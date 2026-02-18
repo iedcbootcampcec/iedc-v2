@@ -1,0 +1,393 @@
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-image: url("/hero/grid-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ===== Top-left IEDC EST badge ===== */
+.iedcBadge {
+  position: absolute;
+  top: 7rem;
+  left: 2rem;
+  z-index: 2;
+}
+
+.iedcBadge img {
+  width: clamp(140px, 18vw, 260px);
+  height: auto;
+  display: block;
+}
+
+/* ===== Main heading ===== */
+.headingBlock {
+  text-align: center;
+  z-index: 2;
+  margin-top: -2rem;
+}
+
+.headingLine1 {
+  display: inline-block;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  text-transform: uppercase;
+  color: var(--text-heading);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin: 0;
+}
+
+.headingLine2 {
+  display: inline-block;
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-style: italic;
+  font-size: clamp(2.5rem, 7vw, 6.5rem);
+  color: #1a1a1a;
+  line-height: 1;
+  margin: -0.1em 0 0 0;
+  position: relative;
+}
+
+.headingLine3 {
+  display: inline-block;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  text-transform: uppercase;
+  color: #1a1a1a;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin: 0.05em 0 0 0;
+}
+
+/* ===== Tagline strip image ===== */
+.tagline {
+  z-index: 2;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.tagline img {
+  width: clamp(260px, 40vw, 520px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ===== Arrow image ===== */
+.arrow {
+  position: absolute;
+  right: 22%;
+  top: 52%;
+  z-index: 3;
+  transform: rotate(-15deg);
+}
+
+.arrow img {
+  width: clamp(80px, 12vw, 180px);
+  filter: grayscale(1);
+  height: auto;
+  display: block;
+}
+
+/* ===== Statue illustration ===== */
+.statue {
+  position: absolute;
+  right: 2%;
+  top: 4%;
+  z-index: 1;
+  will-change: transform;
+}
+
+.statue img {
+  width: clamp(160px, 22vw, 340px);
+  height: auto;
+  display: block;
+  opacity: 0.85;
+}
+
+/* ===== Community > Corporate note ===== */
+.communityNote {
+  position: absolute;
+  right: 8%;
+  top: 48%;
+  rotate: -10deg;
+  z-index: 4;
+  will-change: transform;
+}
+
+.communityNote img {
+  width: clamp(100px, 14vw, 200px);
+  height: auto;
+  display: block;
+}
+
+/* ===== Hero CTA Button ===== */
+.heroCta {
+  z-index: 2;
+  margin-top: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  background: var(--color-accent);
+  border: none;
+  padding: 0.65rem 1.6rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  position: relative;
+}
+
+.heroCta::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid var(--text-heading);
+  z-index: -1;
+  transition:
+    top 0.25s ease,
+    left 0.25s ease;
+}
+
+.heroCta:hover {
+  transform: translate(-2px, -2px);
+}
+
+.heroCta:hover::before {
+  top: 6px;
+  left: 6px;
+}
+
+.heroCtaText {
+  position: relative;
+  z-index: 1;
+}
+
+.heroCtaArrow {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  transition: transform 0.25s ease;
+}
+
+.heroCta:hover .heroCtaArrow {
+  transform: translateX(3px);
+}
+
+/* ===== Bottom-left Founder in progress ===== */
+.founderTag {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2rem;
+  z-index: 2;
+}
+
+.founderTag img {
+  width: clamp(120px, 16vw, 220px);
+  height: auto;
+  display: block;
+}
+
+/* ===== Bottom-right status block ===== */
+.statusBlock {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 2;
+  text-align: right;
+}
+
+.statusCode {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  color: var(--text-body);
+  margin: 0;
+}
+
+.scrollHint {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+
+.scrollArrow {
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+  color: #333;
+  line-height: 1;
+}
+
+.scrollText {
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-style: italic;
+  font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  color: var(--text-subtle);
+}
+
+/* ================ RESPONSIVE ================ */
+
+@media screen and (max-width: 768px) {
+  .hero {
+    padding: 0 1rem;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* ── Badge: top-left ── */
+  .iedcBadge {
+    top: 6.2rem;
+    left: 1rem;
+  }
+
+  .iedcBadge img {
+    width: 200px;
+  }
+
+  /* ── Statue: large, right side, behind heading ── */
+  .statue {
+    right: -5%;
+    top: 15%;
+    z-index: 1;
+  }
+
+  .statue img {
+    width: 55vw;
+    max-width: 260px;
+    opacity: 0.55;
+  }
+
+  /* ── Community note: mid-right, in the gap ── */
+  .communityNote {
+    right: 3%;
+    top: auto;
+    bottom: 18%;
+    z-index: 4;
+  }
+
+  .communityNote img {
+    width: 130px;
+  }
+
+  /* ── Arrow: horizontal, between content & right side ── */
+  .arrow {
+    /* right: 3%;
+    top: auto;
+    bottom: 28%;
+    transform: rotate(-10deg) scale(0.65);
+    z-index: 3; */
+    display: none;
+  }
+
+  /* .arrow img {
+    width: 120px;
+  } */
+
+  /* ── Heading: fill the width ── */
+  .headingBlock {
+    margin-top: 0;
+    z-index: 2;
+  }
+
+  .headingLine1,
+  .headingLine3 {
+    font-size: 4.5rem;
+  }
+
+  .headingLine2 {
+    font-size: 3.5rem;
+  }
+
+  /* ── Tagline ── */
+  .tagline {
+    margin-top: 2rem;
+  }
+
+  .tagline img {
+    width: 90vw;
+  }
+
+  /* ── Hero CTA button ── */
+  .heroCta {
+    margin-top: 2rem;
+  }
+
+  /* ── Founder tag: bottom-left ── */
+  .founderTag {
+    bottom: 2.8rem;
+    left: 1rem;
+    rotate: 5deg;
+  }
+
+  .founderTag img {
+    width: 155px;
+  }
+
+  /* ── Status: bottom-right ── */
+  .statusBlock {
+    bottom: 1.5rem;
+    right: 1rem;
+  }
+
+  .statusCode {
+    font-size: 0.75rem;
+  }
+
+  .scrollText {
+    font-size: 0.7rem;
+  }
+
+  .scrollArrow {
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .statue img {
+    width: 60vw;
+    max-width: 220px;
+    opacity: 0.45;
+  }
+
+  .communityNote {
+    bottom: 16%;
+    right: 1%;
+  }
+
+  .communityNote img {
+    width: 110px;
+  }
+
+  .arrow {
+    bottom: 25%;
+    right: 1%;
+    transform: rotate(-10deg) scale(0.5);
+  }
+
+  .statusCode {
+    font-size: 0.65rem;
+  }
+
+  .scrollText {
+    font-size: 0.6rem;
+  }
+}
