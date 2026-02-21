@@ -25,6 +25,52 @@
   padding: 0;
 }
 
+body::-webkit-scrollbar {
+  width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+@media screen and (max-width: 768px) {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .op-zero {
   opacity: 0;
+}
+
+/* ===== Cut-here separator between sections ===== */
+.cutHereSeparator {
+  position: relative;
+  width: 100%;
+  height: 0;
+  border-top: 2px dashed var(--color-muted);
+  z-index: 10;
+}
+
+.cutHereScissors {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--color-muted);
+  line-height: 1;
+  padding: 0 0.3rem;
 }

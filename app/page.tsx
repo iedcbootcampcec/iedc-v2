@@ -7,6 +7,12 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
+
+      {/* ── Cut-here separator ── */}
+      <div className="cutHereSeparator">
+        <span className="cutHereScissors">✂</span>
+      </div>
+
       <About />
     </main>
   );
