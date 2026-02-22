@@ -79,62 +79,118 @@ export default function Achievements() {
 
   const visibleIndices = getVisibleIndices();
 
-  const navigate = useCallback((direction: "next" | "prev") => {
-    if (isAnimating.current) return;
-    isAnimating.current = true;
+  const navigate = useCallback(
+    (direction: "next" | "prev") => {
+      if (isAnimating.current) return;
+      isAnimating.current = true;
 
-    const topCard = cardRefs.current[0];
-    if (!topCard) {
-      isAnimating.current = false;
-      return;
-    }
+      const isNext = direction === "next";
 
-    const isNext = direction === "next";
+      if (isNext) {
+        // ===== NEXT: Throw top card away, then update state =====
+        const topCard = cardRefs.current[0];
+        if (!topCard) {
+          isAnimating.current = false;
+          return;
+        }
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setCurrentIndex((prev) => {
-          if (isNext) return (prev + 1) % achievements.length;
-          return (prev - 1 + achievements.length) % achievements.length;
+        const tl = gsap.timeline({
+          onComplete: () => {
+            setCurrentIndex((prev) => (prev + 1) % achievements.length);
+            isAnimating.current = false;
+          },
         });
-        isAnimating.current = false;
-      },
-    });
 
-    tl.to(topCard, {
-      y: -40,
-      rotation: isNext ? 6 : -6,
-      scale: 1.03,
-      boxShadow: "8px 18px 50px rgba(0,0,0,0.3)",
-      duration: 0.25,
-      ease: "power2.out",
-    }).to(topCard, {
-      y: -100,
-      opacity: 0,
-      rotation: isNext ? 12 : -12,
-      scale: 0.9,
-      duration: 0.3,
-      ease: "power3.in",
-    });
-
-    for (let i = 1; i < Math.min(4, achievements.length); i++) {
-      const card = cardRefs.current[i];
-      if (!card) continue;
-      const target = getStackOffset(i - 1);
-      tl.to(
-        card,
-        {
-          rotation: target.rotate,
-          x: target.x,
-          y: target.y,
-          scale: target.scale,
-          duration: 0.35,
+        tl.to(topCard, {
+          y: -40,
+          rotation: 6,
+          scale: 1.03,
+          boxShadow: "8px 18px 50px rgba(0,0,0,0.3)",
+          duration: 0.25,
           ease: "power2.out",
-        },
-        "-=0.25",
-      );
-    }
-  }, []);
+        }).to(topCard, {
+          y: -100,
+          opacity: 0,
+          rotation: 12,
+          scale: 0.9,
+          duration: 0.3,
+          ease: "power3.in",
+        });
+
+        for (let i = 1; i < Math.min(4, achievements.length); i++) {
+          const card = cardRefs.current[i];
+          if (!card) continue;
+          const target = getStackOffset(i - 1);
+          tl.to(
+            card,
+            {
+              rotation: target.rotate,
+              x: target.x,
+              y: target.y,
+              scale: target.scale,
+              duration: 0.35,
+              ease: "power2.out",
+            },
+            "-=0.25",
+          );
+        }
+      } else {
+        // ===== PREV: Update state immediately, then animate dropping in =====
+        setCurrentIndex(
+          (prev) => (prev - 1 + achievements.length) % achievements.length,
+        );
+
+        // Use a brief timeout to let React render the previous card at index 0
+        setTimeout(() => {
+          const newTopCard = cardRefs.current[0];
+          if (!newTopCard) return;
+
+          // Animate new top card dropping IN
+          gsap.fromTo(
+            newTopCard,
+            { y: -80, opacity: 0, rotation: -10, scale: 1.05 },
+            {
+              y: 0,
+              opacity: 1,
+              rotation: 0,
+              scale: 1,
+              duration: 0.4,
+              ease: "back.out(1.2)",
+              onComplete: () => {
+                isAnimating.current = false;
+              },
+            },
+          );
+
+          // Animate the rest of the stack sliding DOWN
+          for (let i = 1; i < Math.min(4, achievements.length); i++) {
+            const card = cardRefs.current[i];
+            if (!card) continue;
+            const prevTarget = getStackOffset(i - 1);
+            const newTarget = getStackOffset(i);
+            gsap.fromTo(
+              card,
+              {
+                rotation: prevTarget.rotate,
+                x: prevTarget.x,
+                y: prevTarget.y,
+                scale: prevTarget.scale,
+              },
+              {
+                rotation: newTarget.rotate,
+                x: newTarget.x,
+                y: newTarget.y,
+                scale: newTarget.scale,
+                duration: 0.4,
+                ease: "power2.out",
+              },
+            );
+          }
+        }, 0);
+      }
+    },
+    [achievements.length],
+  );
 
   const startAutoPlay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -151,18 +207,24 @@ export default function Achievements() {
 
   useEffect(() => {
     if (!hasIntroPlayed.current) return;
+
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
       const offset = getStackOffset(i);
-      gsap.set(card, {
-        rotation: offset.rotate,
-        x: offset.x,
-        y: offset.y,
-        scale: offset.scale,
-        opacity: 1,
-        zIndex: 10 - i,
-        clearProps: "boxShadow",
-      });
+
+      if (isAnimating.current) {
+        gsap.set(card, { zIndex: 10 - i });
+      } else {
+        gsap.set(card, {
+          rotation: offset.rotate,
+          x: offset.x,
+          y: offset.y,
+          scale: offset.scale,
+          opacity: 1,
+          zIndex: 10 - i,
+          clearProps: "boxShadow",
+        });
+      }
     });
   }, [currentIndex]);
 
@@ -177,6 +239,10 @@ export default function Achievements() {
         onComplete: () => {
           hasIntroPlayed.current = true;
           startAutoPlay();
+        },
+        onLeaveBack: () => {
+          hasIntroPlayed.current = false;
+          if (autoPlayRef.current) clearInterval(autoPlayRef.current);
         },
       });
 
@@ -315,7 +381,10 @@ export default function Achievements() {
                 </span>
                 <button
                   className={styles.prevBtn}
-                  onClick={() => navigate("prev")}
+                  onClick={() => {
+                    navigate("prev");
+                    startAutoPlay();
+                  }}
                   aria-label="Previous achievement"
                 >
                   <FiArrowLeft />
