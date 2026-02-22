@@ -6,20 +6,24 @@
   width: 100%;
   z-index: 110;
   padding: 1rem 2.5rem;
+  padding-bottom: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition:
-    background 0.4s ease,
-    box-shadow 0.4s ease,
-    backdrop-filter 0.4s ease;
+  transition: background 0.4s ease;
 }
 
-.navbar.scrolled {
-  background: rgba(245, 245, 240, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+.navbar {
+  /* background: rgba(245, 245, 240, var(--nav-bg-intensity)); */
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 240, var(--nav-bg-intensity)) 10%,
+    transparent 100%
+  );
+}
+
+.navbarMobileMenuOpen {
+  background: transparent;
 }
 
 /* ===== Logo / Brand ===== */

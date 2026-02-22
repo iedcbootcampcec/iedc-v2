@@ -4,6 +4,7 @@ import About from "./components/About";
 import { FiScissors } from "react-icons/fi";
 import Announcements from "./components/Announcements";
 import MarqueeBelt from "./components/MarqueeBelt";
+import Achievements from "./components/Achievements";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <About />
       <MarqueeBelt />
       <Announcements />
+      <Achievements />
     </main>
   );
 }

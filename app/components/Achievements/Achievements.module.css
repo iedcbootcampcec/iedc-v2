@@ -1,0 +1,344 @@
+/* ===== Achievements Section ===== */
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("/achievements/achievements-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5rem 2rem 6rem;
+  gap: 3rem;
+}
+
+/* ── Watermark "IMPACT" texts ── */
+.watermarkWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.watermark {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 1);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  line-height: 1;
+  display: block;
+}
+
+.container > *:not(.watermarkWrap) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Heading ===== */
+.heading {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.heading h2 {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  text-transform: uppercase;
+  color: var(--color-light);
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.headingSub {
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: var(--color-light);
+  letter-spacing: 0.04em;
+}
+
+.headingSub::before,
+.headingSub::after {
+  content: "";
+  display: inline-block;
+  width: 3rem;
+  height: 1px;
+  background: var(--color-light);
+  vertical-align: middle;
+  margin: 0 0.6rem;
+}
+
+/* ===== Paper Stack Wrapper ===== */
+.stackWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 560px;
+}
+
+/* ===== Card ===== */
+.card {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 520px;
+  background-image: url("/achievements/paper.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 2px;
+  box-shadow:
+    4px 8px 30px rgba(0, 0, 0, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 1.8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* ── Achievement Image ── */
+.cardImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  margin-bottom: 1.2rem;
+}
+
+.cardImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  filter: sepia(0.08) saturate(0.95);
+}
+
+/* ── Title ── */
+.cardTitle {
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin: 0 0 0.6rem;
+  flex-shrink: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Description ── */
+.cardDesc {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.88rem;
+  color: #4a4a4a;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Navigation Row ── */
+.navRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
+  flex-shrink: 0;
+}
+
+.prevBtn,
+.nextBtn {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.4rem 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.prevBtn {
+  color: #4a4a4a;
+  background: transparent;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.prevBtn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.35);
+  transform: translateX(-2px);
+}
+
+.prevBtn:active {
+  transform: translateX(0);
+}
+
+.nextBtn {
+  color: #faf6ec;
+  background: #1a1a1a;
+  box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+.nextBtn:hover {
+  background: #2a2a2a;
+  box-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.nextBtn:active {
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* ── Counter ── */
+.counter {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: rgba(60, 60, 60, 0.6);
+  margin-right: auto;
+}
+
+/* ── View All Button ── */
+.viewAllBtn {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-light);
+  border: 2px solid var(--color-light);
+  padding: 0.7rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.viewAllBtn:hover {
+  background: var(--color-light);
+  color: #1a1a1a;
+  transform: translateY(-2px);
+}
+
+.viewAllBtn:active {
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 4rem 1rem 5rem;
+    gap: 2rem;
+  }
+
+  .stackWrapper {
+    height: 480px;
+    max-width: 100%;
+  }
+
+  .card {
+    height: 440px;
+    padding: 1.2rem 1.2rem 1.2rem;
+    left: 10px;
+    right: 10px;
+  }
+
+  .cardImageWrap {
+    margin-bottom: 0.8rem;
+  }
+
+  .cardTitle {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cardDesc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .headingSub::before,
+  .headingSub::after {
+    width: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .stackWrapper {
+    height: 440px;
+  }
+
+  .card {
+    height: 400px;
+    padding: 1rem 1rem 0.8rem;
+    left: 5px;
+    right: 5px;
+  }
+
+  .cardImageWrap {
+    margin-bottom: 0.6rem;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .cardDesc {
+    font-size: 0.78rem;
+  }
+
+  .prevBtn,
+  .nextBtn {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .counter {
+    font-size: 0.65rem;
+  }
+}

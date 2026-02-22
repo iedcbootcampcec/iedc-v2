@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import IedcLogo from "./iedcLogo";
 import styles from "./Navbar.module.css";
 
@@ -14,26 +14,40 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll for navbar background
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      const elem = navRef.current;
+      if (!elem) return;
+      const intensity = Math.min(1, window.scrollY / 200);
+      elem.style.setProperty("--nav-bg-intensity", intensity.toString());
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      navRef.current?.classList.add(styles.navbarMobileMenuOpen);
     } else {
       document.body.style.overflow = "";
+      navRef.current?.classList.remove(styles.navbarMobileMenuOpen);
     }
     return () => {
       document.body.style.overflow = "";
+      navRef.current?.classList.remove(styles.navbarMobileMenuOpen);
     };
   }, [isOpen]);
 
@@ -48,9 +62,10 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}
+        className={styles.navbar}
         role="navigation"
         aria-label="Main navigation"
+        ref={navRef}
       >
         {/* ── Logo ── */}
         <a
