@@ -70,7 +70,7 @@ export default function Announcements() {
           scrollTrigger: {
             trigger: `.${styles.heading}`,
             start: "top 85%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );
@@ -89,7 +89,7 @@ export default function Announcements() {
           scrollTrigger: {
             trigger: `.${styles.board}`,
             start: "top 80%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );

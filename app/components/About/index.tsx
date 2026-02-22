@@ -43,7 +43,7 @@ export default function About() {
           scrollTrigger: {
             trigger: `.${styles.heading}`,
             start: "top 85%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );
@@ -61,7 +61,7 @@ export default function About() {
           scrollTrigger: {
             trigger: `.${styles.pipeline}`,
             start: "top 80%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );
@@ -78,7 +78,7 @@ export default function About() {
           scrollTrigger: {
             trigger: `.${styles.pipeline}`,
             start: "top 75%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );
@@ -95,7 +95,7 @@ export default function About() {
           scrollTrigger: {
             trigger: `.${styles.taglineBottom}`,
             start: "top 90%",
-            toggleActions: "play none none none",
+            toggleActions: "play none none reverse",
           },
         },
       );

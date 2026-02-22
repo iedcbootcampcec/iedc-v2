@@ -41,14 +41,25 @@ const achievements = [
     image_url:
       "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
   },
+  {
+    title: "Best IEDC in Kerala",
+    desc: "Recognized as the best Innovation and Entrepreneurship Development Centre in Kerala by the Kerala Startup Mission.",
+    image_url:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
+  },
 ];
 
-const stackOffsets = [
-  { rotate: 0, x: 0, y: 0, scale: 1 },
-  { rotate: -2.5, x: -6, y: 8, scale: 0.97 },
-  { rotate: 3, x: 5, y: 14, scale: 0.94 },
-  { rotate: -4, x: -8, y: 20, scale: 0.91 },
-];
+const getStackOffset = (index: number) => {
+  if (index === 0) return { rotate: 0, x: 0, y: 0, scale: 1 };
+
+  const isOdd = index % 2 !== 0;
+  return {
+    rotate: isOdd ? -(2 + index * 0.5) : 2 + index * 0.5,
+    x: isOdd ? -(4 + index * 2) : 3 + index,
+    y: index * 6 + 2,
+    scale: Math.max(0.8, 1 - index * 0.03),
+  };
+};
 
 export default function Achievements() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -109,7 +120,7 @@ export default function Achievements() {
     for (let i = 1; i < Math.min(4, achievements.length); i++) {
       const card = cardRefs.current[i];
       if (!card) continue;
-      const target = stackOffsets[i - 1];
+      const target = getStackOffset(i - 1);
       tl.to(
         card,
         {
@@ -142,7 +153,7 @@ export default function Achievements() {
     if (!hasIntroPlayed.current) return;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
-      const offset = stackOffsets[i] || stackOffsets[stackOffsets.length - 1];
+      const offset = getStackOffset(i);
       gsap.set(card, {
         rotation: offset.rotate,
         x: offset.x,
@@ -161,7 +172,7 @@ export default function Achievements() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 75%",
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
         onComplete: () => {
           hasIntroPlayed.current = true;
@@ -197,7 +208,7 @@ export default function Achievements() {
       for (let i = count - 1; i >= 0; i--) {
         const card = cardRefs.current[i];
         if (!card) continue;
-        const target = stackOffsets[i] || stackOffsets[stackOffsets.length - 1];
+        const target = getStackOffset(i);
 
         masterTl.to(
           card,
@@ -264,7 +275,7 @@ export default function Achievements() {
       <div className={styles.stackWrapper} style={{ opacity: 0 }}>
         {visibleIndices.map((achIndex, stackPos) => {
           const ach = achievements[achIndex];
-          const offset = stackOffsets[stackPos];
+          const offset = getStackOffset(stackPos);
           return (
             <div
               className={styles.card}
