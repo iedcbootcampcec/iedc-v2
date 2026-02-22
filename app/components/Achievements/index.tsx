@@ -10,7 +10,6 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-/* ── Test achievement data ── */
 const achievements = [
   {
     title: "Won State Innovation Award",
@@ -44,7 +43,6 @@ const achievements = [
   },
 ];
 
-/* Offsets for stacked papers behind the top card */
 const stackOffsets = [
   { rotate: 0, x: 0, y: 0, scale: 1 },
   { rotate: -2.5, x: -6, y: 8, scale: 0.97 },
@@ -58,8 +56,8 @@ export default function Achievements() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAnimating = useRef(false);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hasIntroPlayed = useRef(false);
 
-  /* Which indices are visible in the stack (up to 4 cards) */
   const getVisibleIndices = useCallback(() => {
     const indices: number[] = [];
     for (let i = 0; i < Math.min(4, achievements.length); i++) {
@@ -70,7 +68,6 @@ export default function Achievements() {
 
   const visibleIndices = getVisibleIndices();
 
-  /* ── Navigate with GSAP stack animation ── */
   const navigate = useCallback((direction: "next" | "prev") => {
     if (isAnimating.current) return;
     isAnimating.current = true;
@@ -93,7 +90,6 @@ export default function Achievements() {
       },
     });
 
-    // Phase 1: Top card lifts up and peels away
     tl.to(topCard, {
       y: -40,
       rotation: isNext ? 6 : -6,
@@ -110,7 +106,6 @@ export default function Achievements() {
       ease: "power3.in",
     });
 
-    // Phase 2: Cards behind shift up into position
     for (let i = 1; i < Math.min(4, achievements.length); i++) {
       const card = cardRefs.current[i];
       if (!card) continue;
@@ -130,18 +125,21 @@ export default function Achievements() {
     }
   }, []);
 
-  /* ── Auto-play every 3s ── */
-  useEffect(() => {
+  const startAutoPlay = useCallback(() => {
+    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     autoPlayRef.current = setInterval(() => {
       navigate("next");
     }, 3000);
+  }, [navigate]);
+
+  useEffect(() => {
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
-  }, [navigate]);
+  }, []);
 
-  /* ── After state update, snap cards to their stack positions ── */
   useEffect(() => {
+    if (!hasIntroPlayed.current) return;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
       const offset = stackOffsets[i] || stackOffsets[stackOffsets.length - 1];
@@ -157,40 +155,76 @@ export default function Achievements() {
     });
   }, [currentIndex]);
 
-  /* ── Scroll-triggered entrance ── */
   useGSAP(
     () => {
-      gsap.fromTo(
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+        onComplete: () => {
+          hasIntroPlayed.current = true;
+          startAutoPlay();
+        },
+      });
+
+      masterTl.fromTo(
         `.${styles.heading}`,
-        { y: 50, opacity: 0 },
+        { y: 60, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.7,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: `.${styles.heading}`,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
         },
       );
 
-      gsap.fromTo(
-        `.${styles.stackWrapper}`,
-        { y: 80, opacity: 0, scale: 0.92 },
+      const count = Math.min(cardRefs.current.length, 4);
+      for (let i = 0; i < count; i++) {
+        const card = cardRefs.current[i];
+        if (!card) continue;
+        gsap.set(card, {
+          opacity: 0,
+          x: 600,
+          y: -80,
+          rotation: 25 + i * 8,
+          scale: 0.85,
+        });
+      }
+      masterTl.set(`.${styles.stackWrapper}`, { opacity: 1 }, "-=0.2");
+
+      for (let i = count - 1; i >= 0; i--) {
+        const card = cardRefs.current[i];
+        if (!card) continue;
+        const target = stackOffsets[i] || stackOffsets[stackOffsets.length - 1];
+
+        masterTl.to(
+          card,
+          {
+            x: target.x,
+            y: target.y,
+            rotation: target.rotate,
+            scale: target.scale,
+            opacity: 1,
+            duration: 0.55,
+            ease: "back.out(1.4)",
+          },
+          i === count - 1 ? "-=0.1" : "-=0.2",
+        );
+      }
+
+      /* ─ Phase 4: View All button fades up ─ */
+      masterTl.fromTo(
+        `.${styles.viewAllBtn}`,
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          scale: 1,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: `.${styles.stackWrapper}`,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
+          duration: 0.5,
+          ease: "power2.out",
         },
+        "-=0.15",
       );
     },
     { scope: sectionRef },
