@@ -5,6 +5,9 @@ import { FiScissors } from "react-icons/fi";
 import Announcements from "./components/Announcements";
 import MarqueeBelt from "./components/MarqueeBelt";
 import Achievements from "./components/Achievements";
+import Faculty from "./components/Team/Faculty";
+import Execom from "./components/Team/Execom";
+import SubExecom from "./components/Team/SubExecom";
 import Team from "./components/Team";
 
 export default function Home() {
@@ -24,6 +27,7 @@ export default function Home() {
       <MarqueeBelt />
       <Announcements />
       <Achievements />
+
       <Team />
     </main>
   );
