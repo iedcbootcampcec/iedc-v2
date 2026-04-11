@@ -14,6 +14,12 @@
 
   /* ── Backgrounds ── */
   --bg-page: var(--color-light);
+  --nav-color-rgb: 245, 245, 240;
+  --nav-logo-color: var(--text-heading);
+  --nav-text-color: var(--text-body);
+
+  --achivements-color-rgb: 252, 197, 3;
+  --team-color-rgb: 17, 17, 17;
 }
 
 /* ===== CSS Reset & Base ===== */
@@ -25,20 +31,26 @@
   padding: 0;
 }
 
+body {
+  --scrollbar-bg: var(--bg-page);
+  --scrollbar-thumb: var(--color-muted);
+  --scrollbar-thumb-hover: var(--color-primary);
+}
+
 body::-webkit-scrollbar {
   width: 6px;
 }
 
 body::-webkit-scrollbar-track {
-  background: var(--bg-page);
+  background: var(--scrollbar-bg);
 }
 
 body::-webkit-scrollbar-thumb {
-  background: var(--color-muted);
+  background: var(--scrollbar-thumb);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: var(--scrollbar-thumb-hover);
 }
 
 @media screen and (max-width: 768px) {

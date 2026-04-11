@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import styles from "./Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -68,6 +68,30 @@ export default function Team() {
     },
     { scope: sectionRef },
   );
+
+  useEffect(() => {
+    //change color of navbar on enter and leaving
+    const navbar = document.getElementById("navbar-ref");
+    if (!navbar) return;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 0%",
+        toggleActions: "play none none reverse",
+      },
+    });
+    // to match the nav color to the section color
+    // achivements section has color #FCC503
+    tl.to(navbar, {
+      "--nav-color-rgb": "var(--team-color-rgb)",
+      "--nav-text-color": "var(--color-white)",
+      "--nav-logo-color": "var(--color-white)",
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   return (
     <section className={styles.teamMain} id="team" ref={sectionRef}>

@@ -42,6 +42,21 @@
   display: block;
 }
 
+.watermark1 {
+  font-size: clamp(6rem, 20vw, 18rem);
+  opacity: 0.08;
+}
+
+.watermark2 {
+  font-size: clamp(4.5rem, 15vw, 13rem);
+  opacity: 0.05;
+}
+
+.watermark3 {
+  font-size: clamp(3rem, 10vw, 9rem);
+  opacity: 0.03;
+}
+
 .container > *:not(.watermarkWrap) {
   position: relative;
   z-index: 1;
@@ -273,6 +288,21 @@
   .container {
     padding: 4rem 1rem 5rem;
     gap: 2rem;
+  }
+
+  .watermark1 {
+    font-size: 8rem;
+    opacity: 0.12;
+  }
+
+  .watermark2 {
+    font-size: 6.5rem;
+    opacity: 0.09;
+  }
+
+  .watermark3 {
+    font-size: 5rem;
+    opacity: 0.06;
   }
 
   .stackWrapper {

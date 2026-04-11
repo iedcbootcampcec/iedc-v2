@@ -63,6 +63,7 @@ const getStackOffset = (index: number) => {
 
 export default function Achievements() {
   const sectionRef = useRef<HTMLElement>(null);
+  const navref = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAnimating = useRef(false);
@@ -192,6 +193,26 @@ export default function Achievements() {
     [achievements.length],
   );
 
+  useEffect(() => {
+    //change color of navbar on enter and leaving
+    const navbar = document.getElementById("navbar-ref");
+    if (!navbar) return;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 0%",
+        toggleActions: "play none none reverse",
+      },
+    });
+    tl.to(navbar, {
+      "--nav-color-rgb": "var(--achivements-color-rgb)",
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
   const startAutoPlay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     autoPlayRef.current = setInterval(() => {
@@ -311,22 +332,13 @@ export default function Achievements() {
     <section className={styles.container} id="achievements" ref={sectionRef}>
       {/* ── Background watermarks ── */}
       <div className={styles.watermarkWrap} aria-hidden="true">
-        <span
-          className={styles.watermark}
-          style={{ fontSize: "clamp(6rem, 20vw, 18rem)", opacity: 0.08 }}
-        >
+        <span className={`${styles.watermark} ${styles.watermark1}`}>
           IMPACT
         </span>
-        <span
-          className={styles.watermark}
-          style={{ fontSize: "clamp(4.5rem, 15vw, 13rem)", opacity: 0.05 }}
-        >
+        <span className={`${styles.watermark} ${styles.watermark2}`}>
           IMPACT
         </span>
-        <span
-          className={styles.watermark}
-          style={{ fontSize: "clamp(3rem, 10vw, 9rem)", opacity: 0.03 }}
-        >
+        <span className={`${styles.watermark} ${styles.watermark3}`}>
           IMPACT
         </span>
       </div>

@@ -10,14 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: background 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 .navbar {
   /* background: rgba(245, 245, 240, var(--nav-bg-intensity)); */
   background: linear-gradient(
     180deg,
-    rgba(245, 245, 240, var(--nav-bg-intensity)) 10%,
+    rgba(var(--nav-color-rgb), var(--nav-bg-intensity)) 10%,
     transparent 100%
   );
 }
@@ -28,7 +28,7 @@
 
 /* ===== Logo / Brand ===== */
 .logo {
-  color: var(--text-heading);
+  color: var(--nav-logo-color);
   cursor: pointer;
   z-index: 102;
   text-decoration: none;
@@ -53,7 +53,7 @@
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 0.8rem;
   font-weight: 400;
-  color: var(--text-body);
+  color: var(--nav-text-color);
   text-decoration: none;
   text-transform: lowercase;
   letter-spacing: 0.04em;
@@ -72,10 +72,6 @@
   height: 2px;
   background: var(--color-accent);
   transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.navLink:hover {
-  color: var(--text-heading);
 }
 
 .navLink:hover::after {
@@ -99,7 +95,7 @@
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text-heading);
+  color: var(--nav-text-color);
   background: var(--color-accent);
   border: none;
   padding: 0.5rem 1.2rem;
@@ -119,7 +115,7 @@
   left: 3px;
   width: 100%;
   height: 100%;
-  border: 1.5px solid var(--text-heading);
+  border: 1.5px solid var(--nav-text-color);
   z-index: -1;
   transition:
     top 0.25s ease,
@@ -144,7 +140,7 @@
   width: 40px;
   height: 40px;
   background: none;
-  border: 1.5px solid var(--text-heading);
+  border: 1.5px solid var(--nav-text-color);
   cursor: pointer;
   z-index: 102;
   position: relative;
@@ -156,7 +152,7 @@
   display: block;
   width: 18px;
   height: 1.5px;
-  background: var(--text-heading);
+  background: var(--nav-text-color);
   transition:
     transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
     opacity 0.3s ease,

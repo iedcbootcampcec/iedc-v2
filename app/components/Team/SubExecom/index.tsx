@@ -15,6 +15,8 @@ const members = [
   { name: "Kendall Roy", designation: "Social Media", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400&h=400" },
 ];
 
+const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
+
 export default function SubExecom() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -24,13 +26,15 @@ export default function SubExecom() {
       // Reveal
       gsap.fromTo(
         `.${styles.cardSubExecom}`,
-        { y: 50, opacity: 0 },
+        { y: 80, opacity: 0, rotation: 3, scale: 0.9 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power3.out",
+          rotation: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "back.out(1.2)",
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 88%",
@@ -39,39 +43,39 @@ export default function SubExecom() {
         },
       );
 
-      // Ping-pong (Start from left 0, move to -distance)
+      // Seamless Marquee
       const track = trackRef.current;
-      const wrapper = track?.parentElement;
-      let pingPongTween: gsap.core.Tween | null = null;
+      let scrollTween: gsap.core.Tween | null = null;
 
-      if (track && wrapper) {
-        const initPingPong = () => {
-          if (pingPongTween) pingPongTween.kill();
-          gsap.set(track, { x: 0 }); 
+      if (track) {
+        const initLoop = () => {
+          if (scrollTween) scrollTween.kill();
           
-          const distance = track.scrollWidth - wrapper.clientWidth;
+          const trackGroups = track.querySelectorAll(`.${styles.trackGroup}`);
+          if (trackGroups.length > 0) {
+            const firstGroup = trackGroups[0] as HTMLElement;
+            const groupWidth = firstGroup.offsetWidth;
 
-          if (distance > 0) {
-            const duration = Math.max(distance / 50, 5); 
-            pingPongTween = gsap.to(track, {
-              x: -distance,
-              duration,
-              ease: "sine.inOut",
+            gsap.set(track, { x: 0 }); 
+            
+            scrollTween = gsap.to(track, {
+              x: -groupWidth,
+              ease: "none",
+              duration: groupWidth / 60,
               repeat: -1,
-              yoyo: true,
             });
 
-            wrapper.addEventListener("mouseenter", () => pingPongTween?.pause());
-            wrapper.addEventListener("mouseleave", () => pingPongTween?.play());
+            track.addEventListener("mouseenter", () => scrollTween?.pause());
+            track.addEventListener("mouseleave", () => scrollTween?.play());
           }
         };
 
-        setTimeout(initPingPong, 100);
-        window.addEventListener("resize", initPingPong);
+        setTimeout(initLoop, 200);
+        window.addEventListener("resize", initLoop);
 
         return () => {
-          if (pingPongTween) pingPongTween.kill();
-          window.removeEventListener("resize", initPingPong);
+          if (scrollTween) scrollTween.kill();
+          window.removeEventListener("resize", initLoop);
         };
       }
     },
@@ -87,22 +91,26 @@ export default function SubExecom() {
       <span className={`${styles.cornerCross} ${styles.bottomLeft}`}>+</span>
       <span className={`${styles.cornerCross} ${styles.bottomRight}`}>+</span>
 
-      <h3 className={styles.subHeading} style={{ marginBottom: '1.5rem' }}>Sub Execom</h3>
+      <h3 className={`${styles.subHeading} ${styles.centerTextOnDesktop}`} style={{ marginBottom: '1.5rem' }}>Sub Execom</h3>
       <div className={styles.trackWrapper}>
         <div ref={trackRef} className={styles.track}>
-          {members.map((member, i) => (
-            <div className={`${styles.card} ${styles.cardSubExecom}`} key={`${member.name}-${i}`} style={{ opacity: 0 }}>
-              <div className={styles.photo}>
-                <Image src={member.image} alt={member.name} fill sizes="260px" className={styles.photoImg} />
-              </div>
-              <div className={styles.info}>
-                <h4 className={styles.name}>{member.name}</h4>
-                <p className={styles.designation}>{member.designation}</p>
-                <div className={styles.socials}>
-                  <a href="#" className={styles.socialIcon} aria-label="LinkedIn"><FiLinkedin /></a>
-                  <a href="#" className={styles.socialIcon} aria-label="GitHub"><FiGithub /></a>
+          {[...Array(DUPLICATE_COUNT)].map((_, groupIndex) => (
+            <div className={styles.trackGroup} key={groupIndex}>
+              {members.map((member, i) => (
+                <div className={`${styles.card} ${styles.cardSubExecom}`} key={`${member.name}-${i}-${groupIndex}`} style={{ opacity: 0 }}>
+                  <div className={styles.photo}>
+                    <Image src={member.image} alt={member.name} fill sizes="260px" className={styles.photoImg} />
+                  </div>
+                  <div className={styles.info}>
+                    <h4 className={styles.name}>{member.name}</h4>
+                    <p className={styles.designation}>{member.designation}</p>
+                    <div className={styles.socials}>
+                      <a href="#" className={styles.socialIcon} aria-label="LinkedIn"><FiLinkedin /></a>
+                      <a href="#" className={styles.socialIcon} aria-label="GitHub"><FiGithub /></a>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           ))}
         </div>

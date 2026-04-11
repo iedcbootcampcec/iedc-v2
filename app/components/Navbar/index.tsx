@@ -1,16 +1,30 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import IedcLogo from "./iedcLogo";
 import styles from "./Navbar.module.css";
 
 const NAV_ITEMS = [
-  { label: "home", href: "#hero" },
-  { label: "about", href: "#about" },
-  { label: "events", href: "#events" },
-  { label: "team", href: "#team" },
-  { label: "contact", href: "#contact" },
+  { label: "home", id: "hero" },
+  { label: "about", id: "about" },
+  { label: "events", id: "events" },
+  { label: "achievements", id: "achievements" },
+  { label: "team", id: "team" },
+  { label: "contact", id: "contact" },
 ];
+
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    let offset = 0;
+    if (window.innerWidth > 768 && ["team", "achievements"].includes(id))
+      offset = -20;
+
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - offset;
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  }
+};
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +73,13 @@ export default function Navbar() {
     setIsOpen(false);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const id = e.currentTarget.hash.slice(1);
+    scrollToSection(id);
+    closeMenu();
+  };
+
   return (
     <>
       <nav
@@ -66,12 +87,13 @@ export default function Navbar() {
         role="navigation"
         aria-label="Main navigation"
         ref={navRef}
+        id="navbar-ref"
       >
         {/* ── Logo ── */}
         <a
           href="#hero"
           className={`${styles.logo} ${isOpen ? styles.logoOpen : ""}`}
-          onClick={closeMenu}
+          onClick={handleNavClick}
         >
           <IedcLogo size={"5rem"} />
         </a>
@@ -80,7 +102,11 @@ export default function Navbar() {
         <ul className={styles.navLinks}>
           {NAV_ITEMS.map((item) => (
             <li key={item.label} className={styles.navItem}>
-              <a href={item.href} className={styles.navLink}>
+              <a
+                href={`#${item.id}`}
+                onClick={handleNavClick}
+                className={styles.navLink}
+              >
                 {item.label}
               </a>
             </li>
@@ -115,9 +141,9 @@ export default function Navbar() {
           {NAV_ITEMS.map((item) => (
             <li key={item.label} className={styles.mobileNavItem}>
               <a
-                href={item.href}
+                href={`#${item.id}`}
                 className={styles.mobileNavLink}
-                onClick={closeMenu}
+                onClick={handleNavClick}
               >
                 {item.label}
               </a>

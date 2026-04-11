@@ -144,13 +144,33 @@
   position: relative;
   z-index: 2;
   overflow: hidden;
+  /* Add mask-image for a nice fade effect at the edges */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
 }
 
 .track {
   display: flex;
-  gap: 1.5rem;
   width: max-content;
-  padding: 0 2rem; /* Breathing room at ends */
+  will-change: transform;
+}
+
+.trackGroup {
+  display: flex;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 /* ── Card ── */
@@ -163,8 +183,9 @@
   border: 2px solid #1a1a1a;
   box-shadow: 6px 6px 0px rgba(232, 160, 32, 1); /* Accent color solid shadow */
   transition:
-    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.3s ease;
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s ease;
+  transform-style: preserve-3d;
 }
 
 .card:hover {
@@ -262,6 +283,20 @@
 /* ══════════════════════════════════════════════
    Responsive
    ══════════════════════════════════════════════ */
+
+@media screen and (min-width: 769px) {
+  .hideOnDesktop {
+    display: none !important;
+  }
+  .centerOnDesktop {
+    width: 100%;
+    justify-content: center;
+  }
+  .centerTextOnDesktop {
+    text-align: center;
+    padding-left: 0;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .team {
