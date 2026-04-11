@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background-image: url("/hero/grid-bg.webp");
+  background-image: var(--bg-img-url);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
