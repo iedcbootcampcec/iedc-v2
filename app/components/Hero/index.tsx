@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./Hero.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { image_data } from "./bgImage";
+//import { image_data } from "./bgImage";
 
 gsap.registerPlugin(useGSAP);
 
@@ -137,9 +137,9 @@ export default function Hero() {
       className={styles.hero}
       id="hero"
       ref={containerRef}
-      style={{
-        "--bg-img-url": `url(${image_data})`,
-      } as React.CSSProperties}
+      // style={{
+      //   "--bg-img-url": `url(${image_data})`,
+      // } as React.CSSProperties}
     >
       {/* ── Top-left IEDC badge ── */}
       <div className={`${styles.iedcBadge} op-zero`}>
