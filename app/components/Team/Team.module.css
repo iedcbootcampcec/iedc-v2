@@ -10,9 +10,9 @@
 
 .team {
   position: relative;
-  background-color: #111;
+  background-color: var(--team-bg-color);
   overflow: hidden;
-  color: #f5f5f0;
+  color: var(--color-light);
   padding: 4.5rem 1rem;
 }
 
