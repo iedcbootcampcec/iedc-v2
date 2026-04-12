@@ -235,7 +235,6 @@
   font-family: var(--font-space-mono), monospace;
   font-size: 0.8rem;
   color: var(--color-muted);
-  text-transform: lowercase;
 }
 
 /* ── Socials ── */
