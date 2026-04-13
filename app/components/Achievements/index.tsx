@@ -60,6 +60,7 @@ export default function Achievements() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isInteracting = useRef(false);
+  const autoPlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Drag Physics State
   const startX = useRef(0);
@@ -67,6 +68,28 @@ export default function Achievements() {
   const currentX = useRef(0);
   const currentY = useRef(0);
   const startTimestamp = useRef(0);
+
+  const startAutoPlay = useCallback(() => {
+    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+    autoPlayTimer.current = setTimeout(() => {
+      const target = cardRefs.current[currentIndex];
+      if (!target || isInteracting.current) return;
+      
+      // Auto-shuffle motion (swing right)
+      gsap.to(target, {
+        x: window.innerWidth > 600 ? 400 : 250,
+        y: 30,
+        rotation: 25,
+        scale: 0.9,
+        duration: 0.35,
+        ease: "power2.out",
+        onComplete: () => {
+          gsap.set(target, { zIndex: 0 });
+          setCurrentIndex((prev) => (prev + 1) % achievements.length);
+        }
+      });
+    }, 3500);
+  }, [currentIndex]);
 
   // Handle snap to position whenever currentIndex updates
   useEffect(() => {
@@ -91,7 +114,14 @@ export default function Achievements() {
       
       card.className = `${styles.card} ${stackPos === 0 ? styles.cardGrab : ""}`;
     });
-  }, [currentIndex]);
+
+    // trigger autoplay
+    startAutoPlay();
+
+    return () => {
+      if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+    };
+  }, [currentIndex, startAutoPlay]);
 
   // Pointer event handlers for physics-based throwing
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
@@ -99,6 +129,8 @@ export default function Achievements() {
     if (stackPos !== 0) return; // Only allow dragging the top card
     
     isInteracting.current = true;
+    if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
+
     const target = e.currentTarget;
     target.setPointerCapture(e.pointerId);
 
@@ -178,6 +210,7 @@ export default function Achievements() {
         scale: 1,
         duration: 0.55,
         ease: "elastic.out(1, 0.6)",
+        onComplete: startAutoPlay // Resume autoplay if they aborted drag
       });
     }
   };
