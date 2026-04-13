@@ -3,392 +3,451 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background-image: url("/hero/grid-bg.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  padding: 7.5rem 2rem 3rem;
+  background:
+    radial-gradient(circle at top left, rgba(232, 160, 32, 0.18), transparent 26%),
+    radial-gradient(circle at right 20%, rgba(0, 0, 0, 0.06), transparent 28%),
+    linear-gradient(180deg, #f8f4eb 0%, #f2ede2 100%);
 }
 
-/* ===== Top-left IEDC EST badge ===== */
-.iedcBadge {
-  position: absolute;
-  top: 7rem;
-  left: 2rem;
-  z-index: 2;
-}
-
-.iedcBadge img {
-  width: clamp(140px, 18vw, 260px);
-  height: auto;
-  display: block;
-}
-
-/* ===== Main heading ===== */
-.headingBlock {
-  text-align: center;
-  z-index: 2;
-  margin-top: -2rem;
-}
-
-.headingLine1 {
-  display: inline-block;
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(3rem, 8vw, 7.5rem);
-  text-transform: uppercase;
-  color: var(--text-heading);
-  letter-spacing: 0.04em;
-  line-height: 1;
-  margin: 0;
-}
-
-.headingLine2 {
-  display: inline-block;
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-style: italic;
-  font-size: clamp(2.5rem, 7vw, 6.5rem);
-  color: #1a1a1a;
-  line-height: 1;
-  margin: -0.1em 0 0 0;
-  position: relative;
-}
-
-.headingLine3 {
-  display: inline-block;
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(3rem, 8vw, 7.5rem);
-  text-transform: uppercase;
-  color: #1a1a1a;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  margin: 0.05em 0 0 0;
-}
-
-/* ===== Tagline strip image ===== */
-.tagline {
-  z-index: 2;
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.tagline img {
-  width: clamp(260px, 40vw, 520px);
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-/* ===== Arrow image ===== */
-.arrow {
-  position: absolute;
-  right: 22%;
-  top: 52%;
-  z-index: 3;
-  transform: rotate(-15deg);
-}
-
-.arrow img {
-  width: clamp(80px, 12vw, 180px);
-  filter: grayscale(1);
-  height: auto;
-  display: block;
-}
-
-/* ===== Statue illustration ===== */
-.statue {
-  position: absolute;
-  right: 2%;
-  top: 4%;
-  z-index: 1;
-  will-change: transform;
-}
-
-.statue img {
-  width: clamp(160px, 22vw, 340px);
-  height: auto;
-  display: block;
-  opacity: 0.85;
-}
-
-/* ===== Community > Corporate note ===== */
-.communityNote {
-  position: absolute;
-  right: 8%;
-  top: 48%;
-  rotate: -10deg;
-  z-index: 4;
-  will-change: transform;
-}
-
-.communityNote img {
-  width: clamp(100px, 14vw, 200px);
-  height: auto;
-  display: block;
-}
-
-/* ===== Hero CTA Button ===== */
-.heroCta {
-  /* z-index: 2; */
-  margin-top: 1.8rem;
-  /* display: inline-flex; */
-  /* align-items: center; */
-  /* gap: 0.6rem; */
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-heading);
-  background: var(--color-accent);
-  /* border: 1.5px solid var(--text-heading); */
-  border: none;
-  padding: 0.65rem 1.6rem;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-  position: relative;
-}
-
-.heroCta::before {
+.hero::before {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: "BOOTCAMP";
+  position: absolute;
+  right: -1rem;
+  bottom: 1rem;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(5rem, 18vw, 14rem);
+  line-height: 0.85;
+  letter-spacing: 0.08em;
+  color: rgba(26, 26, 26, 0.04);
+  pointer-events: none;
+}
+
+.heroInner,
+.topRail {
+  position: relative;
+  z-index: 1;
+}
+
+.topRail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.18);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.7);
+}
+
+.heroInner {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 3rem;
+  align-items: center;
+  padding-top: 2.75rem;
+}
+
+.copyColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.kicker {
+  max-width: 34rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.72);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  line-height: 0.9;
+}
+
+.headingLine {
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(4rem, 11vw, 8.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+}
+
+.headingAccent {
+  padding: 0.02em 0.18em;
+  margin: 0.06em 0;
+  background: #fffdf8;
+  border: 2px solid var(--color-primary);
+  box-shadow: 10px 10px 0 var(--color-accent);
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-size: clamp(2.5rem, 7vw, 5.3rem);
+  font-style: italic;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.copy {
+  max-width: 35rem;
+  margin: 1.6rem 0 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.82);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.primaryCta,
+.secondaryCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.primaryCta {
+  position: relative;
+  padding: 0.9rem 1.3rem;
+  background: var(--color-accent);
+  color: var(--text-heading);
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.primaryCta::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
   width: 100%;
   height: 100%;
-  border: 1.5px solid var(--text-heading);
-  pointer-events: none;
+  border: 1.5px solid var(--color-primary);
+  z-index: -1;
   transition:
     top 0.25s ease,
     left 0.25s ease;
 }
 
-.heroCta:hover {
+.primaryCta:hover {
   transform: translate(-2px, -2px);
 }
 
-.heroCta:hover::before {
-  top: 6px;
-  left: 6px;
+.primaryCta:hover::before {
+  top: 7px;
+  left: 7px;
 }
 
-.heroCtaText {
-  position: relative;
-  z-index: 1;
-}
-
-.heroCtaArrow {
-  position: relative;
-  z-index: 1;
-  font-size: 1.1rem;
-  transition: transform 0.25s ease;
-}
-
-.heroCta:hover .heroCtaArrow {
-  transform: translateX(3px);
-}
-
-/* ===== Bottom-left Founder in progress ===== */
-.founderTag {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 2rem;
-  z-index: 2;
-}
-
-.founderTag img {
-  width: clamp(120px, 16vw, 220px);
-  height: auto;
-  display: block;
-}
-
-/* ===== Bottom-right status block ===== */
-.statusBlock {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 2.5rem;
-  z-index: 2;
-  text-align: right;
-}
-
-.statusCode {
+.secondaryCta {
+  padding: 0.92rem 1.15rem;
+  border: 1.5px solid rgba(26, 26, 26, 0.2);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--text-heading);
   font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: clamp(0.75rem, 1.2vw, 1rem);
-  color: var(--text-body);
-  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.scrollHint {
+.secondaryCta:hover {
+  transform: translateY(-2px);
+  border-color: rgba(26, 26, 26, 0.5);
+  background: #ffffff;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  width: min(100%, 48rem);
+  margin-top: 2.4rem;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-height: 128px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.statValue {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-heading);
+}
+
+.statLabel {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.74rem;
+  line-height: 1.65;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.72);
+}
+
+.posterColumn {
+  position: relative;
+  min-height: 640px;
+}
+
+.posterCard {
+  position: relative;
+  width: min(100%, 460px);
+  margin: 2rem auto 0;
+  padding: 1.5rem;
+  background: #fffdf8;
+  border: 2px solid var(--color-primary);
+  box-shadow: 16px 16px 0 rgba(26, 26, 26, 0.08);
+}
+
+.posterTape {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: 96px;
+  height: 28px;
+  background: rgba(232, 160, 32, 0.45);
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+.posterTopline,
+.posterFooter {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.35rem;
-  margin-top: 0.6rem;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.66);
 }
 
-.scrollArrow {
-  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
-  color: #333;
-  line-height: 1;
+.posterBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2.1rem 0;
 }
 
-.scrollText {
+.posterLabel {
+  margin: 0;
   font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-size: 1.15rem;
   font-style: italic;
-  font-size: clamp(0.7rem, 1.1vw, 0.95rem);
-  color: var(--text-subtle);
+  color: rgba(26, 26, 26, 0.75);
 }
 
-/* ================ RESPONSIVE ================ */
+.posterHeadline {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3rem, 6vw, 4.8rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+}
+
+.noteCard,
+.codeCard {
+  position: absolute;
+  width: min(250px, 46%);
+  padding: 1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  box-shadow: 0 14px 32px rgba(26, 26, 26, 0.08);
+}
+
+.noteLabel {
+  display: inline-block;
+  margin-bottom: 0.7rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.55);
+}
+
+.noteCard p {
+  margin: 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(26, 26, 26, 0.82);
+}
+
+.noteOne {
+  top: 1.2rem;
+  left: 0;
+  transform: rotate(-5deg);
+}
+
+.noteTwo {
+  right: 0;
+  bottom: 9.5rem;
+  transform: rotate(4deg);
+}
+
+.codeCard {
+  right: 1.2rem;
+  bottom: 0;
+  width: min(280px, 56%);
+  background: rgba(26, 26, 26, 0.96);
+  border: none;
+  transform: rotate(-2deg);
+}
+
+.codeCard p {
+  margin: 0;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  color: rgba(245, 245, 240, 0.82);
+}
+
+.revealRail,
+.revealMask,
+.revealUp,
+.revealScale,
+.revealCard {
+  will-change: transform, opacity;
+}
+
+@media screen and (max-width: 1080px) {
+  .heroInner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .posterColumn {
+    min-height: 560px;
+    width: min(100%, 560px);
+    margin: 0 auto;
+  }
+
+  .statsGrid {
+    width: 100%;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .hero {
-    padding: 0 1rem;
-    justify-content: center;
-    gap: 0;
+    padding: 6.5rem 1rem 2.5rem;
   }
 
-  /* ── Badge: top-left ── */
-  .iedcBadge {
-    top: 6.2rem;
-    left: 1rem;
+  .topRail {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.66rem;
   }
 
-  .iedcBadge img {
-    width: 200px;
+  .copy {
+    max-width: 100%;
   }
 
-  /* ── Statue: large, right side, behind heading ── */
-  .statue {
-    right: -5%;
-    top: 15%;
-    z-index: 1;
+  .statsGrid {
+    grid-template-columns: 1fr;
   }
 
-  .statue img {
-    width: 55vw;
-    max-width: 260px;
-    opacity: 0.55;
+  .statCard {
+    min-height: auto;
   }
 
-  /* ── Community note: mid-right, in the gap ── */
-  .communityNote {
-    right: 3%;
+  .posterColumn {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .posterCard,
+  .noteCard,
+  .codeCard {
+    position: relative;
     top: auto;
-    bottom: 18%;
-    z-index: 4;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    margin: 0;
+    transform: none;
   }
 
-  .communityNote img {
-    width: 130px;
-  }
-
-  /* ── Arrow: horizontal, between content & right side ── */
-  .arrow {
-    /* right: 3%;
-    top: auto;
-    bottom: 28%;
-    transform: rotate(-10deg) scale(0.65);
-    z-index: 3; */
-    display: none;
-  }
-
-  /* .arrow img {
-    width: 120px;
-  } */
-
-  /* ── Heading: fill the width ── */
-  .headingBlock {
-    margin-top: 0;
-    z-index: 2;
-  }
-
-  .headingLine1,
-  .headingLine3 {
-    font-size: 4.5rem;
-  }
-
-  .headingLine2 {
-    font-size: 3.5rem;
-  }
-
-  /* ── Tagline ── */
-  .tagline {
-    margin-top: 2rem;
-  }
-
-  .tagline img {
-    width: 90vw;
-  }
-
-  /* ── Hero CTA button ── */
-  .heroCta {
-    margin-top: 2rem;
-  }
-
-  /* ── Founder tag: bottom-left ── */
-  .founderTag {
-    bottom: 2.8rem;
-    left: 1rem;
-    rotate: 5deg;
-  }
-
-  .founderTag img {
-    width: 155px;
-  }
-
-  /* ── Status: bottom-right ── */
-  .statusBlock {
-    bottom: 1.5rem;
-    right: 1rem;
-  }
-
-  .statusCode {
-    font-size: 0.75rem;
-  }
-
-  .scrollText {
-    font-size: 0.7rem;
-  }
-
-  .scrollArrow {
-    font-size: 0.75rem;
+  .posterCard {
+    box-shadow: 12px 12px 0 rgba(26, 26, 26, 0.08);
   }
 }
 
-@media screen and (max-width: 420px) {
-  .statue img {
-    width: 60vw;
-    max-width: 220px;
-    opacity: 0.45;
+@media screen and (max-width: 480px) {
+  .hero::after {
+    right: -0.3rem;
+    bottom: 4.5rem;
+    font-size: 4.5rem;
   }
 
-  .communityNote {
-    bottom: 16%;
-    right: 1%;
+  .headingAccent {
+    box-shadow: 6px 6px 0 var(--color-accent);
   }
 
-  .communityNote img {
-    width: 110px;
+  .actions {
+    width: 100%;
+    flex-direction: column;
   }
 
-  .arrow {
-    bottom: 25%;
-    right: 1%;
-    transform: rotate(-10deg) scale(0.5);
-  }
-
-  .statusCode {
-    font-size: 0.65rem;
-  }
-
-  .scrollText {
-    font-size: 0.6rem;
+  .primaryCta,
+  .secondaryCta {
+    width: 100%;
+    justify-content: space-between;
   }
 }

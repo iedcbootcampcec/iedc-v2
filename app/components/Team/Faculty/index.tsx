@@ -101,11 +101,11 @@ export default function Faculty() {
 
       // Seamless Marquee - Mobile Only
       const track = trackRef.current;
-      let mm = gsap.matchMedia();
+      const mm = gsap.matchMedia();
 
       mm.add("(max-width: 768px)", () => {
         let scrollTween: gsap.core.Tween | null = null;
-        
+
         if (track && members.length > 1) {
           const initLoop = () => {
             if (scrollTween) scrollTween.kill();

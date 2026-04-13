@@ -1,238 +1,202 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import styles from "./Hero.module.css";
+import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-//import { image_data } from "./bgImage";
+import styles from "./Hero.module.css";
 
 gsap.registerPlugin(useGSAP);
 
+const stats = [
+  { value: "EST. 2015", label: "student-led startup culture" },
+  { value: "01", label: "campus room for first-time founders" },
+  { value: "SHIP > HYPE", label: "build, test, learn, repeat" },
+];
+
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (reduceMotion) {
+        gsap.set(
+          [
+            `.${styles.revealRail}`,
+            `.${styles.revealMask}`,
+            `.${styles.revealUp}`,
+            `.${styles.revealScale}`,
+            `.${styles.revealCard}`,
+          ],
+          { clearProps: "all", opacity: 1 },
+        );
+        return;
+      }
+
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Phase 1: Heading lines clip-path reveal (staggered)
       tl.fromTo(
-        `.${styles.headingLine1}`,
-        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-        { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.8 },
+        `.${styles.revealRail}`,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.45 },
       )
         .fromTo(
-          `.${styles.headingLine2}`,
-          { clipPath: "inset(0 0 0 100%)", opacity: 0 },
-          { clipPath: "inset(0 -10px 0 0%)", opacity: 1, duration: 0.7 },
-          "-=0.3",
-        )
-        .fromTo(
-          `.${styles.headingLine3}`,
+          `.${styles.revealMask}`,
           { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7 },
-          "-=0.3",
-        )
-
-        // Phase 2: Tagline slides up with fade
-        .fromTo(
-          `.${styles.tagline}`,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6 },
-          "-=0.2",
-        )
-
-        // Phase 3: Scrapbook elements "drop in" like being taped
-        .fromTo(
-          `.${styles.iedcBadge}`,
-          { y: -60, x: -40, opacity: 0, rotation: -12, scale: 0.7 },
           {
-            y: 0,
-            x: 0,
+            clipPath: "inset(0 0% 0 0)",
             opacity: 1,
-            rotation: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "back.out(1.7)",
+            duration: 0.8,
+            stagger: 0.12,
           },
-          "-=0.2",
+          "-=0.15",
         )
         .fromTo(
-          `.${styles.statue}`,
-          { x: 80, opacity: 0, scale: 0.85 },
-          { x: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" },
-          "-=0.4",
+          `.${styles.revealUp}`,
+          { y: 32, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.65, stagger: 0.1 },
+          "-=0.45",
         )
         .fromTo(
-          `.${styles.arrow}`,
-          { scale: 0, opacity: 0, rotation: -90 },
+          `.${styles.revealScale}`,
+          { scale: 0.92, opacity: 0, rotate: -2 },
           {
             scale: 1,
             opacity: 1,
-            rotation: -15,
-            duration: 0.5,
-            ease: "back.out(2)",
+            rotate: 0,
+            duration: 0.75,
+            ease: "back.out(1.2)",
           },
-          "-=0.3",
+          "-=0.45",
         )
         .fromTo(
-          `.${styles.communityNote}`,
-          { y: -50, opacity: 0, rotation: 15, scale: 0.6 },
+          `.${styles.revealCard}`,
+          { y: 36, opacity: 0, rotate: 6 },
           {
             y: 0,
             opacity: 1,
-            rotation: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "back.out(1.5)",
+            rotate: 0,
+            duration: 0.55,
+            stagger: 0.12,
+            ease: "back.out(1.3)",
           },
-          "-=0.2",
-        )
-
-        // Phase 4: Join button bounces in
-        .fromTo(
-          `.${styles.heroCta}`,
-          { scale: 0 },
-          { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" },
-          "-=0.2",
-        )
-
-        // Phase 5: Bottom elements slide in from edges
-        .fromTo(
-          `.${styles.founderTag}`,
-          { x: -60, opacity: 0, rotation: -8 },
-          {
-            x: 0,
-            opacity: 1,
-            rotation: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          },
-          "-=0.2",
-        )
-        .fromTo(
-          `.${styles.statusBlock}`,
-          { x: 60, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-          "-=0.3",
+          "-=0.45",
         );
-
-      // Continuous subtle animations after entrance
-      // Scroll hint arrow bouncing
-      gsap.to(`.${styles.scrollArrow}`, {
-        y: 5,
-        duration: 0.8,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-        delay: tl.duration(),
-      });
     },
     { scope: containerRef },
   );
 
   return (
-    <section
-      className={styles.hero}
-      id="hero"
-      ref={containerRef}
-      // style={{
-      //   "--bg-img-url": `url(${image_data})`,
-      // } as React.CSSProperties}
-    >
-      {/* ── Top-left IEDC badge ── */}
-      <div className={`${styles.iedcBadge} op-zero`}>
-        <Image
-          src="/hero/iedc-est.webp"
-          alt="IEDC Bootcamp / CEC - EST. 2016"
-          width={260}
-          height={80}
-          priority
-          quality={100}
-        />
+    <section className={styles.hero} id="hero" ref={containerRef}>
+      <div className={`${styles.topRail} ${styles.revealRail}`}>
+        <span>IEDC BOOTCAMP CEC</span>
+        <span>STARTUP ROOM / MAKER CULTURE / CAMPUS-BUILT</span>
       </div>
 
-      {/* ── Statue illustration (right side) ── */}
-      <div className={`${styles.statue} op-zero`}>
-        <Image
-          src="/hero/statue.webp"
-          alt="Classical bust illustration"
-          width={340}
-          height={420}
-          priority
-          quality={100}
-        />
-      </div>
+      <div className={styles.heroInner}>
+        <div className={styles.copyColumn}>
+          <p className={`${styles.kicker} ${styles.revealUp}`}>
+            A student-led bootcamp for builders, dreamers, and first-time
+            founders.
+          </p>
 
-      {/* ── Community > Corporate note ── */}
-      <div className={`${styles.communityNote} op-zero`}>
-        <Image
-          src="/hero/comunity-corp.webp"
-          alt="Community > Corporate"
-          width={200}
-          height={120}
-          quality={100}
-        />
-      </div>
+          <h1 className={styles.heading}>
+            <span className={`${styles.headingLine} ${styles.revealMask}`}>
+              START
+            </span>
+            <span
+              className={`${styles.headingLine} ${styles.headingAccent} ${styles.revealMask}`}
+            >
+              something
+            </span>
+            <span className={`${styles.headingLine} ${styles.revealMask}`}>
+              real.
+            </span>
+          </h1>
 
-      {/* ── Arrow ── */}
-      <div className={`${styles.arrow} op-zero`}>
-        <Image
-          src="/hero/arrow.webp"
-          alt="Decorative arrow"
-          width={180}
-          height={60}
-          quality={100}
-        />
-      </div>
+          <p className={`${styles.copy} ${styles.revealUp}`}>
+            IEDC Bootcamp CEC turns rough campus ideas into prototypes, teams,
+            and momentum. Less talking about startups. More building them.
+          </p>
 
-      {/* ── Main heading ── */}
-      <div className={styles.headingBlock}>
-        <h1>
-          <span className={`${styles.headingLine1} op-zero`}>STARTUPS</span>
-          <br />
-          <span className={`${styles.headingLine2} op-zero`}>Start</span>
-          <br />
-          <span className={`${styles.headingLine3} op-zero`}>HERE.</span>
-        </h1>
-      </div>
+          <div className={`${styles.actions} ${styles.revealUp}`}>
+            <a href="#about" className={styles.primaryCta}>
+              <span>Explore Bootcamp</span>
+              <FiArrowUpRight aria-hidden="true" />
+            </a>
+            <a href="#team" className={styles.secondaryCta}>
+              <span>Meet the crew</span>
+              <FiArrowRight aria-hidden="true" />
+            </a>
+          </div>
 
-      {/* ── Tagline strip ── */}
-      <div className={`${styles.tagline} op-zero`}>
-        <Image
-          src="/hero/tagline-main.webp"
-          alt="A startup-driven innovation forum at CEC. We experiment, validate, ship, repeat."
-          width={520}
-          height={80}
-          quality={100}
-        />
-      </div>
+          <div className={`${styles.statsGrid} ${styles.revealUp}`}>
+            {stats.map((item) => (
+              <div className={styles.statCard} key={item.value}>
+                <span className={styles.statValue}>{item.value}</span>
+                <span className={styles.statLabel}>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {/* ── Join Us button ── */}
-      <button className={`${styles.heroCta} op-zero`} type="button">
-        <span className={styles.heroCtaText}>Join Us</span>
-      </button>
+        <div className={styles.posterColumn}>
+          <article className={`${styles.posterCard} ${styles.revealScale}`}>
+            <span className={styles.posterTape} aria-hidden="true" />
 
-      {/* ── Bottom-left Founder in progress ── */}
-      <div className={`${styles.founderTag} op-zero`}>
-        <Image
-          src="/hero/founder-prog.webp"
-          alt="Founder in progress."
-          width={220}
-          height={60}
-          quality={100}
-        />
-      </div>
+            <div className={styles.posterTopline}>
+              <span>bootcamp note / 01</span>
+              <span>est. 2015</span>
+            </div>
 
-      {/* ── Bottom-right status block ── */}
-      <div className={`${styles.statusBlock} op-zero`}>
-        <p className={styles.statusCode}>bootcamp.status = building;</p>
-        <div className={styles.scrollHint}>
-          <span className={styles.scrollArrow}>▼</span>
-          <span className={styles.scrollText}>
-            scroll if you&apos;re serious
-          </span>
+            <div className={styles.posterBody}>
+              <p className={styles.posterLabel}>founder energy, campus timing</p>
+              <h2 className={styles.posterHeadline}>
+                Experiment.
+                <br />
+                Validate.
+                <br />
+                Ship.
+                <br />
+                Repeat.
+              </h2>
+            </div>
+
+            <div className={styles.posterFooter}>
+              <span>community over clout</span>
+              <span>build before perfect</span>
+            </div>
+          </article>
+
+          <aside
+            className={`${styles.noteCard} ${styles.noteOne} ${styles.revealCard}`}
+          >
+            <span className={styles.noteLabel}>field note</span>
+            <p>
+              Builders / dreamers / chaos managers. The vibe is serious work
+              with student energy still intact.
+            </p>
+          </aside>
+
+          <aside
+            className={`${styles.noteCard} ${styles.noteTwo} ${styles.revealCard}`}
+          >
+            <span className={styles.noteLabel}>operating rule</span>
+            <p>Start small. Test fast. Learn in public. Keep moving.</p>
+          </aside>
+
+          <aside
+            className={`${styles.codeCard} ${styles.revealCard}`}
+            aria-label="Bootcamp status"
+          >
+            <p>bootcamp.status = &quot;building&quot;;</p>
+            <p>next.move = &quot;prototype&quot;;</p>
+            <p>mode = &quot;student-first&quot;;</p>
+          </aside>
         </div>
       </div>
     </section>
