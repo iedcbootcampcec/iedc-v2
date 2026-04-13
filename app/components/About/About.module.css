@@ -2,8 +2,7 @@
   position: relative;
   overflow: hidden;
   padding: 6.25rem 2rem;
-  background:
-    linear-gradient(180deg, #f7f0e3 0%, #f3ebde 100%);
+  background: linear-gradient(180deg, #f7f0e3 0%, #f3ebde 100%);
 }
 
 .about::before {
@@ -23,7 +22,11 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 12% 18%, rgba(232, 160, 32, 0.14), transparent 18%),
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(232, 160, 32, 0.14),
+      transparent 18%
+    ),
     radial-gradient(circle at 88% 78%, rgba(26, 26, 26, 0.06), transparent 20%);
   pointer-events: none;
 }
@@ -381,13 +384,21 @@
   }
 
   .topRail,
-  .manifestoBand {
-    flex-direction: column;
-    align-items: flex-start;
+  .manifestoBand,
+  .indexCard,
+  .contextPanel,
+  .briefBoard,
+  .rulesBoard {
+    display: none;
   }
 
-  .manifestoBand {
-    box-shadow: 8px 8px 0 rgba(232, 160, 32, 0.9);
+  .introGrid {
+    margin-top: 0;
+    gap: 0;
+  }
+
+  .dossierGrid {
+    margin-top: 2rem;
   }
 
   .phaseItem {
@@ -400,15 +411,8 @@
     box-shadow: 5px 5px 0 var(--color-accent);
   }
 
-  .indexCard,
-  .contextPanel,
-  .board,
-  .manifestoBand {
+  .board {
     padding-left: 0.9rem;
     padding-right: 0.9rem;
-  }
-
-  .manifestoBand p {
-    font-size: 1.4rem;
   }
 }
