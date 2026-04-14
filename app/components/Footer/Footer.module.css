@@ -116,6 +116,14 @@
   letter-spacing: 0.05em;
 }
 
+.logosWrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
 /* Sys Logs Column */
 .sysLogs {
   gap: 0.5rem;

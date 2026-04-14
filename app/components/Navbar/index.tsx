@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import IedcLogo from "./iedcLogo";
+import IedcLogo from "../logos/iedcLogo";
 import styles from "./Navbar.module.css";
 
 const NAV_ITEMS = [

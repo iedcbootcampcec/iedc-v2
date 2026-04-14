@@ -7,6 +7,9 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowUpRight } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
+import KsumLogo from "../logos/ksumLogo";
+import IedcLogo from "../logos/iedcLogo";
+import CollegeLogo from "../logos/collegeLogo";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -109,6 +112,11 @@ export default function Footer() {
             CEC
           </h2>
           <p className={styles.tagline}>Experiment. Validate. Ship. Repeat.</p>
+          <div className={styles.logosWrap}>
+            <IedcLogo size={90} />
+            <KsumLogo size={100} />
+            <CollegeLogo size={65} />
+          </div>
         </div>
 
         {/* Col 2: System Logs & Copy */}
