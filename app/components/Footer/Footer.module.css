@@ -57,7 +57,7 @@
 }
 
 .ctaArrow {
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(4rem, 12vw, 10rem);
   color: var(--color-accent);
   display: inline-flex;
   align-items: center;

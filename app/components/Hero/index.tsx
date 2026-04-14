@@ -118,11 +118,6 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className={`${styles.copy} ${styles.revealUp}`}>
-            IEDC Bootcamp CEC turns rough campus ideas into prototypes, teams,
-            and momentum. Less talking about startups. More building them.
-          </p>
-
           <div className={`${styles.actions} ${styles.revealUp}`}>
             <a href="#about" className={styles.primaryCta}>
               <span>Explore Bootcamp</span>
@@ -146,7 +141,6 @@ export default function Hero() {
 
             <div className={styles.posterTopline}>
               <span>bootcamp note / 01</span>
-              <span>est. 2015</span>
             </div>
 
             <div className={styles.posterBody}>
@@ -163,11 +157,6 @@ export default function Hero() {
                 Repeat.
               </h2>
             </div>
-
-            <div className={styles.posterFooter}>
-              <span>community over clout</span>
-              <span>build before perfect</span>
-            </div>
           </article>
 
           <aside
@@ -178,22 +167,6 @@ export default function Hero() {
               Builders / dreamers / chaos managers. The vibe is serious work
               with student energy still intact.
             </p>
-          </aside>
-
-          <aside
-            className={`${styles.noteCard} ${styles.noteTwo} ${styles.revealCard}`}
-          >
-            <span className={styles.noteLabel}>operating rule</span>
-            <p>Start small. Test fast. Learn in public. Keep moving.</p>
-          </aside>
-
-          <aside
-            className={`${styles.codeCard} ${styles.revealCard}`}
-            aria-label="Bootcamp status"
-          >
-            <p>bootcamp.status = &quot;building&quot;;</p>
-            <p>next.move = &quot;prototype&quot;;</p>
-            <p>mode = &quot;student-first&quot;;</p>
           </aside>
         </div>
       </div>

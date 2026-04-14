@@ -194,12 +194,18 @@ export default function Achievements() {
     const throwThreshold = 120; // 120px drag
     const velocityThreshold = 0.8; // px per ms
 
+    // Is it a quick click? Small drag and short time
+    const isClick =
+      timeDiff < 300 &&
+      Math.abs(currentX.current) < 10 &&
+      Math.abs(currentY.current) < 10;
+
     const isThrown =
       Math.abs(currentX.current) > throwThreshold ||
       Math.abs(velocityX) > velocityThreshold;
 
-    if (isThrown) {
-      const direction = currentX.current > 0 ? 1 : -1;
+    if (isThrown || isClick) {
+      const direction = isClick || currentX.current > 0 ? 1 : -1;
 
       // Swing card out to the side (deck shuffle motion)
       gsap.to(target, {
@@ -381,7 +387,7 @@ export default function Achievements() {
                   {achIndex + 1} / {achievements.length}
                 </span>
                 <span className={styles.swipeInstruction}>
-                  {stackPos === 0 ? "Swipe to flip" : "Waiting..."}
+                  {stackPos === 0 ? "Click or swipe to flip" : "Waiting..."}
                 </span>
               </div>
             </div>
@@ -396,7 +402,10 @@ export default function Achievements() {
         style={{ opacity: 0 }}
       >
         View All Achievements
-        <FiArrowUpRight size={20} />
+        <FiArrowUpRight
+          size={20}
+          style={{ rotate: "var(--deg)", transition: "rotate 0.2s ease" }}
+        />
       </a>
     </section>
   );

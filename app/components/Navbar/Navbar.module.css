@@ -5,8 +5,7 @@
   left: 0;
   width: 100%;
   z-index: 110;
-  padding: 1rem 2.5rem;
-  padding-bottom: 0;
+  padding: 1.5rem 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,7 +13,6 @@
 }
 
 .navbar {
-  /* background: rgba(245, 245, 240, var(--nav-bg-intensity)); */
   background: linear-gradient(
     180deg,
     rgba(var(--nav-color-rgb), var(--nav-bg-intensity)) 10%,
@@ -39,10 +37,18 @@
 
 /* ===== Desktop Nav Links ===== */
 .navLinks {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 2.2rem;
+  gap: 0.2rem;
   list-style: none;
+  background: color-mix(in srgb, var(--nav-text-color) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--nav-text-color) 15%, transparent);
+  padding: 0.35rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .navItem {
@@ -51,43 +57,28 @@
 
 .navLink {
   font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--nav-text-color);
-  text-decoration: none;
-  text-transform: lowercase;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.1rem;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-/* Tape / underline effect on hover */
-.navLink::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--color-accent);
-  transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.navLink:hover::after {
-  width: 100%;
-}
-
-/* Active link gets the yellow highlight like a marker */
-.navLinkActive {
-  color: var(--text-heading);
+  font-size: 0.72rem;
   font-weight: 700;
+  color: var(--nav-text-color);
+  opacity: 0.75;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.8rem 1.4rem;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: inline-block;
 }
 
-.navLinkActive::after {
-  width: 100%;
-  height: 3px;
-  background: var(--color-accent);
+.navLink:hover {
+  background: color-mix(in srgb, var(--nav-text-color) 8%, transparent);
+  color: var(--nav-text-color);
+  opacity: 1;
+}
+
+/* Active link logic if ever implemented */
+.navLinkActive {
+  background: var(--text-heading);
+  color: var(--color-light);
 }
 
 /* ===== Join CTA Button ===== */
@@ -97,38 +88,23 @@
   font-weight: 700;
   color: var(--nav-text-color);
   background: var(--color-accent);
-  border: none;
+  border: 1.5px solid var(--nav-text-color);
   padding: 0.5rem 1.2rem;
   cursor: pointer;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-  position: relative;
-}
-
-.joinCta::before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 100%;
-  height: 100%;
-  border: 1.5px solid var(--nav-text-color);
-  z-index: -1;
-  transition:
-    top 0.25s ease,
-    left 0.25s ease;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0px var(--nav-text-color);
 }
 
 .joinCta:hover {
-  transform: translate(-2px, -2px);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--nav-text-color);
 }
 
-.joinCta:hover::before {
-  top: 5px;
-  left: 5px;
+.joinCta:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px transparent;
 }
 
 /* ===== Hamburger Button ===== */

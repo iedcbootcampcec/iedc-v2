@@ -10,7 +10,6 @@ const NAV_ITEMS = [
   { label: "events", id: "events" },
   { label: "achievements", id: "achievements" },
   { label: "team", id: "team" },
-  { label: "contact", id: "contact" },
 ];
 
 const scrollToSection = (id: string) => {
