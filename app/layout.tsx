@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Anton, Playfair_Display, Space_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,6 +26,24 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-space-mono",
+  display: "swap",
+});
+
+const brunson = localFont({
+  src: "../public/fonts/Brunson.ttf",
+  variable: "--font-brunson",
+  display: "swap",
+});
+
+const feelingPassionate = localFont({
+  src: "../public/fonts/Feeling Passionate Personal Use Only.ttf",
+  variable: "--font-feeling-passionate",
+  display: "swap",
+});
+
+const posterman = localFont({
+  src: "../public/fonts/Posterman_PERSONAL_USE_ONLY.otf",
+  variable: "--font-posterman",
   display: "swap",
 });
 
@@ -66,7 +85,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${anton.variable} ${playfair.variable} ${spaceMono.variable}`}
+      className={`${inter.variable} ${anton.variable} ${playfair.variable} ${spaceMono.variable} ${brunson.variable} ${feelingPassionate.variable} ${posterman.variable}`}
     >
       <body>{children}</body>
     </html>

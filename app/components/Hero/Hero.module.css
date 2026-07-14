@@ -4,15 +4,17 @@
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
-  padding: 7.5rem 2rem 3rem;
+  padding: 6.5rem 2rem 4rem;
   background:
     radial-gradient(
       circle at top left,
-      rgba(232, 160, 32, 0.18),
-      transparent 26%
+      rgba(232, 160, 32, 0.15),
+      transparent 30%
     ),
-    radial-gradient(circle at right 20%, rgba(0, 0, 0, 0.06), transparent 28%),
+    radial-gradient(circle at right 30%, rgba(0, 0, 0, 0.04), transparent 35%),
     linear-gradient(180deg, #f8f4eb 0%, #f2ede2 100%);
+  display: flex;
+  align-items: center;
 }
 
 .hero::before {
@@ -20,449 +22,190 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(26, 26, 26, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26, 26, 26, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(26, 26, 26, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
-  opacity: 0.45;
+  opacity: 0.6;
   pointer-events: none;
-}
-
-.hero::after {
-  content: "BOOTCAMP";
-  position: absolute;
-  right: -1rem;
-  bottom: 1rem;
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(5rem, 18vw, 14rem);
-  line-height: 0.85;
-  letter-spacing: 0.08em;
-  color: rgba(26, 26, 26, 0.04);
-  pointer-events: none;
-}
-
-.heroInner,
-.topRail {
-  position: relative;
-  z-index: 1;
-}
-
-.topRail {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid rgba(26, 26, 26, 0.18);
-  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.7);
 }
 
 .heroInner {
   width: min(1280px, 100%);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-  gap: 3rem;
-  align-items: center;
-  padding-top: 2.75rem;
+  position: relative;
+  z-index: 1;
 }
 
 .copyColumn {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  max-width: 800px;
 }
 
-.kicker {
-  max-width: 34rem;
-  margin: 0 0 1.5rem;
-  padding-left: 1rem;
-  border-left: 2px solid var(--color-accent);
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.75rem;
-  line-height: 1.6;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.65);
+.kickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.kickerBar {
+  width: 6px;
+  height: 24px;
+  background-color: var(--color-accent);
+  display: inline-block;
+}
+
+.kickerText {
+  font-family: var(--font-posterman), "Posterman", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
 }
 
 .heading {
   display: flex;
   flex-direction: column;
   margin: 0;
-  line-height: 0.9;
+  line-height: 0.85;
+  margin-top: -0.7em;
 }
 
 .headingLine {
   display: inline-block;
   width: fit-content;
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(4rem, 11vw, 8.9rem);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-heading);
 }
 
-.headingAccent {
-  padding: 0.02em 0.18em;
-  margin: 0.06em 0;
-  background: #fffdf8;
-  border: 2px solid var(--color-primary);
-  box-shadow: 10px 10px 0 var(--color-accent);
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-size: clamp(2.5rem, 7vw, 5.3rem);
-  font-style: italic;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: -0.01em;
-}
-
-.copy {
-  max-width: 35rem;
-  margin: 1.6rem 0 0;
-  font-family: var(--font-inter), "Inter", sans-serif;
-  font-size: clamp(1rem, 1.7vw, 1.18rem);
-  line-height: 1.7;
-  color: rgba(26, 26, 26, 0.82);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.primaryCta,
-.secondaryCta {
+.ideasWrapper {
+  position: relative;
   display: inline-flex;
+  align-items: flex-start;
+  width: fit-content;
+}
+
+.ideasText {
+  font-family: var(--font-brunson), "Brunson", sans-serif;
+  font-size: 180px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 0.5px rgba(248, 244, 235, 0.35);
+}
+
+.sparkles {
+  display: inline-block;
+  width: clamp(1.8rem, 5vw, 3.5rem);
+  height: clamp(1.8rem, 5vw, 3.5rem);
+  margin-left: -1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.buildText {
+  font-family: var(--font-feeling-passionate), "Feeling Passionate", cursive;
+  font-size: 140px;
+  color: var(--color-accent);
+  line-height: 1.37em;
+  letter-spacing: -0.03em;
+  margin-top: -0.05em;
+  margin-bottom: -0.105em;
+  padding-right: 0.5em;
+}
+
+.realityText {
+  font-family: var(--font-brunson), "Brunson", sans-serif;
+  font-size: 180px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 0.5px rgba(248, 244, 235, 0.35);
+}
+
+.ctaSection {
+  display: flex;
   align-items: center;
-  gap: 0.6rem;
-  min-height: 48px;
-  text-decoration: none;
-  transition:
-    transform 0.25s ease,
-    background-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease;
+  gap: 2rem;
+  margin-top: 2.5rem;
 }
 
 .primaryCta {
-  position: relative;
-  padding: 0.9rem 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.8rem;
   background: var(--color-accent);
-  color: var(--text-heading);
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  box-shadow: 6px 6px 0px var(--color-primary);
+  font-family: var(--font-brunson), "Brunson", sans-serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.25rem);
+  font-weight: 550;
   cursor: pointer;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: all 0.2s ease;
-  box-shadow: 4px 4px 0px var(--color-primary);
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
 }
 
 .primaryCta:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px var(--color-primary);
+  box-shadow: 4px 4px 0px var(--color-primary);
 }
 
 .primaryCta:active {
-  transform: translate(4px, 4px);
+  transform: translate(6px, 6px);
   box-shadow: 0px 0px 0px transparent;
 }
 
-.secondaryCta {
-  padding: 0.92rem 1.15rem;
-  border: 1.5px solid rgba(26, 26, 26, 0.2);
-  background: rgba(255, 255, 255, 0.68);
-  color: var(--text-heading);
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.primaryCta svg {
+  font-size: 1.25rem;
+  stroke-width: 3px;
 }
 
-.secondaryCta:hover {
-  transform: translateY(-2px);
-  border-color: rgba(26, 26, 26, 0.5);
-  background: #ffffff;
-}
-
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  width: min(100%, 48rem);
-  margin-top: 2.4rem;
-}
-
-.statCard {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  padding: 0.5rem 0 0.5rem 1.25rem;
-  border-left: 1px solid rgba(26, 26, 26, 0.18);
-  background: transparent;
-}
-
-.statValue {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(1.45rem, 3vw, 2rem);
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-heading);
-}
-
-.statLabel {
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.74rem;
-  line-height: 1.65;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.72);
-}
-
-.posterColumn {
-  position: relative;
-  min-height: 640px;
-}
-
-.posterCard {
-  position: relative;
-  width: min(100%, 460px);
-  margin: 2rem auto 0;
-  padding: 1.5rem;
-  background: #fffdf8;
-  border: 2px solid var(--color-primary);
-  box-shadow: 16px 16px 0 rgba(26, 26, 26, 0.08);
-}
-
-.posterTape {
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  width: 96px;
-  height: 28px;
-  background: rgba(232, 160, 32, 0.45);
-  transform: translateX(-50%) rotate(-4deg);
-}
-
-.posterTopline,
-.posterFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.72rem;
-  line-height: 1.6;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.66);
-}
-
-.posterBody {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 2.1rem 0;
-}
-
-.posterLabel {
-  margin: 0;
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-size: 1.15rem;
-  font-style: italic;
-  color: rgba(26, 26, 26, 0.75);
-}
-
-.posterHeadline {
-  margin: 0;
-  font-family: var(--font-inter), "Inter", sans-serif;
-  font-weight: 700;
-  font-size: clamp(2.5rem, 5.5vw, 4rem);
-  line-height: 0.95;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  color: var(--text-heading);
-}
-
-.noteCard,
-.codeCard {
-  position: absolute;
-  width: min(250px, 46%);
-  padding: 1rem 1.1rem;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(26, 26, 26, 0.12);
-  box-shadow: 0 14px 32px rgba(26, 26, 26, 0.08);
-}
-
-.noteLabel {
-  display: inline-block;
-  margin-bottom: 0.7rem;
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.55);
-}
-
-.noteCard p {
-  margin: 0;
-  font-family: var(--font-inter), "Inter", sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: rgba(26, 26, 26, 0.82);
-}
-
-.noteOne {
-  top: 1.2rem;
-  left: 0;
-  transform: rotate(-5deg);
-}
-
-.noteTwo {
-  right: 0;
-  bottom: 9.5rem;
-  transform: rotate(4deg);
-}
-
-.codeCard {
-  right: 1.2rem;
-  bottom: 0;
-  width: min(280px, 56%);
-  background: rgba(26, 26, 26, 0.96);
-  border: none;
-  transform: rotate(-2deg);
-}
-
-.codeCard p {
-  margin: 0;
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.78rem;
-  line-height: 1.8;
-  letter-spacing: 0.04em;
-  color: rgba(245, 245, 240, 0.82);
+.startBuildingSvg {
+  height: 60px;
+  width: auto;
+  margin-left: -2.36em; 
+  margin-bottom: 1em;
+  object-fit: contain;
 }
 
 .revealRail,
 .revealMask,
-.revealUp,
-.revealScale,
-.revealCard {
+.revealUp {
   will-change: transform, opacity;
-}
-
-@media screen and (max-width: 1080px) {
-  .heroInner {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .posterColumn {
-    min-height: 560px;
-    width: min(100%, 560px);
-    margin: 0 auto;
-  }
-
-  .statsGrid {
-    width: 100%;
-  }
 }
 
 @media screen and (max-width: 768px) {
   .hero {
-    padding: 6.5rem 1rem 2.5rem;
+    padding: 7rem 1.2rem 3rem;
   }
 
-  .topRail {
-    display: none;
-  }
-
-  .copy {
-    max-width: 100%;
-  }
-
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
-  }
-
-  .statCard {
-    padding: 0.6rem 0.4rem;
-    border-left: 1px solid rgba(26, 26, 26, 0.18);
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .statCard:first-child {
-    border-left: none;
-  }
-
-  .statValue {
-    font-size: 1.25rem;
-  }
-
-  .statLabel {
-    font-size: 0.6rem;
-    line-height: 1.3;
-  }
-
-  .posterColumn {
-    min-height: auto;
-  }
-
-  .posterCard {
-    position: relative;
-    width: 100%;
-    margin: 2rem 0 0;
-    box-shadow: 12px 12px 0 rgba(26, 26, 26, 0.08);
-    transform: none;
-  }
-
-  .noteCard,
-  .codeCard {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .hero::after {
-    right: -0.3rem;
-    bottom: 4.5rem;
-    font-size: 4.5rem;
-  }
-
-  .headingAccent {
-    box-shadow: 6px 6px 0 var(--color-accent);
-  }
-
-  .actions {
-    width: 100%;
+  .ctaSection {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 2.2rem;
+    width: 100%;
   }
 
-  .primaryCta,
-  .secondaryCta {
+  .primaryCta {
     width: 100%;
     justify-content: space-between;
   }
 
-  .statsGrid {
-    gap: 0.4rem;
+  .startBuildingContainer {
+    margin-left: 0;
+    gap: 1.2rem;
   }
 
-  .statValue {
-    font-size: 1.1rem;
-  }
-
-  .statLabel {
-    font-size: 0.55rem;
+  .arrowSvg {
+    transform: rotate(15deg);
   }
 }
