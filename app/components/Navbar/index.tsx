@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { usePathname } from "next/navigation";
 import IedcLogo from "../logos/iedcLogo";
 import styles from "./Navbar.module.css";
 
@@ -28,6 +29,7 @@ const scrollToSection = (id: string) => {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,8 +75,15 @@ export default function Navbar() {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const hash = e.currentTarget.hash;
+    const id = hash.slice(1);
+
+    if (pathname !== "/") {
+      closeMenu();
+      return;
+    }
+
     e.preventDefault();
-    const id = e.currentTarget.hash.slice(1);
     scrollToSection(id);
     closeMenu();
   };
@@ -90,7 +99,7 @@ export default function Navbar() {
       >
         {/* ── Logo ── */}
         <a
-          href="#hero"
+          href="/#hero"
           className={`${styles.logo} ${isOpen ? styles.logoOpen : ""}`}
           onClick={handleNavClick}
         >
@@ -102,7 +111,7 @@ export default function Navbar() {
           {NAV_ITEMS.map((item) => (
             <li key={item.label} className={styles.navItem}>
               <a
-                href={`#${item.id}`}
+                href={`/#${item.id}`}
                 onClick={handleNavClick}
                 className={styles.navLink}
               >
@@ -140,7 +149,7 @@ export default function Navbar() {
           {NAV_ITEMS.map((item) => (
             <li key={item.label} className={styles.mobileNavItem}>
               <a
-                href={`#${item.id}`}
+                href={`/#${item.id}`}
                 className={styles.mobileNavLink}
                 onClick={handleNavClick}
               >
@@ -154,7 +163,7 @@ export default function Navbar() {
         <div className={styles.mobileFooter}>
           <span className={styles.mobileFooterText}>EST. 2015 — CEC</span>
           <a
-            href="#hero"
+            href="/#hero"
             className={styles.mobileFooterCta}
             onClick={closeMenu}
           >

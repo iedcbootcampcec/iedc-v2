@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
@@ -10,6 +13,18 @@ import Team from "./components/Team";
 import Footer from "./components/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    if (window.location.hash) {
+      const hash = window.location.hash.slice(1);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 400);
+    }
+  }, []);
+
   return (
     <main>
       <Navbar />
