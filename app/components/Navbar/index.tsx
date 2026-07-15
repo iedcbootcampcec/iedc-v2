@@ -25,14 +25,14 @@ const scrollToSection = (id: string) => {
   }
 };
 
-export default function Navbar() {
+export default function Navbar({ isMenuShown = true, mainUrl = "#hero" }) {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const elem = navRef.current;
-      if (!elem) return;
+      if (!elem || !isMenuShown) return;
       const intensity = Math.min(1, window.scrollY / 200);
       elem.style.setProperty("--nav-bg-intensity", intensity.toString());
     };
@@ -90,45 +90,49 @@ export default function Navbar() {
       >
         {/* ── Logo ── */}
         <a
-          href="#hero"
+          href={mainUrl}
           className={`${styles.logo} ${isOpen ? styles.logoOpen : ""}`}
-          onClick={handleNavClick}
+          onClick={mainUrl != "#hero" ? () => {} : handleNavClick}
         >
           <IedcLogo size={"5rem"} />
         </a>
 
-        {/* ── Desktop links ── */}
-        <ul className={styles.navLinks}>
-          {NAV_ITEMS.map((item) => (
-            <li key={item.label} className={styles.navItem}>
-              <a
-                href={`#${item.id}`}
-                onClick={handleNavClick}
-                className={styles.navLink}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {isMenuShown && (
+          <>
+            {/* ── Desktop links ── */}
+            <ul className={styles.navLinks}>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.label} className={styles.navItem}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={handleNavClick}
+                    className={styles.navLink}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-        {/* ── Desktop Join CTA ── */}
-        <button className={styles.joinCta} type="button">
-          Join Us
-        </button>
+            {/* ── Desktop Join CTA ── */}
+            <button className={styles.joinCta} type="button">
+              Join Us
+            </button>
 
-        {/* ── Hamburger (mobile only) ── */}
-        <button
-          className={`${styles.hamburger} ${isOpen ? styles.hamburgerOpen : ""}`}
-          onClick={toggleMenu}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-          type="button"
-        >
-          <span className={styles.hamburgerLine} />
-          <span className={styles.hamburgerLine} />
-          <span className={styles.hamburgerLine} />
-        </button>
+            {/* ── Hamburger (mobile only) ── */}
+            <button
+              className={`${styles.hamburger} ${isOpen ? styles.hamburgerOpen : ""}`}
+              onClick={toggleMenu}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              type="button"
+            >
+              <span className={styles.hamburgerLine} />
+              <span className={styles.hamburgerLine} />
+              <span className={styles.hamburgerLine} />
+            </button>
+          </>
+        )}
       </nav>
 
       {/* ── Mobile fullscreen overlay ── */}
