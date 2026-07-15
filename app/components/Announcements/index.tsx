@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import styles from "./Announcements.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -59,22 +60,22 @@ export default function Announcements() {
     () => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduceMotion) {
-        gsap.set(`.${styles.reveal}`, { clearProps: "all", opacity: 1 });
+        gsap.set([`.${styles.reveal}`], { clearProps: "all", opacity: 1 });
         return;
       }
 
       gsap.fromTo(
         `.${styles.reveal}`,
-        { y: 25, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.7,
+          duration: 0.8,
           stagger: 0.1,
-          ease: "power2.out",
+          ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 80%",
+            start: "top 75%",
             toggleActions: "play none none reverse",
           },
         }
@@ -97,28 +98,32 @@ export default function Announcements() {
 
         <div className={styles.rightCol}>
           <div className={styles.listContainer}>
-            {events.slice(0, 5).map((event) => (
-              <a
-                href="#events"
-                key={event.id}
-                className={`${styles.listItem} ${styles.reveal}`}
-                style={
-                  {
-                    opacity: 0,
-                    "--hover-bg": `url('${event.image}')`,
-                  } as React.CSSProperties
-                }
-              >
-                <div className={styles.listDate}>{event.when}</div>
-                <div className={styles.listMid}>
-                  <h3 className={styles.listTitle}>{event.title}</h3>
-                  <span className={styles.listCategory}>{event.category}</span>
-                </div>
-                <div className={styles.listIcon}>
-                  <FiArrowUpRight />
-                </div>
-              </a>
-            ))}
+            {events.slice(0, 5).map((event) => {
+              const isIdeathon = event.title.toLowerCase() === "ideathon";
+              const href = isIdeathon ? "/ideathon" : "/#events";
+              return (
+                <Link
+                  href={href}
+                  key={event.id}
+                  className={`${styles.listItem} ${styles.reveal}`}
+                  style={
+                    {
+                      opacity: 0,
+                      "--hover-bg": `url('${event.image}')`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <div className={styles.listDate}>{event.when}</div>
+                  <div className={styles.listMid}>
+                    <h3 className={styles.listTitle}>{event.title}</h3>
+                    <span className={styles.listCategory}>{event.category}</span>
+                  </div>
+                  <div className={styles.listIcon}>
+                    <FiArrowUpRight />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
 

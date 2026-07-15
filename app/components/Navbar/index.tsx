@@ -26,7 +26,12 @@ const scrollToSection = (id: string) => {
   }
 };
 
-export default function Navbar() {
+interface NavbarProps {
+  isMenuShown?: boolean;
+  mainUrl?: string;
+}
+
+export default function Navbar({ isMenuShown = true, mainUrl = "#hero" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -34,13 +39,13 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const elem = navRef.current;
-      if (!elem) return;
+      if (!elem || !isMenuShown) return;
       const intensity = Math.min(1, window.scrollY / 200);
       elem.style.setProperty("--nav-bg-intensity", intensity.toString());
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMenuShown]);
 
   useEffect(() => {
     const handleResize = () => {
