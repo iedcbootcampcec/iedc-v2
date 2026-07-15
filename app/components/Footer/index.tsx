@@ -6,10 +6,11 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowUpRight } from "react-icons/fi";
-import { FaHeart } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import KsumLogo from "../logos/ksumLogo";
 import IedcLogo from "../logos/iedcLogo";
 import CollegeLogo from "../logos/collegeLogo";
+import { INSTAGRAM, LINKEDIN } from "@data/publicUrls";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -119,28 +120,30 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Col 2: System Logs & Copy */}
+        {/* Col 2: System Logs */}
         <div className={`${styles.gridItem} ${styles.sysLogs}`}>
           <p className={styles.code}>system.status = &quot;online&quot;;</p>
           <p className={styles.code}>location = &quot;chengannur&quot;;</p>
-          <p className={styles.copyText}>
-            &copy; {new Date().getFullYear()} IEDC BOOTCAMP CEC. All rights
-            reserved.
-          </p>
         </div>
 
         {/* Col 3: Socials */}
         <div className={`${styles.gridItem} ${styles.socials}`}>
-          <a href="#" target="_blank" rel="noreferrer">
+          <a href={INSTAGRAM} target="_blank" rel="noreferrer">
+            <FaInstagram className={styles.socialIcon} />
             Instagram
           </a>
-          <a href="#" target="_blank" rel="noreferrer">
+          <a href={LINKEDIN} target="_blank" rel="noreferrer">
+            <FaLinkedinIn className={styles.socialIcon} />
             LinkedIn
           </a>
-          <a href="#" target="_blank" rel="noreferrer">
-            X / Twitter
-          </a>
         </div>
+      </div>
+
+      {/* Bottom copyright bar */}
+      <div className={styles.bottomBar}>
+        <p className={styles.copyText}>
+          &copy; {new Date().getFullYear()} IEDC BOOTCAMP CEC. All rights reserved.
+        </p>
       </div>
     </footer>
   );
