@@ -9,16 +9,18 @@ import { FiLinkedin } from "react-icons/fi";
 
 const members = [
   {
-    name: "Alex Morgan",
-    designation: "Faculty Advisor",
+    name: "Sherin Joseph",
+    designation: "FACULTY ADVISOR",
     image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Sherin_Joseph.webp",
+    linkedin: "https://linkedin.com",
   },
   {
-    name: "Jordan Lee",
-    designation: "Co-Advisor",
+    name: "Muhammed Ilyas H",
+    designation: "CO-NODAL OFFICER",
     image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Muhammed_Ilyas_H.webp",
+    linkedin: "https://linkedin.com",
   },
 ];
 
@@ -120,7 +122,7 @@ export default function Faculty() {
                     <p className={styles.designation}>{member.designation}</p>
                     <div className={styles.socials}>
                       <a
-                        href="#"
+                        href={member.linkedin || "#"}
                         className={styles.socialIcon}
                         aria-label="LinkedIn"
                       >

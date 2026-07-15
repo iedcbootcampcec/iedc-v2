@@ -9,34 +9,74 @@ import { FiLinkedin } from "react-icons/fi";
 
 const members = [
   {
-    name: "Jessie Parker",
-    designation: "Frontend Dev",
+    name: "Blessy Stephen",
+    designation: "PROGRAM MANAGER",
     image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Blessy_Stephen.webp",
+    linkedin: "https://linkedin.com",
   },
   {
-    name: "Robin Banks",
-    designation: "Backend Dev",
+    name: "Aiswarya Rose Jacob",
+    designation: "SOCIAL MEDIA & MARKETING MANAGER",
     image:
-      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aiswarya_Rose_Jacob.webp",
+    linkedin: "https://linkedin.com",
   },
   {
-    name: "Drew Carey",
-    designation: "UI/UX Designer",
+    name: "Aksa Mariam",
+    designation: "CONTENT WRITER",
     image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aksa_Mariam.webp",
+    linkedin: "https://linkedin.com",
   },
   {
-    name: "Skyler White",
-    designation: "Event Manager",
+    name: "Parvathi Rajan",
+    designation: "CONTENT WRITER",
     image:
-      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Parvathi_Rajan_A_V.webp",
+    linkedin: "https://linkedin.com",
   },
   {
-    name: "Kendall Roy",
-    designation: "Social Media",
+    name: "A Nandakishore",
+    designation: "VIDEO EDITOR",
     image:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400&h=400",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/A_Nandakishor.webp",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    name: "Krishnanad",
+    designation: "VIDEO EDITOR",
+    image:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnanad.webp",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    name: "Ishaani Raj Padickal",
+    designation: "DESIGNER",
+    image:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Ishaani_Raj_Padickal.webp",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    name: "Krishnan Nampoothiri",
+    designation: "DESIGNER",
+    image:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnan_Nampoothiri_N.webp",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    name: "Shaheem Ali",
+    designation: "DESIGNER",
+    image:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/SHAHEEM_ALI_ERUKULANGARA.webp",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    name: "Sarin M S",
+    designation: "WEB MANAGER",
+    image:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Sarin_M_S.webp",
+    linkedin: "https://linkedin.com",
   },
 ];
 
@@ -134,7 +174,7 @@ export default function SubExecom() {
                     <p className={styles.designation}>{member.designation}</p>
                     <div className={styles.socials}>
                       <a
-                        href="#"
+                        href={member.linkedin || "#"}
                         className={styles.socialIcon}
                         aria-label="LinkedIn"
                       >
