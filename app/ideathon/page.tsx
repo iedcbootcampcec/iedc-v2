@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import styles from "./ideathon.module.css";
@@ -43,6 +43,12 @@ export default function IdeathonPage() {
   const [submitMessage, setSubmitMessage] = useState("");
   const [showGuidelinesModal, setShowGuidelinesModal] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
+
+  useEffect(() => {
+    const deadline = new Date("2026-07-26T23:59:59");
+    setIsClosed(new Date() > deadline);
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -209,7 +215,17 @@ export default function IdeathonPage() {
               </div>
             )}
 
-            {submitStatus === "success" ? (
+            {isClosed ? (
+              <div className={styles.closedScreen}>
+                <div className={styles.closedIconWrapper}>
+                  <span className={styles.closedCross}>✕</span>
+                </div>
+                <h2 className={styles.successTitle}>REGISTRATION CLOSED</h2>
+                <p className={styles.successDescription}>
+                  The registration deadline for the Ideathon has passed (26th July 2026, 11:59 PM). We are no longer accepting submissions.
+                </p>
+              </div>
+            ) : submitStatus === "success" ? (
               <div className={styles.successScreen}>
                 <div className={styles.successIconWrapper}>
                   <span className={styles.successCheck}>✓</span>

@@ -1013,4 +1013,33 @@
   color: var(--color-primary);
 }
 
+.closedScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.closedIconWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3.5px solid var(--color-primary);
+  background: #fef2f2;
+  box-shadow: 4px 4px 0 var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.closedCross {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ef4444;
+  line-height: 1;
+}
+
+
 
