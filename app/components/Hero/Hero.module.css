@@ -87,7 +87,7 @@
 
 .ideasText {
   font-family: var(--font-brunson), "Brunson", sans-serif;
-  font-size: 180px;
+  font-size: clamp(3.5rem, 15vw, 180px);
   font-weight: 400;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -108,7 +108,7 @@
 
 .buildText {
   font-family: var(--font-feeling-passionate), "Feeling Passionate", cursive;
-  font-size: 140px;
+  font-size: clamp(2.75rem, 11.7vw, 140px);
   color: var(--color-accent);
   line-height: 1.37em;
   letter-spacing: -0.03em;
@@ -119,7 +119,7 @@
 
 .realityText {
   font-family: var(--font-brunson), "Brunson", sans-serif;
-  font-size: 180px;
+  font-size: clamp(3.5rem, 15vw, 180px);
   font-weight: 400;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -170,9 +170,9 @@
 }
 
 .startBuildingSvg {
-  height: 60px;
+  height: clamp(50px, 8vw, 60px);
   width: auto;
-  margin-left: -2.36em; 
+  margin-left: -2.36em;
   margin-bottom: 1em;
   object-fit: contain;
 }
@@ -180,6 +180,7 @@
 .revealRail,
 .revealMask,
 .revealUp {
+  opacity: 0;
   will-change: transform, opacity;
 }
 
@@ -188,24 +189,44 @@
     padding: 7rem 1.2rem 3rem;
   }
 
-  .ctaSection {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2.2rem;
-    width: 100%;
-  }
-
   .primaryCta {
-    width: 100%;
-    justify-content: space-between;
+    padding: 0.6rem 1.8rem;
   }
 
-  .startBuildingContainer {
-    margin-left: 0;
-    gap: 1.2rem;
+  .ctaBootcamp {
+    display: none;
   }
 
-  .arrowSvg {
-    transform: rotate(15deg);
+  .kickerContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .kickerText {
+    font-size: 1rem;
+  }
+
+  .kickerBar {
+    height: 20px;
+  }
+
+  .heading {
+    margin-top: -0.4em;
+  }
+
+  .sparkles {
+    margin-left: -0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ideasText {
+    font-size: clamp(4.5rem, 20vw, 180px);
+  }
+
+  .buildText {
+    font-size: clamp(3.5rem, 16vw, 140px);
+  }
+
+  .realityText {
+    font-size: clamp(4.5rem, 20vw, 180px);
   }
 }

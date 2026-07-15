@@ -86,7 +86,7 @@ export default function Hero() {
 
           <div className={`${styles.ctaSection} ${styles.revealUp}`}>
             <a href="#about" className={styles.primaryCta}>
-              <span>Explore Bootcamp</span>
+              <span>Explore<span className={styles.ctaBootcamp}> Bootcamp</span></span>
               <FiArrowUpRight aria-hidden="true" />
             </a>
             
