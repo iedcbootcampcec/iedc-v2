@@ -142,12 +142,6 @@ export default function Footer() {
           </a>
         </div>
       </div>
-
-      <div className={styles.creditContainer}>
-        <p>
-          Made wid <FaHeart color="red" /> by Kichu
-        </p>
-      </div>
     </footer>
   );
 }
