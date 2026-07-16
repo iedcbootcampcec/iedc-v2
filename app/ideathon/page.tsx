@@ -242,8 +242,8 @@ export default function IdeathonPage() {
             <div className={styles.header}>
               <h1 className={styles.title}>IDEATHON</h1>
               <p className={styles.subtitle}>
-                Register your team, submit payment details, and pitch your
-                startup idea.
+                Turn your ideas into impact. Register now for IDEATHON '26 and
+                showcase your innovation on a state-level platform.
               </p>
             </div>
 
@@ -266,7 +266,8 @@ export default function IdeathonPage() {
                 </div>
                 <h2 className={styles.successTitle}>REGISTRATION CLOSED</h2>
                 <p className={styles.successDescription}>
-                  The registration deadline for the Ideathon has passed (26th July 2026, 11:59 PM). We are no longer accepting submissions.
+                  The registration deadline for the Ideathon has passed (26th
+                  July 2026, 11:59 PM). We are no longer accepting submissions.
                 </p>
               </div>
             ) : submitStatus === "success" ? (
