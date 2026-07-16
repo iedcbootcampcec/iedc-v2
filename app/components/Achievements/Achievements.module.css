@@ -86,8 +86,8 @@
 .stackWrapper {
   position: relative;
   width: 100%;
-  max-width: 520px;
-  height: 560px;
+  max-width: 480px;
+  height: 680px;
   perspective: 1000px;
 }
 
@@ -97,9 +97,9 @@
   top: 0;
   left: 20px;
   right: 20px;
-  max-width: 480px;
+  max-width: 440px;
   margin: 0 auto;
-  height: 520px;
+  height: 640px;
   background-color: #ffffff;
   border: 2px solid #1a1a1a;
   box-shadow: 10px 10px 0px rgba(26, 26, 26, 1);
@@ -125,7 +125,7 @@
 .cardImageWrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1px solid rgba(26, 26, 26, 0.88);
   flex-shrink: 0;
@@ -241,11 +241,11 @@
     padding: 5rem 1rem 4rem;
   }
   .stackWrapper {
-    height: 480px;
+    height: 580px;
     max-width: 100%;
   }
   .card {
-    height: 440px;
+    height: 540px;
     padding: 1.2rem;
     left: 10px;
     right: 10px;

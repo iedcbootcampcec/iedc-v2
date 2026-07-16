@@ -12,34 +12,52 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const achievements = [
   {
-    title: "Won State Innovation Award",
-    desc: "SSF startups mentored by our team received the coveted State Innovation Award, enhancing our credibility across the ecosystem.",
+    title: "A New Journey Begins for Lekshmipriya S & Abhijith J Nair at IEDC NEST",
+    desc: "IEDC BOOTCAMP CEC is excited to announce that Lekshmipriya S and Abhijith J Nair are beginning their new journey at IEDC NEST.",
     image_url:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/new_journey_nest.webp",
   },
   {
-    title: "National Hackathon Champions",
-    desc: "Our student team secured first place at the National Hackathon, building an AI-powered sustainability tracker in just 36 hours.",
+    title: "Ananthu M P - Community Developer for IEDC NEST.",
+    desc: "IEDC BOOTCAMP CEC is thrilled to announce that Ananthu M P, CEO, IEDC BOOTCAMP CEC is starting his new position as Community Developer for IEDC NEST",
     image_url:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/community_dev_nest.webp",
   },
   {
-    title: "Launched Student Incubator",
-    desc: "Established a fully functional in-campus incubator providing workspace, mentorship, and seed funding to early-stage student startups.",
+    title: "Akshay Pradeep - State Student Lead of IEDC NEST",
+    desc: "Mr. Akshay Pradeep, Creative and Innovations Lead at IEDC Bootcamp CEC was selected as the State Lead of IEDC NEST (Network of Entrepreneurs & Students' Team).",
     image_url:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/Akshay_pradeep.webp",
   },
   {
-    title: "EdTech Product Acquired",
-    desc: "A student-built EdTech platform incubated under our program was acquired by a leading national education company.",
+    title: "Sreelakshmi M - State Creative Lead of IEDC NEST",
+    desc: "Ms. Sreelakshmi M, Student Lead of IEDC Bootcamp CEC was selected as the State Creative Lead of IEDC NEST (Network of Entrepreneurs & Students' Team).",
     image_url:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/state_creative_lead.webp",
   },
   {
-    title: "Best IEDC in Kerala",
-    desc: "Recognized as the best Innovation and Entrepreneurship Development Centre in Kerala by the Kerala Startup Mission.",
+    title: "AKSHAY PRADEEP ADDRESSING IEDC SUMMIT",
+    desc: "Mr. Akshay Pradeep, the State Student Lead of IEDC NEST (Network of Entrepreneurs & Students' Team), addressed the IEDC Summit - Asia's largest Summit for aspiring entrepreneurs.",
     image_url:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/addressing_iedc_summit.webp",
+  },
+  {
+    title: "SPECIAL MENTION AWARD",
+    desc: "Ms. Sreelakshmi M, CEO of IEDC Bootcamp CEC secured a special mention award for the active contribution, commitment, and dedication towards Innovators' Premier League 2021 hosted by Kerala Startup Mission and IEDC Kerala.",
+    image_url:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/special_mention_award.webp",
+  },
+  {
+    title: "IDEA FEST GRANT WINNERS 2021",
+    desc: "The team comprising Basim Aslam P O, Suzanne James, Lekshmi Priya V, and Sanal Sabu participated in Idea Fest Grant 2021 and was honored with a cash prize of 1 lakh from IEDC Kerala and Kerala StartUp Mission at Technopark, Trivandrum.",
+    image_url:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/idea_fest_grant_winners.webp",
+  },
+  {
+    title: "TOP PERFORMER IN SOUTH REGION",
+    desc: "The IEDC Bootcamp CEC team was awarded the top position in the South Region and also recognized as the top performer in the Alappuzha district in the Innovators Premier League (IPL), hosted by Kerala StartUp Mission and IEDC Kerala.",
+    image_url:
+      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/top_performer.webp",
   },
 ];
 
