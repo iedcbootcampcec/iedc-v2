@@ -111,6 +111,8 @@ export default function Execom() {
                       {member.linkedin && (
                         <a
                           href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={styles.socialIcon}
                           aria-label="LinkedIn"
                         >

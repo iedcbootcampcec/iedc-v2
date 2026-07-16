@@ -6,7 +6,7 @@ import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiLinkedin } from "react-icons/fi";
-import { faculty as members } from "@data/data"
+import { faculty as members } from "@data/data";
 
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
 
@@ -117,6 +117,8 @@ export default function Faculty() {
                         href={member.linkedin || "#"}
                         className={styles.socialIcon}
                         aria-label="LinkedIn"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         <FiLinkedin />
                       </a>

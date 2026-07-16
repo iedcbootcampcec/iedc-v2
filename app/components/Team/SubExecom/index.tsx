@@ -6,9 +6,7 @@ import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiLinkedin } from "react-icons/fi";
-import { subTeam as members } from "@data/data"
-
-
+import { subTeam as members } from "@data/data";
 
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
 
@@ -110,6 +108,8 @@ export default function SubExecom() {
                     <div className={styles.socials}>
                       <a
                         href={member.linkedin || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={styles.socialIcon}
                         aria-label="LinkedIn"
                       >

@@ -7,11 +7,9 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowUpRight } from "react-icons/fi";
-import { achievements } from "@data/achivements"
+import { achievements } from "@data/achivements";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-
 
 const getStackOffset = (index: number) => {
   if (index === 0) return { rotate: 0, x: 0, y: 0, scale: 1 };
@@ -349,9 +347,7 @@ export default function Achievements() {
               <h3 className={styles.cardTitle}>{ach.title}</h3>
 
               {/* Description */}
-              <p className={styles.cardDesc} style={{
-                textOverflow: "ellipsis",
-              }}>{ach.desc.length > 80 ? ach.desc.slice(0, 80) + "..." : ach.desc}</p>
+              <p className={styles.cardDesc}>{ach.desc}</p>
 
               {/* Interaction Details */}
               <div className={styles.navRow}>

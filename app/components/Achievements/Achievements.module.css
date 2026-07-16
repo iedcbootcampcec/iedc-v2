@@ -153,6 +153,15 @@
   margin: 0 0 0.8rem;
   flex-shrink: 0;
   pointer-events: none;
+
+  /* clamp to 2 lines, guaranteed */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* ── Description ── */
@@ -162,8 +171,17 @@
   color: rgba(26, 26, 26, 0.8);
   line-height: 1.6;
   margin: 0;
-  flex: 1;
+  flex-shrink: 0; /* was flex: 1 — that's what let it grow past the box */
   pointer-events: none;
+
+  /* clamp to 3 lines, guaranteed */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* ── Navigation Row ── */

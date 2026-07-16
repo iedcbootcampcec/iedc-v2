@@ -112,70 +112,76 @@ export default function Navbar({ isMenuShown = true }: NavbarProps) {
         </a>
 
         {/* ── Desktop links ── */}
-        <ul className={styles.navLinks}>
-          {NAV_ITEMS.map((item) => (
-            <li key={item.label} className={styles.navItem}>
-              <a
-                href={`/#${item.id}`}
-                onClick={handleNavClick}
-                className={styles.navLink}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {isMenuShown && (
+          <>
+            <ul className={styles.navLinks}>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.label} className={styles.navItem}>
+                  <a
+                    href={`/#${item.id}`}
+                    onClick={handleNavClick}
+                    className={styles.navLink}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-        {/* ── Desktop Join CTA ── */}
-        <button className={styles.joinCta} type="button">
-          Join Us
-        </button>
+            {/* ── Desktop Join CTA ── */}
+            <button className={styles.joinCta} type="button">
+              Join Us
+            </button>
 
-        {/* ── Hamburger (mobile only) ── */}
-        <button
-          className={`${styles.hamburger} ${isOpen ? styles.hamburgerOpen : ""}`}
-          onClick={toggleMenu}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-          type="button"
-        >
-          <span className={styles.hamburgerLine} />
-          <span className={styles.hamburgerLine} />
-          <span className={styles.hamburgerLine} />
-        </button>
+            {/* ── Hamburger (mobile only) ── */}
+            <button
+              className={`${styles.hamburger} ${isOpen ? styles.hamburgerOpen : ""}`}
+              onClick={toggleMenu}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              type="button"
+            >
+              <span className={styles.hamburgerLine} />
+              <span className={styles.hamburgerLine} />
+              <span className={styles.hamburgerLine} />
+            </button>
+          </>
+        )}
       </nav>
 
       {/* ── Mobile fullscreen overlay ── */}
-      <div
-        className={`${styles.mobileOverlay} ${isOpen ? styles.open : ""}`}
-        aria-hidden={!isOpen}
-      >
-        <ul className={styles.mobileNavList}>
-          {NAV_ITEMS.map((item) => (
-            <li key={item.label} className={styles.mobileNavItem}>
-              <a
-                href={`/#${item.id}`}
-                className={styles.mobileNavLink}
-                onClick={handleNavClick}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      {isMenuShown && (
+        <div
+          className={`${styles.mobileOverlay} ${isOpen ? styles.open : ""}`}
+          aria-hidden={!isOpen}
+        >
+          <ul className={styles.mobileNavList}>
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label} className={styles.mobileNavItem}>
+                <a
+                  href={`/#${item.id}`}
+                  className={styles.mobileNavLink}
+                  onClick={handleNavClick}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        {/* ── Mobile bottom info ── */}
-        <div className={styles.mobileFooter}>
-          <span className={styles.mobileFooterText}>EST. 2015 — CEC</span>
-          <a
-            href="/#hero"
-            className={styles.mobileFooterCta}
-            onClick={closeMenu}
-          >
-            Join the bootcamp →
-          </a>
+          {/* ── Mobile bottom info ── */}
+          <div className={styles.mobileFooter}>
+            <span className={styles.mobileFooterText}>EST. 2015 — CEC</span>
+            <a
+              href="/#hero"
+              className={styles.mobileFooterCta}
+              onClick={closeMenu}
+            >
+              Join the bootcamp →
+            </a>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
