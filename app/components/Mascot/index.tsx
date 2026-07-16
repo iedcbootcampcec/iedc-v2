@@ -51,20 +51,23 @@ export default function Mascot() {
               <span className={styles.kickerBar} />
               <span className={styles.kickerText}>THE SPIRIT OF CEC</span>
             </div>
-            
+
             <div className={styles.headerMobileRow}>
               <div className={styles.textLeft}>
                 <h2 className={styles.heading}>
                   MEET <span className={styles.accentText}>VOLT</span>
                 </h2>
                 <p className={styles.description}>
-                  Volt is the official mascot of IEDC Bootcamp CEC. With burning flame hair representing infinite curiosity, and a cape built for shipping fast, Volt is the digital companion for every student creator, developer, and founder on campus.
+                  Volt is the official mascot of IEDC Bootcamp CEC. With burning
+                  flame hair representing infinite curiosity, and a cape built
+                  for shipping fast, Volt is the digital companion for every
+                  student creator, developer, and founder on campus.
                 </p>
               </div>
 
               <div className={styles.mobileImageWrapper}>
                 <img
-                  src="/assets/mascot.png"
+                  src="/assets/mascot.webp"
                   alt="IEDC Volt Mascot"
                   className={styles.mascotImgMobile}
                 />
@@ -72,19 +75,27 @@ export default function Mascot() {
             </div>
 
             <div className={styles.rulesCard}>
-              <h3 className={styles.rulesTitle}>VOLT&apos;S CODE FOR BUILDERS:</h3>
+              <h3 className={styles.rulesTitle}>
+                VOLT&apos;S CODE FOR BUILDERS:
+              </h3>
               <ul className={styles.rulesList}>
                 <li>
                   <strong className={styles.ruleNumber}>01</strong>
-                  <span>Always ship over hype. Tangible MVPs win arguments.</span>
+                  <span>
+                    Always ship over hype. Tangible MVPs win arguments.
+                  </span>
                 </li>
                 <li>
                   <strong className={styles.ruleNumber}>02</strong>
-                  <span>Failure is just high-quality debugging. Keep iterating.</span>
+                  <span>
+                    Failure is just high-quality debugging. Keep iterating.
+                  </span>
                 </li>
                 <li>
                   <strong className={styles.ruleNumber}>03</strong>
-                  <span>Keep the student-led founder energy serious and loud.</span>
+                  <span>
+                    Keep the student-led founder energy serious and loud.
+                  </span>
                 </li>
               </ul>
             </div>
@@ -93,7 +104,7 @@ export default function Mascot() {
           <div className={`${styles.imageCol} ${styles.reveal}`}>
             <div className={styles.imageWrapper}>
               <img
-                src="/assets/mascot.png"
+                src="/assets/mascot.webp"
                 alt="IEDC Volt Mascot"
                 className={styles.mascotImg}
               />

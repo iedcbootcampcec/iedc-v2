@@ -166,9 +166,9 @@
 .mascotImg {
   position: relative;
   z-index: 2;
-  width: 90%;
+  width: 120%;
   height: auto;
-  max-height: 110%;
+  max-height: 120%;
   object-fit: contain;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -242,11 +242,12 @@
   }
 
   .mascotImgMobile {
-    position: relative;
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
     z-index: 2;
-    width: 110%;
+    width: 180%;
     height: auto;
-    max-height: 140%;
     display: block;
     margin: 0;
     object-fit: contain;
