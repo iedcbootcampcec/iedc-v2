@@ -1,4 +1,18 @@
 {
+    "faculty": [
+        {
+            "name": "Sherin Joseph",
+            "designation": "FACULTY ADVISOR",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Sherin_Joseph.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Muhammed Ilyas H",
+            "designation": "CO-NODAL OFFICER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Muhammed_Ilyas_H.webp",
+            "linkedin": "https://linkedin.com"
+        }
+    ],
     "team": [
         {
             "name": "Christo Pius",
@@ -53,6 +67,68 @@
             "role": "Technology Lead",
             "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Execom/Mahadevan-Reji.webp",
             "linkedin": "https://www.linkedin.com/in/mahadevan-reji/"
+        }
+    ],
+    "subTeam": [
+        {
+            "name": "Blessy Stephen",
+            "designation": "PROGRAM MANAGER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Blessy_Stephen.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Aiswarya Rose Jacob",
+            "designation": "SOCIAL MEDIA & MARKETING MANAGER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aiswarya_Rose_Jacob.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Aksa Mariam",
+            "designation": "CONTENT WRITER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aksa_Mariam.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Parvathi Rajan",
+            "designation": "CONTENT WRITER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Parvathi_Rajan_A_V.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "A Nandakishore",
+            "designation": "VIDEO EDITOR",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/A_Nandakishor.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Krishnanad",
+            "designation": "VIDEO EDITOR",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnanad.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Ishaani Raj Padickal",
+            "designation": "DESIGNER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Ishaani_Raj_Padickal.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Krishnan Nampoothiri",
+            "designation": "DESIGNER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnan_Nampoothiri_N.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Shaheem Ali",
+            "designation": "DESIGNER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/SHAHEEM_ALI_ERUKULANGARA.webp",
+            "linkedin": "https://linkedin.com"
+        },
+        {
+            "name": "Sarin M S",
+            "designation": "WEB MANAGER",
+            "image": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Sarin_M_S.webp",
+            "linkedin": "https://linkedin.com"
         }
     ]
 }

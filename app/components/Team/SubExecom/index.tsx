@@ -6,79 +6,9 @@ import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiLinkedin } from "react-icons/fi";
+import { subTeam as members } from "@data/data"
 
-const members = [
-  {
-    name: "Blessy Stephen",
-    designation: "PROGRAM MANAGER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Blessy_Stephen.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Aiswarya Rose Jacob",
-    designation: "SOCIAL MEDIA & MARKETING MANAGER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aiswarya_Rose_Jacob.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Aksa Mariam",
-    designation: "CONTENT WRITER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Aksa_Mariam.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Parvathi Rajan",
-    designation: "CONTENT WRITER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Parvathi_Rajan_A_V.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "A Nandakishore",
-    designation: "VIDEO EDITOR",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/A_Nandakishor.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Krishnanad",
-    designation: "VIDEO EDITOR",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnanad.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Ishaani Raj Padickal",
-    designation: "DESIGNER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Ishaani_Raj_Padickal.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Krishnan Nampoothiri",
-    designation: "DESIGNER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Krishnan_Nampoothiri_N.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Shaheem Ali",
-    designation: "DESIGNER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/SHAHEEM_ALI_ERUKULANGARA.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Sarin M S",
-    designation: "WEB MANAGER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/SubExecom/Sarin_M_S.webp",
-    linkedin: "https://linkedin.com",
-  },
-];
+
 
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
 
