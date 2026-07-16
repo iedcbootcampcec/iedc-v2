@@ -53,12 +53,16 @@ export default function Mascot() {
             </div>
             
             <div className={styles.headerMobileRow}>
-              <h2 className={styles.heading}>
-                MEET <span className={styles.accentText}>VOLT</span>
-              </h2>
+              <div className={styles.textLeft}>
+                <h2 className={styles.heading}>
+                  MEET <span className={styles.accentText}>VOLT</span>
+                </h2>
+                <p className={styles.description}>
+                  Volt is the official mascot of IEDC Bootcamp CEC. With burning flame hair representing infinite curiosity, and a cape built for shipping fast, Volt is the digital companion for every student creator, developer, and founder on campus.
+                </p>
+              </div>
 
               <div className={styles.mobileImageWrapper}>
-                <div className={styles.mobileBackdrop} />
                 <img
                   src="/assets/mascot.png"
                   alt="IEDC Volt Mascot"
@@ -66,10 +70,6 @@ export default function Mascot() {
                 />
               </div>
             </div>
-            
-            <p className={styles.description}>
-              Volt is the official mascot of IEDC Bootcamp CEC. With burning flame hair representing infinite curiosity, and a cape built for shipping fast, Volt is the digital companion for every student creator, developer, and founder on campus.
-            </p>
 
             <div className={styles.rulesCard}>
               <h3 className={styles.rulesTitle}>VOLT&apos;S CODE FOR BUILDERS:</h3>

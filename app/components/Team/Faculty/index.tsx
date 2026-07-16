@@ -60,6 +60,9 @@ export default function Faculty() {
         let scrollTween: gsap.core.Tween | null = null;
 
         if (track && members.length > 1) {
+          const pause = () => scrollTween?.pause();
+          const play = () => scrollTween?.play();
+
           const initLoop = () => {
             if (scrollTween) scrollTween.kill();
 
@@ -82,9 +85,14 @@ export default function Faculty() {
           setTimeout(initLoop, 200);
           window.addEventListener("resize", initLoop);
 
+          track.addEventListener("mouseenter", pause);
+          track.addEventListener("mouseleave", play);
+
           return () => {
             if (scrollTween) scrollTween.kill();
             window.removeEventListener("resize", initLoop);
+            track.removeEventListener("mouseenter", pause);
+            track.removeEventListener("mouseleave", play);
           };
         }
       });

@@ -177,6 +177,12 @@
   transform: translateY(-12px) scale(1.03);
 }
 
+.textLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .headerMobileRow {
   display: block;
 }
@@ -208,7 +214,7 @@
 
   .headerMobileRow {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 1.5rem;
     width: 100%;
@@ -238,11 +244,11 @@
   .mascotImgMobile {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: 110%;
     height: auto;
-    max-height: 130%;
+    max-height: 140%;
     display: block;
-    margin: 0 auto;
+    margin: 0;
     object-fit: contain;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }

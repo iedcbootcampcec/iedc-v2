@@ -113,6 +113,9 @@ export default function SubExecom() {
       let scrollTween: gsap.core.Tween | null = null;
 
       if (track) {
+        const pause = () => scrollTween?.pause();
+        const play = () => scrollTween?.play();
+
         const initLoop = () => {
           if (scrollTween) scrollTween.kill();
 
@@ -129,18 +132,20 @@ export default function SubExecom() {
               duration: groupWidth / 60,
               repeat: -1,
             });
-
-            track.addEventListener("mouseenter", () => scrollTween?.pause());
-            track.addEventListener("mouseleave", () => scrollTween?.play());
           }
         };
 
         setTimeout(initLoop, 200);
         window.addEventListener("resize", initLoop);
 
+        track.addEventListener("mouseenter", pause);
+        track.addEventListener("mouseleave", play);
+
         return () => {
           if (scrollTween) scrollTween.kill();
           window.removeEventListener("resize", initLoop);
+          track.removeEventListener("mouseenter", pause);
+          track.removeEventListener("mouseleave", play);
         };
       }
     },
