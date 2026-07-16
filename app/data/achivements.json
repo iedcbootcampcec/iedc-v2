@@ -1,0 +1,44 @@
+{
+    "achievements": [
+        {
+            "title": "A New Journey Begins for Lekshmipriya S & Abhijith J Nair at IEDC NEST",
+            "desc": "IEDC BOOTCAMP CEC is excited to announce that Lekshmipriya S and Abhijith J Nair are beginning their new journey at IEDC NEST.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/new_journey_nest.webp"
+        },
+        {
+            "title": "Ananthu M P - Community Developer for IEDC NEST",
+            "desc": "IEDC BOOTCAMP CEC is thrilled to announce that Ananthu M P, CEO, IEDC BOOTCAMP CEC is starting his new position as Community Developer for IEDC NEST.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/community_dev_nest.webp"
+        },
+        {
+            "title": "Akshay Pradeep - State Student Lead of IEDC NEST",
+            "desc": "Mr. Akshay Pradeep, Creative and Innovations Lead at IEDC Bootcamp CEC was selected as the State Lead of IEDC NEST (Network of Entrepreneurs & Students' Team).",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/Akshay_pradeep.webp"
+        },
+        {
+            "title": "Sreelakshmi M - State Creative Lead of IEDC NEST",
+            "desc": "Ms. Sreelakshmi M, Student Lead of IEDC Bootcamp CEC was selected as the State Creative Lead of IEDC NEST (Network of Entrepreneurs & Students' Team).",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/state_creative_lead.webp"
+        },
+        {
+            "title": "AKSHAY PRADEEP ADDRESSING IEDC SUMMIT",
+            "desc": "Mr. Akshay Pradeep, the State Student Lead of IEDC NEST (Network of Entrepreneurs & Students' Team), addressed the IEDC Summit - Asia's largest Summit for aspiring entrepreneurs.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/addressing_iedc_summit.webp"
+        },
+        {
+            "title": "SPECIAL MENTION AWARD",
+            "desc": "Ms. Sreelakshmi M, CEO of IEDC Bootcamp CEC secured a special mention award for the active contribution, commitment, and dedication towards Innovators' Premier League 2021 hosted by Kerala Startup Mission and IEDC Kerala.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/special_mention_award.webp"
+        },
+        {
+            "title": "IDEA FEST GRANT WINNERS 2021",
+            "desc": "The team comprising Basim Aslam P O, Suzanne James, Lekshmi Priya V, and Sanal Sabu participated in Idea Fest Grant 2021 and was honored with a cash prize of 1 lakh from IEDC Kerala and Kerala Startup Mission at Technopark, Trivandrum.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/idea_fest_grant_winners.webp"
+        },
+        {
+            "title": "TOP PERFORMER IN SOUTH REGION",
+            "desc": "The IEDC Bootcamp CEC team was awarded the top position in the South Region and also recognized as the top performer in the Alappuzha district in the Innovators Premier League (IPL), hosted by Kerala Startup Mission and IEDC Kerala.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/top_performer.webp"
+        }
+    ]
+}

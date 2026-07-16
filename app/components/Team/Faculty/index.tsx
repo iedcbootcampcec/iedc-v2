@@ -6,23 +6,7 @@ import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FiLinkedin } from "react-icons/fi";
-
-const members = [
-  {
-    name: "Sherin Joseph",
-    designation: "FACULTY ADVISOR",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Sherin_Joseph.webp",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Muhammed Ilyas H",
-    designation: "CO-NODAL OFFICER",
-    image:
-      "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/team-26/Facualty/Muhammed_Ilyas_H.webp",
-    linkedin: "https://linkedin.com",
-  },
-];
+import { faculty as members } from "@data/data"
 
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
 
