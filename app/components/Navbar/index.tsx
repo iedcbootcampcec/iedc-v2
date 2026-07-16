@@ -31,7 +31,10 @@ interface NavbarProps {
   mainUrl?: string;
 }
 
-export default function Navbar({ isMenuShown = true, mainUrl = "#hero" }: NavbarProps) {
+export default function Navbar({
+  isMenuShown = true,
+  mainUrl = "#hero",
+}: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();

@@ -48,7 +48,7 @@ const posterman = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IEDC Bootcamp CEC",
+  title: "IEDC BOOTCAMP CEC",
   description:
     "A startup-driven innovation forum at CEC. We experiment, validate, ship, repeat.",
   icons: {

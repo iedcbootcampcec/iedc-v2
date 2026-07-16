@@ -67,7 +67,9 @@ export default function Hero() {
           </div>
 
           <h1 className={styles.heading}>
-            <span className={`${styles.headingLine} ${styles.ideasWrapper} ${styles.revealMask}`}>
+            <span
+              className={`${styles.headingLine} ${styles.ideasWrapper} ${styles.revealMask}`}
+            >
               <span className={styles.ideasText}>IDEAS</span>
               <img
                 src="/assets/sparkle.svg"
@@ -76,20 +78,26 @@ export default function Hero() {
                 className={styles.sparkles}
               />
             </span>
-            <span className={`${styles.headingLine} ${styles.buildText} ${styles.revealMask}`}>
+            <span
+              className={`${styles.headingLine} ${styles.buildText} ${styles.revealMask}`}
+            >
               BUILD
             </span>
-            <span className={`${styles.headingLine} ${styles.realityText} ${styles.revealMask}`}>
+            <span
+              className={`${styles.headingLine} ${styles.realityText} ${styles.revealMask}`}
+            >
               REALITY
             </span>
           </h1>
 
           <div className={`${styles.ctaSection} ${styles.revealUp}`}>
             <a href="#about" className={styles.primaryCta}>
-              <span>Explore<span className={styles.ctaBootcamp}> Bootcamp</span></span>
+              <span>
+                Explore<span className={styles.ctaBootcamp}> BOOTCAMP</span>
+              </span>
               <FiArrowUpRight aria-hidden="true" />
             </a>
-            
+
             <img
               src="/assets/start_building.svg"
               alt="Start building today"

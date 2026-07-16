@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "IDEATHON ‘26 | IEDC Bootcamp CEC",
+  title: "IDEATHON ‘26 | IEDC BOOTCAMP CEC",
   description:
     "IDEATHON ‘26, the Ultimate Arena for Kerala’s Innovators, where you can connect with entrepreneurs, showcase your ideas, compete with the brightest minds, and take the first step toward building the future.",
   icons: {

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "IEDC Bootcamp CEC",
+    name: "IEDC BOOTCAMP CEC",
     short_name: "IEDC CEC",
     description: "A startup-driven innovation forum at CEC. We experiment, validate, ship, repeat.",
     start_url: "/",

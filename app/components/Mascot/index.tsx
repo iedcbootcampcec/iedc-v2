@@ -58,7 +58,7 @@ export default function Mascot() {
                   MEET <span className={styles.accentText}>VOLT</span>
                 </h2>
                 <p className={styles.description}>
-                  Volt is the official mascot of IEDC Bootcamp CEC. With burning
+                  Volt is the official mascot of IEDC BOOTCAMP CEC. With burning
                   flame hair representing infinite curiosity, and a cape built
                   for shipping fast, Volt is the digital companion for every
                   student creator, developer, and founder on campus.

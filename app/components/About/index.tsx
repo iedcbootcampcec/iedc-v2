@@ -82,7 +82,7 @@ export default function About() {
             </div>
 
             <p className={`${styles.description} ${styles.revealUp}`}>
-              IEDC Bootcamp CEC is where curious students stop consuming startup
+              IEDC BOOTCAMP CEC is where curious students stop consuming startup
               culture and start practicing it. A room to start messy, validate
               fast, and learn in public.
             </p>
@@ -107,9 +107,7 @@ export default function About() {
                     PILLAR {pillar.num}
                   </span>
                 </div>
-                <p className={styles.pillarDescription}>
-                  {pillar.description}
-                </p>
+                <p className={styles.pillarDescription}>{pillar.description}</p>
               </div>
             ))}
           </div>
