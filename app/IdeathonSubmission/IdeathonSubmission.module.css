@@ -501,7 +501,7 @@
   color: var(--color-primary);
 }
 
-.select {
+.selectTrigger {
   width: 100%;
   padding: 0.85rem 1rem;
   background: #fffdf8;
@@ -512,25 +512,127 @@
   outline: none;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%231a1a1a' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-  background-position: right 1rem center;
-  background-repeat: no-repeat;
-  background-size: 1.25rem;
-  padding-right: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.select:focus {
+.selectTrigger:focus,
+.selectTrigger[data-state='open'] {
   background: #ffffff;
   box-shadow: 4px 4px 0px var(--color-accent);
 }
 
-.loadingSpinner {
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: rgba(26, 26, 26, 0.6);
-  padding: 0.85rem 0;
+.selectIcon {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectIcon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 2.5;
+}
+
+.selectContent {
+  overflow: hidden;
+  background-color: #fffdf8;
+  border: 2px solid var(--color-primary);
+  box-shadow: 4px 4px 0px var(--color-primary);
+  z-index: 50;
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+}
+
+.selectViewport {
+  padding: 0.5rem;
+}
+
+.selectItem {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  padding: 0.65rem 2rem 0.65rem 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.selectItem[data-highlighted] {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.selectItemIndicator {
+  position: absolute;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectScrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: #fffdf8;
+  color: var(--color-primary);
+  cursor: default;
+}
+
+.selectTriggerLoading {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: #f8f4eb;
+  border: 2px solid rgba(26, 26, 26, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: not-allowed;
+  position: relative;
+  overflow: hidden;
+}
+
+.selectTriggerLoading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent
+  );
+  animation: shimmer 1.2s infinite;
+}
+
+.skeletonText {
+  width: 50%;
+  height: 1.1rem;
+  background: rgba(26, 26, 26, 0.1);
+  border-radius: 4px;
+}
+
+.skeletonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  background: rgba(26, 26, 26, 0.1);
+  border-radius: 4px;
+  z-index: 1; /* Keep above shimmer */
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .leaderDetailsBox {
