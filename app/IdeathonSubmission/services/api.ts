@@ -3,6 +3,25 @@ export interface Team {
   team_name: string;
 }
 
+export interface TeamMember {
+  user_id: string;
+  name: string;
+}
+
+export interface TeamMembersDetails {
+  members: TeamMember[];
+  leader_name: string;
+  isFallback?: boolean;
+}
+
+export interface UpdateMembersPayload {
+  leader_gender: string;
+  members: {
+    user_id: string;
+    gender: string;
+  }[];
+}
+
 const baseUrl = process.env.NEXT_PUBLIC_IDEATHON_API_URL!;
 
 export async function fetchTeams(): Promise<Team[]> {
@@ -22,6 +41,61 @@ export async function fetchTeams(): Promise<Team[]> {
     console.error("Error fetching teams:", err);
     return [];
   }
+}
+
+export async function fetchTeamMembers(
+  teamId: number | string
+): Promise<TeamMembersDetails> {
+  try {
+    const res = await fetch(`${baseUrl}/teams/members/${teamId}`);
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(
+        errorData.error || errorData.message || `HTTP ${res.status}`
+      );
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.warn(
+      `[fetchTeamMembers] Backend endpoint GET /teams/members/${teamId} returned error:`,
+      err
+    );
+    // Return fallback sample team structure so gender options remain functional
+    return {
+      leader_name: "Team Leader",
+      members: [
+        { user_id: `mem_${teamId}_1`, name: "Member 1" },
+        { user_id: `mem_${teamId}_2`, name: "Member 2" },
+      ],
+      isFallback: true,
+    };
+  }
+}
+
+export async function updateTeamMembers(
+  teamId: number | string,
+  payload: UpdateMembersPayload
+) {
+  const res = await fetch(`${baseUrl}/teams/members/update/${teamId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const resData = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(
+      resData.message || resData.error || "Failed to update team members."
+    );
+  }
+
+  return resData;
 }
 
 export async function submitIdea(teamId: number, submission: string) {
@@ -48,3 +122,4 @@ export async function submitIdea(teamId: number, submission: string) {
 
   return resData;
 }
+

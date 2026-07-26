@@ -9,12 +9,30 @@ import {
   FiChevronUp,
 } from "react-icons/fi";
 import * as Select from "@radix-ui/react-select";
-import { Team, fetchTeams, submitIdea } from "./services/api";
+import {
+  Team,
+  TeamMembersDetails,
+  fetchTeams,
+  fetchTeamMembers,
+  updateTeamMembers,
+  submitIdea,
+} from "./services/api";
+
+const GENDER_OPTIONS = ["Male", "Female", "Other"];
 
 export default function SubmissionForm() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoadingTeams, setIsLoadingTeams] = useState(true);
-  const [selectedTeamId, setSelectedTeamId] = useState<number | "">("");
+  const [selectedTeamId, setSelectedTeamId] = useState<number | string>("");
+
+  const [teamMembersDetails, setTeamMembersDetails] =
+    useState<TeamMembersDetails | null>(null);
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false);
+  const [leaderGender, setLeaderGender] = useState("");
+  const [memberGenders, setMemberGenders] = useState<Record<string, string>>(
+    {}
+  );
+
   const [submissionText, setSubmissionText] = useState("");
 
   const [formError, setFormError] = useState("");
@@ -38,7 +56,42 @@ export default function SubmissionForm() {
     };
   }, []);
 
-  const selectedTeam = teams.find((t) => t.team_id === Number(selectedTeamId));
+  useEffect(() => {
+    if (!selectedTeamId) {
+      setTeamMembersDetails(null);
+      setLeaderGender("");
+      setMemberGenders({});
+      return;
+    }
+
+    let mounted = true;
+    setIsLoadingMembers(true);
+    setTeamMembersDetails(null);
+    setLeaderGender("");
+    setMemberGenders({});
+
+    fetchTeamMembers(selectedTeamId).then((data) => {
+      if (mounted) {
+        setTeamMembersDetails(data);
+        setIsLoadingMembers(false);
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedTeamId]);
+
+  const selectedTeam = teams.find(
+    (t) => String(t.team_id) === String(selectedTeamId)
+  );
+
+  const handleMemberGenderChange = (userId: string, gender: string) => {
+    setMemberGenders((prev) => ({
+      ...prev,
+      [userId]: gender,
+    }));
+  };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -47,6 +100,27 @@ export default function SubmissionForm() {
     if (!selectedTeamId) {
       return setFormError("Please select your team.");
     }
+
+    if (!leaderGender) {
+      return setFormError(
+        `Please select gender for team leader${
+          teamMembersDetails?.leader_name
+            ? ` (${teamMembersDetails.leader_name})`
+            : ""
+        }.`
+      );
+    }
+
+    if (teamMembersDetails?.members) {
+      for (const member of teamMembersDetails.members) {
+        if (!memberGenders[member.user_id]) {
+          return setFormError(
+            `Please select gender for team member (${member.name}).`
+          );
+        }
+      }
+    }
+
     if (!submissionText.trim()) {
       return setFormError("Please enter your submission text/link.");
     }
@@ -54,12 +128,23 @@ export default function SubmissionForm() {
     setSubmitStatus("submitting");
 
     try {
+      const membersPayload =
+        teamMembersDetails?.members.map((m) => ({
+          user_id: m.user_id,
+          gender: memberGenders[m.user_id] || "",
+        })) || [];
+
+      await updateTeamMembers(selectedTeamId, {
+        leader_gender: leaderGender,
+        members: membersPayload,
+      });
+
       await submitIdea(Number(selectedTeamId), submissionText.trim());
       setSubmitStatus("success");
     } catch (err: any) {
       setSubmitStatus("error");
       setFormError(
-        err.message || "An unexpected error occurred during submission.",
+        err.message || "An unexpected error occurred during submission."
       );
     }
   };
@@ -117,7 +202,7 @@ export default function SubmissionForm() {
           ) : (
             <Select.Root
               value={selectedTeamId ? String(selectedTeamId) : ""}
-              onValueChange={(val) => setSelectedTeamId(Number(val))}
+              onValueChange={(val) => setSelectedTeamId(val)}
               disabled={submitStatus === "submitting"}
               required
             >
@@ -166,8 +251,159 @@ export default function SubmissionForm() {
           )}
         </div>
 
+        {Boolean(selectedTeamId) && (
+          <>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionNum}>02</span>
+              <h2 className={styles.sectionTitle}>Update Team Genders</h2>
+            </div>
+
+            {isLoadingMembers ? (
+              <div className={styles.membersLoadingBox}>
+                <div
+                  className={styles.skeletonText}
+                  style={{ width: "60%", height: "1.1rem" }}
+                />
+                <div
+                  className={styles.skeletonText}
+                  style={{ width: "100%", height: "2.5rem", marginTop: "0.5rem" }}
+                />
+              </div>
+            ) : (
+              <div className={styles.genderSection}>
+                {/* Leader Gender Field */}
+                <div className={styles.field}>
+                  <label className={styles.label}>
+                    Leader Gender:{" "}
+                    <span className={styles.memberNameHighlight}>
+                      {teamMembersDetails?.leader_name
+                        ? `(${teamMembersDetails.leader_name})`
+                        : ""}
+                    </span>
+                  </label>
+                  <Select.Root
+                    value={leaderGender}
+                    onValueChange={setLeaderGender}
+                    disabled={submitStatus === "submitting"}
+                  >
+                    <Select.Trigger
+                      className={styles.selectTrigger}
+                      aria-label="Leader Gender"
+                    >
+                      <Select.Value placeholder="-- Select Gender --" />
+                      <Select.Icon className={styles.selectIcon}>
+                        <FiChevronDown />
+                      </Select.Icon>
+                    </Select.Trigger>
+                    <Select.Portal>
+                      <Select.Content
+                        className={styles.selectContent}
+                        position="popper"
+                        sideOffset={4}
+                      >
+                        <Select.ScrollUpButton
+                          className={styles.selectScrollButton}
+                        >
+                          <FiChevronUp />
+                        </Select.ScrollUpButton>
+                        <Select.Viewport className={styles.selectViewport}>
+                          {GENDER_OPTIONS.map((opt) => (
+                            <Select.Item
+                              key={opt}
+                              value={opt}
+                              className={styles.selectItem}
+                            >
+                              <Select.ItemText>{opt}</Select.ItemText>
+                              <Select.ItemIndicator
+                                className={styles.selectItemIndicator}
+                              >
+                                <FiCheck />
+                              </Select.ItemIndicator>
+                            </Select.Item>
+                          ))}
+                        </Select.Viewport>
+                        <Select.ScrollDownButton
+                          className={styles.selectScrollButton}
+                        >
+                          <FiChevronDown />
+                        </Select.ScrollDownButton>
+                      </Select.Content>
+                    </Select.Portal>
+                  </Select.Root>
+                </div>
+
+                {/* Team Members Gender Fields */}
+                {teamMembersDetails?.members &&
+                  teamMembersDetails.members.map((member) => (
+                    <div key={member.user_id} className={styles.field}>
+                      <label className={styles.label}>
+                        Member Gender:{" "}
+                        <span className={styles.memberNameHighlight}>
+                          ({member.name})
+                        </span>
+                      </label>
+                      <Select.Root
+                        value={memberGenders[member.user_id] || ""}
+                        onValueChange={(val) =>
+                          handleMemberGenderChange(member.user_id, val)
+                        }
+                        disabled={submitStatus === "submitting"}
+                      >
+                        <Select.Trigger
+                          className={styles.selectTrigger}
+                          aria-label={`Gender for ${member.name}`}
+                        >
+                          <Select.Value placeholder="-- Select Gender --" />
+                          <Select.Icon className={styles.selectIcon}>
+                            <FiChevronDown />
+                          </Select.Icon>
+                        </Select.Trigger>
+                        <Select.Portal>
+                          <Select.Content
+                            className={styles.selectContent}
+                            position="popper"
+                            sideOffset={4}
+                          >
+                            <Select.ScrollUpButton
+                              className={styles.selectScrollButton}
+                            >
+                              <FiChevronUp />
+                            </Select.ScrollUpButton>
+                            <Select.Viewport className={styles.selectViewport}>
+                              {GENDER_OPTIONS.map((opt) => (
+                                <Select.Item
+                                  key={opt}
+                                  value={opt}
+                                  className={styles.selectItem}
+                                >
+                                  <Select.ItemText>{opt}</Select.ItemText>
+                                  <Select.ItemIndicator
+                                    className={styles.selectItemIndicator}
+                                  >
+                                    <FiCheck />
+                                  </Select.ItemIndicator>
+                                </Select.Item>
+                              ))}
+                            </Select.Viewport>
+                            <Select.ScrollDownButton
+                              className={styles.selectScrollButton}
+                            >
+                              <FiChevronDown />
+                            </Select.ScrollDownButton>
+                          </Select.Content>
+                        </Select.Portal>
+                      </Select.Root>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </>
+        )}
+
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>02</span>
+          <span className={styles.sectionNum}>
+            {selectedTeamId ? "03" : "02"}
+          </span>
           <h2 className={styles.sectionTitle}>Submission</h2>
         </div>
 
@@ -206,3 +442,4 @@ export default function SubmissionForm() {
     </>
   );
 }
+
