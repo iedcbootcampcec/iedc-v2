@@ -514,8 +514,8 @@ export default function IdeathonPage() {
                       <strong>only selected teams will qualify for the Final Round.</strong>
                     </li>
                     <li>
-                      If a team is not selected for the Final Round, the registration
-                      fee will be refunded.
+                      If a team is not selected for the Final Round,<strong> the registration
+                      fee will be refunded.</strong>
                     </li>
                     <li>
                       The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
@@ -728,8 +728,8 @@ export default function IdeathonPage() {
                 <strong>only selected teams will qualify for the Final Round.</strong>
               </li>
               <li>
-                If a team is not selected for the Final Round, the registration
-                fee will be refunded.
+                {" "}<strong>If a team is not selected for the Final Round, the registration 
+                fee will be refunded.</strong>
               </li>
               <li>
                 The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
