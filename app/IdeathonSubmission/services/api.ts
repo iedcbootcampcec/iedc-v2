@@ -24,6 +24,53 @@ export interface UpdateMembersPayload {
 
 const baseUrl = process.env.NEXT_PUBLIC_IDEATHON_API_URL!;
 
+export interface FindTeamResult {
+  team_id: string;
+  team_name: string;
+}
+
+export async function findTeamByName(
+  inputTeamName: string
+): Promise<FindTeamResult> {
+  const queryName = inputTeamName.trim();
+
+  try {
+    const res = await fetch(`${baseUrl}/teams/find`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ team_name: queryName }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.team_id && !data.error) {
+      return {
+        team_id: String(data.team_id),
+        team_name: data.team_name || queryName,
+      };
+    }
+  } catch (err) {
+    console.warn(`[findTeamByName] POST /teams/find error:`, err);
+  }
+
+  // Fallback: search /teams list with case-insensitive lowercased comparison
+  const teams = await fetchTeams();
+  const matchedTeam = teams.find(
+    (t) => t.team_name.trim().toLowerCase() === queryName.toLowerCase()
+  );
+
+  if (matchedTeam) {
+    return {
+      team_id: String(matchedTeam.team_id),
+      team_name: matchedTeam.team_name,
+    };
+  }
+
+  throw new Error("No team found with that name. Please check and try again.");
+}
+
 export async function fetchTeams(): Promise<Team[]> {
   try {
     const res = await fetch(`${baseUrl}/teams`);
