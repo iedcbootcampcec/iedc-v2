@@ -30,7 +30,7 @@ export interface FindTeamResult {
 }
 
 export async function findTeamByName(
-  inputTeamName: string
+  inputTeamName: string,
 ): Promise<FindTeamResult> {
   const queryName = inputTeamName.trim();
 
@@ -40,7 +40,7 @@ export async function findTeamByName(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ team_name: queryName }),
+      body: JSON.stringify({ team_name: queryName.trim() }),
     });
 
     const data = await res.json().catch(() => ({}));
@@ -55,43 +55,11 @@ export async function findTeamByName(
     console.warn(`[findTeamByName] POST /teams/find error:`, err);
   }
 
-  // Fallback: search /teams list with case-insensitive lowercased comparison
-  const teams = await fetchTeams();
-  const matchedTeam = teams.find(
-    (t) => t.team_name.trim().toLowerCase() === queryName.toLowerCase()
-  );
-
-  if (matchedTeam) {
-    return {
-      team_id: String(matchedTeam.team_id),
-      team_name: matchedTeam.team_name,
-    };
-  }
-
   throw new Error("No team found with that name. Please check and try again.");
 }
 
-export async function fetchTeams(): Promise<Team[]> {
-  try {
-    const res = await fetch(`${baseUrl}/teams`);
-
-    if (!res.ok) throw new Error("Failed to fetch teams");
-
-    const data = await res.json();
-
-    if (Array.isArray(data)) {
-      return data;
-    } else {
-      throw new Error("Invalid response format");
-    }
-  } catch (err) {
-    console.error("Error fetching teams:", err);
-    return [];
-  }
-}
-
 export async function fetchTeamMembers(
-  teamId: number | string
+  teamId: number | string,
 ): Promise<TeamMembersDetails> {
   try {
     const res = await fetch(`${baseUrl}/teams/members/${teamId}`);
@@ -99,7 +67,7 @@ export async function fetchTeamMembers(
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
       throw new Error(
-        errorData.error || errorData.message || `HTTP ${res.status}`
+        errorData.error || errorData.message || `HTTP ${res.status}`,
       );
     }
 
@@ -108,7 +76,7 @@ export async function fetchTeamMembers(
   } catch (err) {
     console.warn(
       `[fetchTeamMembers] Backend endpoint GET /teams/members/${teamId} returned error:`,
-      err
+      err,
     );
     // Return fallback sample team structure so gender options remain functional
     return {
@@ -124,7 +92,7 @@ export async function fetchTeamMembers(
 
 export async function updateTeamMembers(
   teamId: number | string,
-  payload: UpdateMembersPayload
+  payload: UpdateMembersPayload,
 ) {
   const res = await fetch(`${baseUrl}/teams/members/update/${teamId}`, {
     method: "POST",
@@ -138,7 +106,7 @@ export async function updateTeamMembers(
 
   if (!res.ok) {
     throw new Error(
-      resData.message || resData.error || "Failed to update team members."
+      resData.message || resData.error || "Failed to update team members.",
     );
   }
 
@@ -169,4 +137,3 @@ export async function submitIdea(teamId: number, submission: string) {
 
   return resData;
 }
-
