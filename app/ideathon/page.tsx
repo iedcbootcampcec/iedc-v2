@@ -504,43 +504,37 @@ export default function IdeathonPage() {
                       </strong>
                     </li>
                     <li>
-                      Only the <strong>shortlisted teams</strong> from the
-                      Preliminary Round will qualify for the{" "}
-                      <strong>Final Round</strong>, which will be held on{" "}
-                      <strong>
-                        1st August 2026 at College of Engineering Chengannur
-                        (CEC)
-                      </strong>
-                      .
+                      The <strong>Preliminary Round will be conducted online</strong>.
+                      Teams are free to choose their own theme or idea and must
+                      submit their pitch in the prescribed format (to be shared
+                      later).
                     </li>
                     <li>
-                      Teams are{" "}
-                      <strong>free to choose their own theme/idea</strong> for
-                      the Preliminary Round.
+                      Based on the evaluation of submissions,{" "}
+                      <strong>only selected teams will qualify for the Final Round.</strong>
                     </li>
                     <li>
-                      Teams{" "}
-                      <strong>
-                        may change or refine their theme/idea before the Final
-                        Round
-                      </strong>{" "}
-                      if they develop a{" "}
-                      <strong>better or more improved concept</strong>.
+                      If a team is not selected for the Final Round, the registration
+                      fee will be refunded.
                     </li>
                     <li>
-                      The <strong>Preliminary Round</strong> will be conducted{" "}
-                      <strong>online</strong>. Teams must submit their pitch in
-                      the <strong>prescribed format</strong>, which will be
-                      shared later.
+                      The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
                     </li>
                     <li>
                       Registration will be considered confirmed upon successful
-                      completion of the process, and the{" "}
-                      <strong>
-                        participation fee once processed will not be subject to
-                        revision.
-                      </strong>
-                      .
+                      submission and payment of the participation fee.
+                    </li>
+                    <li>
+                      Teams are allowed to{" "}
+                      <strong>refine or improve their idea after the Preliminary Round</strong>
+                      if they develop a better concept.
+                    </li>
+                    <li>
+                      Registration Deadline: <strong>1st August 2026</strong>
+                    </li>
+                    <li>
+                      Further details regarding selection and final round participation
+                      will be communicated to shortlisted teams.
                     </li>
                   </ol>
 
@@ -725,39 +719,35 @@ export default function IdeathonPage() {
                 <strong>two rounds: Preliminary Round and Final Round.</strong>
               </li>
               <li>
-                Only the <strong>shortlisted teams</strong> from the Preliminary
-                Round will qualify for the <strong>Final Round</strong>, which
-                will be held on{" "}
-                <strong>
-                  1st August 2026 at College of Engineering Chengannur (CEC)
-                </strong>
-                .
+                The <strong>Preliminary Round will be conducted online</strong>.
+                Teams are free to choose their own theme or idea and must submit
+                their pitch in the prescribed format (to be shared later).
               </li>
               <li>
-                Teams are <strong>free to choose their own theme/idea</strong>{" "}
-                for the Preliminary Round.
+                Based on the evaluation of submissions,{" "}
+                <strong>only selected teams will qualify for the Final Round.</strong>
               </li>
               <li>
-                Teams{" "}
-                <strong>
-                  may change or refine their theme/idea before the Final Round
-                </strong>{" "}
-                if they develop a{" "}
-                <strong>better or more improved concept</strong>.
+                If a team is not selected for the Final Round, the registration
+                fee will be refunded.
               </li>
               <li>
-                The <strong>Preliminary Round</strong> will be conducted{" "}
-                <strong>online</strong>. Teams must submit their pitch in the{" "}
-                <strong>prescribed format</strong>, which will be shared later.
+                The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
               </li>
               <li>
-                Registration will be considered confirmed upon successful
-                completion of the process, and the{" "}
-                <strong>
-                  participation fee once processed will not be subject to
-                  revision.
-                </strong>
-                .
+                Teams are allowed to <strong>refine or improve their idea after the Preliminary Round</strong>
+                if they develop a better concept.
+              </li>
+              <li>
+                <strong>Registration Deadline: 1st August 2026</strong>
+              </li>
+              <li>
+                Registration will be considered complete only after successful
+                submission and payment of the participation fee.
+              </li>
+              <li>
+                Further details regarding selection and final round participation
+                will be communicated to shortlisted teams.
               </li>
             </ol>
 
