@@ -54,7 +54,6 @@ export default function IdeathonPage() {
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
-  const [showGuidelinesModal, setShowGuidelinesModal] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
 
@@ -144,12 +143,11 @@ export default function IdeathonPage() {
       return setFormError("Please upload a screenshot of payment.");
     if (!upiId.trim()) return setFormError("UPI ID is required.");
 
-    setShowGuidelinesModal(true);
+    handleFinalSubmit();
   };
 
   const handleFinalSubmit = async () => {
     if (!agreeTerms) return;
-    setShowGuidelinesModal(false);
     setSubmitStatus("submitting");
 
     const baseUrl = process.env.NEXT_PUBLIC_IDEATHON_API_URL!;
@@ -694,83 +692,6 @@ export default function IdeathonPage() {
           </div>
         </div>
       </main>
-      {showGuidelinesModal && (
-        <div
-          className={styles.modalOverlay}
-          onClick={() => setShowGuidelinesModal(false)}
-        >
-          <div
-            className={styles.guidelinesModal}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className={styles.modalCloseBtn}
-              onClick={() => setShowGuidelinesModal(false)}
-            >
-              ✕
-            </button>
-            <h3 className={styles.guidelinesModalTitle}>
-              COMPETITION GUIDELINES
-            </h3>
-
-            <ol className={styles.guidelinesModalList}>
-              <li>
-                The competition consists of{" "}
-                <strong>two rounds: Preliminary Round and Final Round.</strong>
-              </li>
-              <li>
-                The <strong>Preliminary Round will be conducted online</strong>.
-                Teams are free to choose their own theme or idea and must submit
-                their pitch in the prescribed format (to be shared later).
-              </li>
-              <li>
-                Based on the evaluation of submissions,{" "}
-                <strong>only selected teams will qualify for the Final Round.</strong>
-              </li>
-              <li>
-                {" "}<strong>If a team is not selected for the Final Round, the registration 
-                fee will be refunded.</strong>
-              </li>
-              <li>
-                The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
-              </li>
-              <li>
-                Teams are allowed to <strong>refine or improve their idea after the Preliminary Round</strong>
-                if they develop a better concept.
-              </li>
-              <li>
-                <strong>Registration Deadline: 1st August 2026</strong>
-              </li>
-              <li>
-                Registration will be considered complete only after successful
-                submission and payment of the participation fee.
-              </li>
-              <li>
-                Further details regarding selection and final round participation
-                will be communicated to shortlisted teams.
-              </li>
-            </ol>
-
-            <div className={styles.modalActions}>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={() => setShowGuidelinesModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={styles.confirmSubmitBtn}
-                disabled={!agreeTerms}
-                onClick={handleFinalSubmit}
-              >
-                Confirm &amp; Register
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       {showCopyToast && (
         <div className={styles.copyToast}>
           <span>UPI ID Copied to Clipboard!</span>
