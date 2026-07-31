@@ -551,13 +551,6 @@
   color: var(--color-primary);
 }
 
-.feeBreakdown {
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.75rem;
-  color: #10b981;
-  font-weight: 700;
-  margin-top: 0.2rem;
-}
 
 .fileUploadContainer {
   position: relative;
@@ -919,14 +912,6 @@
     font-size: 2rem;
   }
 
-  .earlyBirdBanner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .earlyBirdPriceTag {
-    margin-left: 0;
-  }
 }
 
 /* ===== Ticket Pass Component ===== */

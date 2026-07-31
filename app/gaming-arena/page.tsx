@@ -17,7 +17,6 @@ import {
 const MAX_MINI_MILITIA_PLAYERS = 6;
 const MINI_MILITIA_CAP = 100;
 const EFOOTBALL_CAP = 64;
-const EARLY_BIRD_LIMIT = 20;
 
 const GENDER_OPTIONS = ["Male", "Female", "Other"];
 
@@ -82,87 +81,21 @@ export default function GamingArenaPage() {
   const [submitMessage, setSubmitMessage] = useState("");
   const [ticketData, setTicketData] = useState<TicketData | null>(null);
 
-  const [stats, setStats] = useState({
-    miniMilitiaCount: 0,
-    eFootballCount: 0,
-    totalParticipants: 0,
-  });
-
-  const fetchStats = useCallback(async () => {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_IDEATHON_API_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
-      "";
-
-    const eventName = "gaming-arena";
-
-    try {
-      let res: Response | null = null;
-      if (baseUrl) {
-        res = await fetch(`${baseUrl}/events/${eventName}/stats`).catch(
-          () => null,
-        );
-      }
-
-      if (!res || !res.ok) {
-        res = await fetch(`/events/${eventName}/stats`).catch(() => null);
-      }
-
-      if (res && res.ok) {
-        const data = await res.json();
-        const miniMilitiaCount =
-          data.miniMilitiaCount ??
-          data["Mini Militia"] ??
-          data.mini_militia ??
-          data.miniMilitia ??
-          data.mini_militia_count ??
-          0;
-
-        const eFootballCount =
-          data.eFootballCount ??
-          data.eFootball ??
-          data["eFootball"] ??
-          data.efootball ??
-          data.efootball_count ??
-          data.e_football_count ??
-          0;
-
-        const totalParticipants =
-          data.totalParticipants ??
-          data.total_participants ??
-          data.total ??
-          data.count ??
-          data.registrations ??
-          miniMilitiaCount + eFootballCount;
-
-        setStats({ miniMilitiaCount, eFootballCount, totalParticipants });
-      }
-    } catch (err) {
-      console.warn("Error fetching event stats:", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
-
   useEffect(() => {
     if (submitStatus === "success" || submitStatus === "error") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [submitStatus]);
 
-  const isMiniMilitiaClosed = stats.miniMilitiaCount >= MINI_MILITIA_CAP;
-  const isEFootballClosed = stats.eFootballCount >= EFOOTBALL_CAP;
-  const isAllClosed = isMiniMilitiaClosed && isEFootballClosed;
+  const isMiniMilitiaClosed = false;
+  const isEFootballClosed = false;
+  const isAllClosed = false;
 
-  const isEarlyBirdActive = stats.totalParticipants < EARLY_BIRD_LIMIT;
-  const pricePerHead = isEarlyBirdActive ? 20 : 30;
+  const pricePerHead = 30;
 
   const currentHeadCount =
     selectedGame === "efootball" ? 1 : 1 + teammates.length;
   const totalAmount = currentHeadCount * pricePerHead;
-  const totalSavings = isEarlyBirdActive ? currentHeadCount * 5 : 0;
 
   const handleCopyUpi = () => {
     navigator.clipboard.writeText("shaheemek890@okaxis");
@@ -341,7 +274,7 @@ export default function GamingArenaPage() {
         upiId: upiId.trim() || null,
         referralCode: referralCode.trim() || null,
         totalPaid: totalAmount,
-        isEarlyBird: isEarlyBirdActive,
+        isEarlyBird: false,
       };
 
       const eventName = "gaming-arena";
@@ -851,9 +784,7 @@ export default function GamingArenaPage() {
                 <div className={styles.guidelinesInlineBox}>
                   <ol className={styles.guidelinesInlineList}>
                     <li>
-                      <strong>Entry Fee:</strong> ₹30 per head (Early bird
-                      ₹20/head for the first 20 registrations across both
-                      games).
+                      <strong>Entry Fee:</strong> ₹30 per head.
                     </li>
                     <li>
                       <strong>Mini Militia Format:</strong> Team tournament with
@@ -957,12 +888,6 @@ export default function GamingArenaPage() {
                           {currentHeadCount === 1 ? "Player" : "Players"} @ ₹
                           {pricePerHead}/head)
                         </strong>
-                        {isEarlyBirdActive && (
-                          <span className={styles.feeBreakdown}>
-                            🎉 Early Bird Discount Applied! Saved ₹
-                            {totalSavings}
-                          </span>
-                        )}
                       </div>
                     </div>
                   </div>

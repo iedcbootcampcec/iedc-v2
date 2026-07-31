@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "GAMING ARENA '26 | IEDC BOOTCAMP CEC",
   description:
-    "Register for Gaming Arena '26, the ultimate gaming arena of Ideathon! Compete in Mini Militia (Team Game, up to 6 players) and eFootball (Individual). Early bird discount available for the first 20 registrations!",
+    "Register for Gaming Arena '26, the ultimate gaming arena of Ideathon! Compete in Mini Militia (Team Game, up to 6 players) and eFootball (Individual).",
   icons: {
     icon: [
       { url: "/site/favicon.ico" },
