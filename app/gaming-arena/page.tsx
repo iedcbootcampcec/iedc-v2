@@ -12,48 +12,39 @@ import {
   FiPlus,
   FiCopy,
   FiCheck,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
+import * as Select from "@radix-ui/react-select";
 
-const MAX_MINI_MILITIA_PLAYERS = 6;
-const MINI_MILITIA_CAP = 100;
-const EFOOTBALL_CAP = 64;
+import type { Teammate, TicketData, GameType, SubmitStatus } from "./types";
+import {
+  MAX_MINI_MILITIA_PLAYERS,
+  MINI_MILITIA_CAP,
+  EFOOTBALL_CAP,
+  PRICE_PER_HEAD,
+  GENDER_OPTIONS,
+  UPI_ID,
+  WHATSAPP_GROUPS,
+  GAME_DISPLAY_NAMES,
+} from "./constants";
+import {
+  isValidPhone,
+  isValidEmail,
+  sanitizePhone,
+  emptyTeammate,
+} from "./utils";
+import {
+  uploadPaymentScreenshot,
+  registerTeam,
+} from "./services/gamingArenaService";
 
-const GENDER_OPTIONS = ["Male", "Female", "Other"];
-
-interface Teammate {
-  name: string;
-  phone: string;
-  gender: string;
-  email: string;
-  college: string;
-}
-
-interface TicketData {
-  message: string;
-  teamId: number;
-  ticket: string;
-  eventName: string;
-  teamName: string;
-  game: string;
-}
-
-const emptyTeammate = (): Teammate => ({
-  name: "",
-  phone: "",
-  gender: "",
-  email: "",
-  college: "",
-});
-
-const isValidPhone = (num: string) => /^[6-9]\d{9}$/.test(num);
-const isValidEmail = (email: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const sanitizePhone = (val: string) => val.replace(/\D/g, "").slice(0, 10);
+const isMiniMilitiaClosed = false;
+const isEFootballClosed = false;
+const isAllClosed = false;
 
 export default function GamingArenaPage() {
-  const [selectedGame, setSelectedGame] = useState<
-    "mini_militia" | "efootball"
-  >("mini_militia");
+  const [selectedGame, setSelectedGame] = useState<GameType>("mini_militia");
 
   const [teamName, setTeamName] = useState("");
   const [leaderName, setLeaderName] = useState("");
@@ -75,9 +66,7 @@ export default function GamingArenaPage() {
   const [showCopyToast, setShowCopyToast] = useState(false);
 
   const [formError, setFormError] = useState("");
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [ticketData, setTicketData] = useState<TicketData | null>(null);
 
@@ -87,18 +76,12 @@ export default function GamingArenaPage() {
     }
   }, [submitStatus]);
 
-  const isMiniMilitiaClosed = false;
-  const isEFootballClosed = false;
-  const isAllClosed = false;
-
-  const pricePerHead = 30;
-
   const currentHeadCount =
     selectedGame === "efootball" ? 1 : 1 + teammates.length;
-  const totalAmount = currentHeadCount * pricePerHead;
+  const totalAmount = currentHeadCount * PRICE_PER_HEAD;
 
   const handleCopyUpi = () => {
-    navigator.clipboard.writeText("shaheemek890@okaxis");
+    navigator.clipboard.writeText(UPI_ID);
     setCopied(true);
     setShowCopyToast(true);
     setTimeout(() => {
@@ -141,114 +124,100 @@ export default function GamingArenaPage() {
     [],
   );
 
-  const handleSubmitClick = (e: React.FormEvent) => {
+  const resetFormFields = () => {
+    setTeamName("");
+    setLeaderName("");
+    setLeaderPhone("");
+    setLeaderGender("");
+    setLeaderEmail("");
+    setLeaderCollege("");
+    setTeammates([]);
+    setPaymentScreenshotFile(null);
+    setScreenshotFileName("");
+    setUpiId("");
+    setReferralCode("");
+  };
+
+  const validateForm = (): string | null => {
+    if (selectedGame === "mini_militia" && isMiniMilitiaClosed) {
+      return `Registration for Mini Militia is closed (Limit of ${MINI_MILITIA_CAP} reached).`;
+    }
+    if (selectedGame === "efootball" && isEFootballClosed) {
+      return `Registration for eFootball is closed (Limit of ${EFOOTBALL_CAP} reached).`;
+    }
+    if (selectedGame === "mini_militia" && !teamName.trim()) {
+      return "Team name is required for Mini Militia.";
+    }
+    if (!leaderName.trim()) {
+      return selectedGame === "mini_militia"
+        ? "Team Leader's name is required."
+        : "Participant's name is required.";
+    }
+    if (!leaderPhone.trim() || !isValidPhone(leaderPhone)) {
+      return "Enter a valid 10-digit phone number.";
+    }
+    if (!leaderGender) {
+      return "Please select a gender.";
+    }
+    if (!leaderEmail.trim() || !isValidEmail(leaderEmail)) {
+      return "Enter a valid email address.";
+    }
+    if (!leaderCollege.trim()) {
+      return "College name is required.";
+    }
+    if (selectedGame === "mini_militia") {
+      for (let i = 0; i < teammates.length; i++) {
+        const mate = teammates[i];
+        if (!mate.name.trim()) return `Teammate ${i + 1}'s name is required.`;
+        if (!mate.phone.trim() || !isValidPhone(mate.phone))
+          return `Enter a valid 10-digit phone number for Teammate ${i + 1}.`;
+        if (!mate.gender) return `Select gender for Teammate ${i + 1}.`;
+        if (!mate.email.trim() || !isValidEmail(mate.email))
+          return `Enter a valid email address for Teammate ${i + 1}.`;
+        if (!mate.college.trim())
+          return `Teammate ${i + 1}'s college is required.`;
+      }
+    }
+    if (!agreeTerms) {
+      return "Please accept the gaming guidelines to continue.";
+    }
+    if (!paymentScreenshotFile) {
+      return "Please upload a screenshot of payment.";
+    }
+    if (!upiId.trim()) {
+      return "UPI ID / Transaction reference is required.";
+    }
+    return null;
+  };
+
+  const handleSubmitClick = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError("");
     setSubmitStatus("idle");
     setSubmitMessage("");
 
-    if (selectedGame === "mini_militia" && isMiniMilitiaClosed) {
-      return setFormError(
-        `Registration for Mini Militia is closed (Limit of ${MINI_MILITIA_CAP} reached).`,
-      );
-    }
-    if (selectedGame === "efootball" && isEFootballClosed) {
-      return setFormError(
-        `Registration for eFootball is closed (Limit of ${EFOOTBALL_CAP} reached).`,
-      );
-    }
-
-    if (selectedGame === "mini_militia" && !teamName.trim()) {
-      return setFormError("Team name is required for Mini Militia.");
-    }
-
-    if (!leaderName.trim()) {
-      return setFormError(
-        selectedGame === "mini_militia"
-          ? "Team Leader's name is required."
-          : "Participant's name is required.",
-      );
-    }
-    if (!leaderPhone.trim() || !isValidPhone(leaderPhone)) {
-      return setFormError("Enter a valid 10-digit phone number.");
-    }
-    if (!leaderGender) {
-      return setFormError("Please select a gender.");
-    }
-    if (!leaderEmail.trim() || !isValidEmail(leaderEmail)) {
-      return setFormError("Enter a valid email address.");
-    }
-    if (!leaderCollege.trim()) {
-      return setFormError("College name is required.");
-    }
-
-    if (selectedGame === "mini_militia") {
-      for (let i = 0; i < teammates.length; i++) {
-        const mate = teammates[i];
-        if (!mate.name.trim())
-          return setFormError(`Teammate ${i + 1}'s name is required.`);
-        if (!mate.phone.trim() || !isValidPhone(mate.phone))
-          return setFormError(
-            `Enter a valid 10-digit phone number for Teammate ${i + 1}.`,
-          );
-        if (!mate.gender)
-          return setFormError(`Select gender for Teammate ${i + 1}.`);
-        if (!mate.email.trim() || !isValidEmail(mate.email))
-          return setFormError(
-            `Enter a valid email address for Teammate ${i + 1}.`,
-          );
-        if (!mate.college.trim())
-          return setFormError(`Teammate ${i + 1}'s college is required.`);
-      }
-    }
-
-    if (!agreeTerms) {
-      return setFormError("Please accept the gaming guidelines to continue.");
-    }
-    if (!paymentScreenshotFile) {
-      return setFormError("Please upload a screenshot of payment.");
-    }
-    if (!upiId.trim()) {
-      return setFormError("UPI ID / Transaction reference is required.");
+    const error = validateForm();
+    if (error) {
+      setFormError(error);
+      return;
     }
 
     handleFinalSubmit();
   };
 
-
   const handleFinalSubmit = async () => {
     setSubmitStatus("submitting");
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_IDEATHON_API_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
-      "";
-
-    const gameNameFormatted =
-      selectedGame === "mini_militia" ? "Mini Militia" : "eFootball";
+    const gameNameFormatted = GAME_DISPLAY_NAMES[selectedGame];
     const formattedTeamName =
       selectedGame === "mini_militia"
         ? teamName.trim()
         : teamName.trim() || leaderName.trim();
 
     try {
-      let objectKey = "";
-      if (paymentScreenshotFile && baseUrl) {
-        const formData = new FormData();
-        formData.append("file", paymentScreenshotFile);
-
-        const uploadRes = await fetch(`${baseUrl}/upload`, {
-          method: "POST",
-          body: formData,
-        }).catch(() => null);
-
-        if (uploadRes && uploadRes.ok) {
-          const uploadData = await uploadRes.json();
-          objectKey = uploadData.objectKey || uploadData.key || "key_uploaded";
-        } else {
-          objectKey = `payments/gaming_arena_${Date.now()}_${paymentScreenshotFile.name}`;
-        }
-      }
+      const screenshotKey = await uploadPaymentScreenshot(
+        paymentScreenshotFile!,
+      );
 
       const payload = {
         game: gameNameFormatted,
@@ -270,115 +239,26 @@ export default function GamingArenaPage() {
                 college: t.college.trim(),
               }))
             : [],
-        paymentScreenshot: objectKey || null,
-        upiId: upiId.trim() || null,
+        paymentScreenshot: screenshotKey,
+        upiId: upiId.trim(),
         referralCode: referralCode.trim() || null,
         totalPaid: totalAmount,
         isEarlyBird: false,
       };
 
-      const eventName = "gaming-arena";
-      let registerRes: Response | null = null;
-      let resData: any = null;
+      const ticket = await registerTeam(payload);
 
-      if (baseUrl) {
-        try {
-          registerRes = await fetch(`${baseUrl}/events/${eventName}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-        } catch (err) {
-          console.error("Backend request error:", err);
-        }
-      }
-
-      if (!registerRes) {
-        registerRes = await fetch(`/events/${eventName}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }).catch(() => null);
-      }
-
-      if (
-        registerRes &&
-        (registerRes.status === 201 || registerRes.status === 200)
-      ) {
-        resData = await registerRes.json().catch(() => ({}));
-      } else if (registerRes) {
-        const errJson = await registerRes.json().catch(() => ({}));
-        console.warn("⚠️ Backend error:", registerRes.status, errJson);
-
-        const errMsg =
-          errJson.message ||
-          errJson.error ||
-          (errJson.errors ? errJson.errors.join(", ") : null);
-
-        if (registerRes.status === 409) {
-          setSubmitStatus("error");
-          setSubmitMessage(
-            errMsg ||
-              "You are already registered for this game. You can still register for the other game.",
-          );
-          return;
-        }
-
-        if (registerRes.status === 400 || registerRes.status === 422) {
-          setSubmitStatus("error");
-          setSubmitMessage(
-            errMsg || "Invalid registration details. Please check your inputs.",
-          );
-          return;
-        }
-
-        console.warn(
-          "Proceeding with ticket generation despite backend error:",
-          registerRes.status,
-        );
-      }
-
-      const finalTicket: TicketData = {
-        message: resData?.message || "Event submission successful",
-        teamId: resData?.teamId ?? 12,
-        ticket: resData?.ticket || "b6a0a5ed1ec24c84b0f1b2f0a4d6f4a1",
-        eventName: resData?.eventName || "gaming-mania",
-        teamName: resData?.teamName || formattedTeamName || "Team Phoenix",
-        game: resData?.game || gameNameFormatted || "Valorant",
-      };
-
-      setTicketData(finalTicket);
+      setTicketData(ticket);
       setSubmitStatus("success");
-      setSubmitMessage(finalTicket.message);
+      setSubmitMessage(ticket.message);
       resetFormFields();
     } catch (err: any) {
-      const fallbackTicket: TicketData = {
-        message: "Event submission successful",
-        teamId: 12,
-        ticket: "b6a0a5ed1ec24c84b0f1b2f0a4d6f4a1",
-        eventName: "gaming-mania",
-        teamName: formattedTeamName || "Team Phoenix",
-        game: gameNameFormatted || "Valorant",
-      };
-      setTicketData(fallbackTicket);
-      setSubmitStatus("success");
-      setSubmitMessage(fallbackTicket.message);
-      resetFormFields();
+      console.error("Gaming Arena registration error:", err);
+      setSubmitStatus("error");
+      setSubmitMessage(
+        err?.message || "An unexpected error occurred. Please try again.",
+      );
     }
-  };
-
-  const resetFormFields = () => {
-    setTeamName("");
-    setLeaderName("");
-    setLeaderPhone("");
-    setLeaderGender("");
-    setLeaderEmail("");
-    setLeaderCollege("");
-    setTeammates([]);
-    setPaymentScreenshotFile(null);
-    setScreenshotFileName("");
-    setUpiId("");
-    setReferralCode("");
   };
 
   return (
@@ -435,9 +315,9 @@ export default function GamingArenaPage() {
                 <div className={styles.successActionsContainer}>
                   <a
                     href={
-                      ticketData.game === "Mini Militia"
-                        ? "https://chat.whatsapp.com/ByVyCHB6nek1xSqgSKYpEE"
-                        : "https://chat.whatsapp.com/Fvz9NbArFLj8Z0HTQm8dQz"
+                      ticketData.game === GAME_DISPLAY_NAMES.mini_militia
+                        ? WHATSAPP_GROUPS.mini_militia
+                        : WHATSAPP_GROUPS.efootball
                     }
                     target="_blank"
                     rel="noopener noreferrer"
@@ -569,19 +449,54 @@ export default function GamingArenaPage() {
                   </div>
                   <div className={styles.field}>
                     <label className={styles.label}>Gender</label>
-                    <select
-                      className={styles.select}
+                    <Select.Root
                       value={leaderGender}
-                      onChange={(e) => setLeaderGender(e.target.value)}
-                      required
+                      onValueChange={setLeaderGender}
                     >
-                      <option value="">Select Gender</option>
-                      {GENDER_OPTIONS.map((g) => (
-                        <option key={g} value={g}>
-                          {g}
-                        </option>
-                      ))}
-                    </select>
+                      <Select.Trigger
+                        className={styles.selectTrigger}
+                        aria-label="Leader Gender"
+                      >
+                        <Select.Value placeholder="Select Gender" />
+                        <Select.Icon className={styles.selectIcon}>
+                          <FiChevronDown />
+                        </Select.Icon>
+                      </Select.Trigger>
+                      <Select.Portal>
+                        <Select.Content
+                          className={styles.selectContent}
+                          position="popper"
+                          sideOffset={4}
+                        >
+                          <Select.ScrollUpButton
+                            className={styles.selectScrollButton}
+                          >
+                            <FiChevronUp />
+                          </Select.ScrollUpButton>
+                          <Select.Viewport className={styles.selectViewport}>
+                            {GENDER_OPTIONS.map((g) => (
+                              <Select.Item
+                                key={g}
+                                value={g}
+                                className={styles.selectItem}
+                              >
+                                <Select.ItemText>{g}</Select.ItemText>
+                                <Select.ItemIndicator
+                                  className={styles.selectItemIndicator}
+                                >
+                                  <FiCheck />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                            ))}
+                          </Select.Viewport>
+                          <Select.ScrollDownButton
+                            className={styles.selectScrollButton}
+                          >
+                            <FiChevronDown />
+                          </Select.ScrollDownButton>
+                        </Select.Content>
+                      </Select.Portal>
+                    </Select.Root>
                   </div>
                 </div>
 
@@ -645,7 +560,7 @@ export default function GamingArenaPage() {
                           }
                           className={styles.addTeammateBtn}
                         >
-                          <FiPlus /> Add Player
+                          <FiPlus /> Add <span>Player</span>
                         </button>
                       </div>
                     </div>
@@ -653,8 +568,9 @@ export default function GamingArenaPage() {
                     {teammates.length === 0 ? (
                       <div className={styles.emptyTeammates}>
                         <p>
-                          No teammates added yet. Leader is Player 1. Click "Add
-                          Player" to add up to 5 teammates (Max squad size: 6).
+                          No teammates added yet. Leader is Player 1. Click
+                          &quot;Add Player&quot; to add up to 5 teammates (Max
+                          squad size: 6).
                         </p>
                       </div>
                     ) : (
@@ -691,25 +607,62 @@ export default function GamingArenaPage() {
                               </div>
                               <div className={styles.field}>
                                 <label className={styles.label}>Gender</label>
-                                <select
-                                  className={styles.select}
+                                <Select.Root
                                   value={mate.gender}
-                                  onChange={(e) =>
-                                    updateTeammate(
-                                      idx,
-                                      "gender",
-                                      e.target.value,
-                                    )
+                                  onValueChange={(val) =>
+                                    updateTeammate(idx, "gender", val)
                                   }
-                                  required
                                 >
-                                  <option value="">Select Gender</option>
-                                  {GENDER_OPTIONS.map((g) => (
-                                    <option key={g} value={g}>
-                                      {g}
-                                    </option>
-                                  ))}
-                                </select>
+                                  <Select.Trigger
+                                    className={styles.selectTrigger}
+                                    aria-label={`Gender for Player ${idx + 2}`}
+                                  >
+                                    <Select.Value placeholder="Select Gender" />
+                                    <Select.Icon className={styles.selectIcon}>
+                                      <FiChevronDown />
+                                    </Select.Icon>
+                                  </Select.Trigger>
+                                  <Select.Portal>
+                                    <Select.Content
+                                      className={styles.selectContent}
+                                      position="popper"
+                                      sideOffset={4}
+                                    >
+                                      <Select.ScrollUpButton
+                                        className={styles.selectScrollButton}
+                                      >
+                                        <FiChevronUp />
+                                      </Select.ScrollUpButton>
+                                      <Select.Viewport
+                                        className={styles.selectViewport}
+                                      >
+                                        {GENDER_OPTIONS.map((g) => (
+                                          <Select.Item
+                                            key={g}
+                                            value={g}
+                                            className={styles.selectItem}
+                                          >
+                                            <Select.ItemText>
+                                              {g}
+                                            </Select.ItemText>
+                                            <Select.ItemIndicator
+                                              className={
+                                                styles.selectItemIndicator
+                                              }
+                                            >
+                                              <FiCheck />
+                                            </Select.ItemIndicator>
+                                          </Select.Item>
+                                        ))}
+                                      </Select.Viewport>
+                                      <Select.ScrollDownButton
+                                        className={styles.selectScrollButton}
+                                      >
+                                        <FiChevronDown />
+                                      </Select.ScrollDownButton>
+                                    </Select.Content>
+                                  </Select.Portal>
+                                </Select.Root>
                               </div>
                             </div>
                             <div className={styles.row}>
@@ -784,29 +737,34 @@ export default function GamingArenaPage() {
                 <div className={styles.guidelinesInlineBox}>
                   <ol className={styles.guidelinesInlineList}>
                     <li>
-                      <strong>Entry Fee:</strong> ₹30 per head.
+                      <strong>Entry Fee:</strong> ₹{PRICE_PER_HEAD} per head.
                     </li>
-                    <li>
-                      <strong>Mini Militia Format:</strong> Team tournament with
-                      squad sizes up to 6 players. Standard room settings apply.
-                      Custom mods/hacks lead to immediate disqualification.
-                    </li>
-                    <li>
-                      <strong>eFootball Format:</strong> Individual 1v1
-                      knock-out tournament. Standard match rules apply.
-                    </li>
+                    {selectedGame === "mini_militia" ? (
+                      <li>
+                        <strong>Mini Militia Format:</strong> Team tournament
+                        with squad sizes up to 6 players. Standard room settings
+                        apply. Custom mods/hacks lead to immediate
+                        disqualification.
+                      </li>
+                    ) : (
+                      <li>
+                        <strong>eFootball Format:</strong> Individual 1v1
+                        knock-out tournament. Standard match rules apply.
+                      </li>
+                    )}
                     <li>
                       <strong>Device Rules:</strong> Participants must bring
                       their own smartphones with stable internet connectivity.
                     </li>
                     <li>
                       <strong>Registration Cap:</strong> Mini Militia is limited
-                      to 100 registrations. eFootball is limited to 64
-                      registrations.
+                      to {MINI_MILITIA_CAP} registrations. eFootball is limited
+                      to {EFOOTBALL_CAP} registrations.
                     </li>
                     <li>
-                      <strong>Decisions & Conduct:</strong> Referee/Coordinator
-                      decisions are final. Fair play must be strictly observed.
+                      <strong>Decisions &amp; Conduct:</strong>{" "}
+                      Referee/Coordinator decisions are final. Fair play must be
+                      strictly observed.
                     </li>
                   </ol>
 
@@ -862,7 +820,7 @@ export default function GamingArenaPage() {
                         <span className={styles.paymentLabel}>UPI ID:</span>
                         <div className={styles.upiValueContainer}>
                           <strong className={styles.paymentValue}>
-                            shaheemek890@okaxis
+                            {UPI_ID}
                           </strong>
                           <button
                             type="button"
@@ -886,7 +844,7 @@ export default function GamingArenaPage() {
                         <strong className={styles.regFee}>
                           ₹{totalAmount} ({currentHeadCount}{" "}
                           {currentHeadCount === 1 ? "Player" : "Players"} @ ₹
-                          {pricePerHead}/head)
+                          {PRICE_PER_HEAD}/head)
                         </strong>
                       </div>
                     </div>
