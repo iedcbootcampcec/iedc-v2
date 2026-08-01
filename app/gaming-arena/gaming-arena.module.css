@@ -46,7 +46,6 @@
   text-align: left;
 }
 
-
 .title {
   font-family: var(--font-brunson), "Brunson", sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
@@ -65,7 +64,6 @@
   color: rgba(26, 26, 26, 0.75);
   margin: 0;
 }
-
 
 /* ===== Section Headers ===== */
 .sectionHeader {
@@ -551,7 +549,6 @@
   color: var(--color-primary);
 }
 
-
 .fileUploadContainer {
   position: relative;
   width: 100%;
@@ -666,7 +663,6 @@
   font-weight: 700;
 }
 
-
 .toastError {
   background: #fef2f2;
   color: #991b1b;
@@ -723,7 +719,8 @@
   opacity: 0.6;
 }
 
-.successScreen, .closedScreen {
+.successScreen,
+.closedScreen {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -731,7 +728,8 @@
   padding: 0.5rem 0.25rem 1rem;
 }
 
-.successIconWrapper, .closedIconWrapper {
+.successIconWrapper,
+.closedIconWrapper {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -872,6 +870,14 @@
 
 /* ===== Responsive Styles ===== */
 @media screen and (max-width: 768px) {
+  .addTeammateBtn span {
+    display: none;
+  }
+
+  .addTeammateBtn {
+    margin-left: 10px;
+  }
+
   .gamingArenaPage {
     padding: 7rem 1rem 4rem;
   }
@@ -911,7 +917,6 @@
   .title {
     font-size: 2rem;
   }
-
 }
 
 /* ===== Ticket Pass Component ===== */
@@ -1096,3 +1101,94 @@
   }
 }
 
+/* ===== Radix Select ===== */
+.selectTrigger {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: #fffdf8;
+  border: 2px solid var(--color-primary);
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectTrigger:focus,
+.selectTrigger[data-state="open"] {
+  background: #ffffff;
+  box-shadow: 4px 4px 0px var(--color-accent);
+}
+
+.selectTrigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.selectIcon {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectIcon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 2.5;
+}
+
+.selectContent {
+  overflow: hidden;
+  background-color: #fffdf8;
+  border: 2px solid var(--color-primary);
+  box-shadow: 4px 4px 0px var(--color-primary);
+  z-index: 50;
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+}
+
+.selectViewport {
+  padding: 0.5rem;
+}
+
+.selectItem {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  padding: 0.65rem 2rem 0.65rem 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.selectItem[data-highlighted] {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.selectItemIndicator {
+  position: absolute;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectScrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: #fffdf8;
+  color: var(--color-primary);
+  cursor: default;
+}
