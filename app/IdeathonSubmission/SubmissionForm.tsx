@@ -32,53 +32,6 @@ interface LocalSubmissionRecord {
   timestamp: number;
 }
 
-function getLocalSubmittedTeams(): LocalSubmissionRecord[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem("iedc_submitted_teams");
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveLocalSubmittedTeam(
-  teamId: string,
-  teamName: string,
-  submissionUrl: string,
-) {
-  if (typeof window === "undefined") return;
-  try {
-    const existing = getLocalSubmittedTeams();
-    const updated = existing.filter(
-      (t) =>
-        String(t.teamId) !== String(teamId) &&
-        t.teamName.toLowerCase() !== teamName.trim().toLowerCase(),
-    );
-    updated.push({
-      teamId: String(teamId),
-      teamName: teamName.trim(),
-      submissionUrl,
-      timestamp: Date.now(),
-    });
-    localStorage.setItem("iedc_submitted_teams", JSON.stringify(updated));
-  } catch (err) {
-    console.warn("Could not save submission to localStorage:", err);
-  }
-}
-
-function checkLocalSubmittedTeam(
-  teamId: string,
-  teamName: string,
-): LocalSubmissionRecord | undefined {
-  const records = getLocalSubmittedTeams();
-  return records.find(
-    (t) =>
-      String(t.teamId) === String(teamId) ||
-      t.teamName.toLowerCase() === teamName.trim().toLowerCase(),
-  );
-}
-
 export default function SubmissionForm() {
   const [inputTeamName, setInputTeamName] = useState("");
   const [verifiedTeam, setVerifiedTeam] = useState<FindTeamResult | null>(null);
@@ -131,18 +84,14 @@ export default function SubmissionForm() {
     try {
       const team = await findTeamByName(targetName);
 
-      const localRecord = checkLocalSubmittedTeam(team.team_id, team.team_name);
-      if (localRecord) {
-        team.has_submission = true;
-        if (!team.submission && localRecord.submissionUrl) {
-          team.submission = localRecord.submissionUrl;
-        }
-      }
-
       setVerifiedTeam(team);
       setIsVerifyingTeam(false);
 
       setIsLoadingMembers(true);
+      if (team.has_submission) {
+        setIsLoadingMembers(false);
+        return;
+      }
       const membersData = await fetchTeamMembers(team.team_id);
       setTeamMembersDetails(membersData);
       setIsLoadingMembers(false);
@@ -218,7 +167,7 @@ export default function SubmissionForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError("");
     setFileError("");
@@ -285,17 +234,10 @@ export default function SubmissionForm() {
       setUploadProgressMsg("Finalizing submission...");
       await submitIdea(currentTeam.team_id, finalSubmissionUrl);
 
-      saveLocalSubmittedTeam(
-        currentTeam.team_id,
-        currentTeam.team_name,
-        finalSubmissionUrl,
-      );
-
       if (verifiedTeam) {
         setVerifiedTeam({
           ...verifiedTeam,
           has_submission: true,
-          submission: finalSubmissionUrl,
         });
       }
 
@@ -340,7 +282,7 @@ export default function SubmissionForm() {
             }}
             type="button"
           >
-          <FiX />
+            <FiX />
           </button>
         </div>
       )}
@@ -424,17 +366,6 @@ export default function SubmissionForm() {
                     Team <strong>{verifiedTeam.team_name}</strong> has already
                     submitted their pitch deck.
                   </p>
-                  {verifiedTeam.submission && (
-                    <a
-                      href={verifiedTeam.submission}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.viewSubmissionBtn}
-                    >
-                      <span>View Submitted Pitch Deck</span>
-                      <FiArrowUpRight />
-                    </a>
-                  )}
                 </div>
               ) : (
                 <div className={styles.verifiedBadge}>

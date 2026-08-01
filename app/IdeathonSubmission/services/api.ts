@@ -22,8 +22,8 @@ const baseUrl = process.env.NEXT_PUBLIC_IDEATHON_API_URL!;
 export interface FindTeamResult {
   team_id: string;
   team_name: string;
-  has_submission?: boolean;
-  submission?: string | null;
+  has_submission: boolean;
+  error?: string;
 }
 
 export async function findTeamByName(
@@ -40,36 +40,12 @@ export async function findTeamByName(
       body: JSON.stringify({ team_name: queryName.trim() }),
     });
 
-    const data = await res.json().catch(() => ({}));
+    const data = (await res.json().catch(() => ({}))) as FindTeamResult;
 
     if (res.ok && data.team_id && !data.error) {
-      const submissionUrl =
-        data.submission ||
-        data.submission_url ||
-        data.pitch_deck ||
-        data.pitch_deck_url ||
-        data.submission_link ||
-        data.idea ||
-        null;
-
-      const isSubmitted =
-        Boolean(data.has_submission) ||
-        Boolean(data.has_submitted) ||
-        Boolean(data.is_submitted) ||
-        Boolean(data.submitted) ||
-        Boolean(data.already_submitted) ||
-        Boolean(data.isSubmitted) ||
-        Boolean(data.hasSubmitted) ||
-        data.status === "submitted" ||
-        data.status === "completed" ||
-        Boolean(submissionUrl);
-
-      return {
-        team_id: String(data.team_id),
-        team_name: data.team_name || queryName,
-        has_submission: isSubmitted,
-        submission: typeof submissionUrl === "string" ? submissionUrl : null,
-      };
+      return data;
+    } else {
+      throw new Error(data.error || "No team found with that name.");
     }
   } catch (err) {
     console.warn(`[findTeamByName] POST /teams/find error:`, err);
@@ -92,20 +68,16 @@ export async function fetchTeamMembers(
     }
 
     const data = await res.json();
+    if (!res.ok || data.error) {
+      throw new Error(data.error || "Invalid response from server.");
+    }
     return data;
   } catch (err) {
     console.warn(
       `[fetchTeamMembers] Backend endpoint GET /teams/members/${teamId} returned error:`,
       err,
     );
-    return {
-      leader_name: "Team Leader",
-      members: [
-        { user_id: `mem_${teamId}_1`, name: "Member 1" },
-        { user_id: `mem_${teamId}_2`, name: "Member 2" },
-      ],
-      isFallback: true,
-    };
+    throw new Error("Failed to fetch team members.");
   }
 }
 
@@ -133,15 +105,8 @@ export async function updateTeamMembers(
 }
 
 export async function submitIdea(teamId: number | string, submission: string) {
-  const parsedId =
-    typeof teamId === "number"
-      ? teamId
-      : !isNaN(Number(teamId)) && teamId !== ""
-      ? Number(teamId)
-      : teamId;
-
   const payload = {
-    team_id: parsedId,
+    team_id: teamId,
     submission: submission,
   };
 
@@ -157,14 +122,19 @@ export async function submitIdea(teamId: number | string, submission: string) {
 
   if (!res.ok) {
     throw new Error(
-      resData.error || resData.message || "Failed to submit project. Please try again.",
+      resData.error ||
+        resData.message ||
+        "Failed to submit project. Please try again.",
     );
   }
 
   return resData;
 }
 
-export async function uploadPdfToDrive(file: File, teamName: string): Promise<string> {
+export async function uploadPdfToDrive(
+  file: File,
+  teamName: string,
+): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("team_name", teamName);
@@ -178,7 +148,7 @@ export async function uploadPdfToDrive(file: File, teamName: string): Promise<st
 
   if (!res.ok || !data.webViewLink) {
     throw new Error(
-      data.error || "Failed to upload file to Google Drive. Please try again."
+      data.error || "Failed to upload file to Google Drive. Please try again.",
     );
   }
 
