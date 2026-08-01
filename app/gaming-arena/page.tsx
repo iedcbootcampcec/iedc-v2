@@ -722,15 +722,19 @@ export default function GamingArenaPage() {
                           per head.
                         </li>
                         <li>
+                          <strong>Platform:</strong> Mobile.
+                        </li>
+                        <li>
                           Teams must have <strong>3–6 players</strong>.
                         </li>
                         <li>
-                          Online qualifiers will be followed by{" "}
+                          <strong>Tournament Mode:</strong> Played in{" "}
+                          <strong>hybrid mode</strong> (Online qualifiers followed by{" "}
                           <strong>offline semi-finals and finals</strong> at the{" "}
                           <strong>
                             College of Engineering Chengannur on 8th August
                           </strong>
-                          .
+                          ).
                         </li>
                         <li>
                           Teams must <strong>report on time</strong> as per the
@@ -767,18 +771,22 @@ export default function GamingArenaPage() {
                           per participant.
                         </li>
                         <li>
+                          <strong>Platform:</strong> Mobile.
+                        </li>
+                        <li>
                           This is an <strong>individual event</strong>.
                         </li>
                         <li>
-                          Online qualifiers will be followed by the{" "}
+                          <strong>Tournament Mode:</strong> Played in{" "}
+                          <strong>hybrid mode</strong> (Online qualifiers followed by{" "}
                           <strong>
-                            offline quater-finals, semi-finals and finals
+                            offline quarter-finals, semi-finals and finals
                           </strong>{" "}
                           at the{" "}
                           <strong>
                             College of Engineering Chengannur on 8th August
                           </strong>
-                          .
+                          ).
                         </li>
                         <li>
                           Participants must <strong>report on time</strong> as
