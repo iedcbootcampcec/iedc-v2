@@ -24,7 +24,8 @@ import {
   EFOOTBALL_CAP,
   PRICE_PER_HEAD,
   GENDER_OPTIONS,
-  UPI_ID,
+  UPI_IDS,
+  QR_CODES,
   WHATSAPP_GROUPS,
   GAME_DISPLAY_NAMES,
 } from "./constants";
@@ -81,7 +82,7 @@ export default function GamingArenaPage() {
   const totalAmount = currentHeadCount * PRICE_PER_HEAD;
 
   const handleCopyUpi = () => {
-    navigator.clipboard.writeText(UPI_ID);
+    navigator.clipboard.writeText(UPI_IDS[selectedGame]);
     setCopied(true);
     setShowCopyToast(true);
     setTimeout(() => {
@@ -341,14 +342,12 @@ export default function GamingArenaPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmitClick} className={styles.form}>
-                {/* 01 Game Selection */}
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionNum}>01</span>
                   <h2 className={styles.sectionTitle}>Select Your Game</h2>
                 </div>
 
                 <div className={styles.gameSelectGrid}>
-                  {/* Mini Militia Option */}
                   <div
                     className={`${styles.gameCard} ${
                       selectedGame === "mini_militia"
@@ -365,19 +364,9 @@ export default function GamingArenaPage() {
                       <span className={styles.gameCardType}>
                         Squad Battle (Up to 6 Players)
                       </span>
-                      <span
-                        className={`${styles.gameCardLimit} ${
-                          isMiniMilitiaClosed ? styles.gameCardClosed : ""
-                        }`}
-                      >
-                        {isMiniMilitiaClosed
-                          ? "FULL (100/100 Registered)"
-                          : `Cap: ${MINI_MILITIA_CAP} Registrations`}
-                      </span>
                     </div>
                   </div>
 
-                  {/* eFootball Option */}
                   <div
                     className={`${styles.gameCard} ${
                       selectedGame === "efootball"
@@ -394,20 +383,10 @@ export default function GamingArenaPage() {
                       <span className={styles.gameCardType}>
                         Individual Tournament
                       </span>
-                      <span
-                        className={`${styles.gameCardLimit} ${
-                          isEFootballClosed ? styles.gameCardClosed : ""
-                        }`}
-                      >
-                        {isEFootballClosed
-                          ? "FULL (64/64 Registered)"
-                          : `Cap: ${EFOOTBALL_CAP} Registrations`}
-                      </span>
                     </div>
                   </div>
                 </div>
 
-                {/* 02 Participant / Leader Details */}
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionNum}>02</span>
                   <h2 className={styles.sectionTitle}>
@@ -735,38 +714,105 @@ export default function GamingArenaPage() {
                 </div>
 
                 <div className={styles.guidelinesInlineBox}>
-                  <ol className={styles.guidelinesInlineList}>
-                    <li>
-                      <strong>Entry Fee:</strong> ₹{PRICE_PER_HEAD} per head.
-                    </li>
+                  <ul className={styles.guidelinesInlineList}>
                     {selectedGame === "mini_militia" ? (
-                      <li>
-                        <strong>Mini Militia Format:</strong> Team tournament
-                        with squad sizes up to 6 players. Standard room settings
-                        apply. Custom mods/hacks lead to immediate
-                        disqualification.
-                      </li>
+                      <>
+                        <li>
+                          <strong>Registration Fee:</strong> ₹{PRICE_PER_HEAD}{" "}
+                          per head.
+                        </li>
+                        <li>
+                          Teams must have <strong>3–6 players</strong>.
+                        </li>
+                        <li>
+                          Online qualifiers will be followed by{" "}
+                          <strong>offline semi-finals and finals</strong> at the{" "}
+                          <strong>
+                            College of Engineering Chengannur on 8th August
+                          </strong>
+                          .
+                        </li>
+                        <li>
+                          Teams must <strong>report on time</strong> as per the
+                          schedule.
+                        </li>
+                        <li>
+                          <strong>No changes</strong> will be made to{" "}
+                          <strong>match rules based on team size</strong>. A
+                          3-member team may face a 6-member team (3v6).
+                        </li>
+                        <li>
+                          Hacks, mods, cheats, abusive behavior, or any unfair
+                          practices will result in{" "}
+                          <strong>immediate disqualification</strong>.
+                        </li>
+                        <li>
+                          Players are responsible for a{" "}
+                          <strong>stable internet</strong> connection during
+                          online matches.
+                        </li>
+                        <li>
+                          The organizers reserve the right to modify the
+                          schedule or match settings.{" "}
+                          <strong>
+                            All decisions of the organizing committee are final
+                          </strong>
+                          .
+                        </li>
+                      </>
                     ) : (
-                      <li>
-                        <strong>eFootball Format:</strong> Individual 1v1
-                        knock-out tournament. Standard match rules apply.
-                      </li>
+                      <>
+                        <li>
+                          <strong>Registration Fee:</strong> ₹{PRICE_PER_HEAD}{" "}
+                          per participant.
+                        </li>
+                        <li>
+                          This is an <strong>individual event</strong>.
+                        </li>
+                        <li>
+                          Online qualifiers will be followed by the{" "}
+                          <strong>
+                            offline quater-finals, semi-finals and finals
+                          </strong>{" "}
+                          at the{" "}
+                          <strong>
+                            College of Engineering Chengannur on 8th August
+                          </strong>
+                          .
+                        </li>
+                        <li>
+                          Participants must <strong>report on time</strong> as
+                          per the schedule.
+                        </li>
+                        <li>
+                          The use of hacks, mods, exploits, unauthorized
+                          applications, or any unfair practices will result in{" "}
+                          <strong>immediate disqualification</strong>.
+                        </li>
+                        <li>
+                          Players are responsible for ensuring a{" "}
+                          <strong>stable internet connection</strong> during
+                          online matches.
+                        </li>
+                        <li>
+                          Match{" "}
+                          <strong>
+                            settings and rules will be announced by the
+                            organizers
+                          </strong>{" "}
+                          before each round.
+                        </li>
+                        <li>
+                          The organizers reserve the right to modify the
+                          schedule or match settings.{" "}
+                          <strong>
+                            All decisions of the organizing committee are final
+                          </strong>
+                          .
+                        </li>
+                      </>
                     )}
-                    <li>
-                      <strong>Device Rules:</strong> Participants must bring
-                      their own smartphones with stable internet connectivity.
-                    </li>
-                    <li>
-                      <strong>Registration Cap:</strong> Mini Militia is limited
-                      to {MINI_MILITIA_CAP} registrations. eFootball is limited
-                      to {EFOOTBALL_CAP} registrations.
-                    </li>
-                    <li>
-                      <strong>Decisions &amp; Conduct:</strong>{" "}
-                      Referee/Coordinator decisions are final. Fair play must be
-                      strictly observed.
-                    </li>
-                  </ol>
+                  </ul>
 
                   <div className={styles.agreeContainer}>
                     <input
@@ -810,8 +856,8 @@ export default function GamingArenaPage() {
                   <div className={styles.paymentDetailsRow}>
                     <div className={styles.qrCodeWrapper}>
                       <img
-                        src="/assets/shaheem_qr.webp"
-                        alt="Payment QR Code"
+                        src={QR_CODES[selectedGame]}
+                        alt={`${GAME_DISPLAY_NAMES[selectedGame]} Payment QR Code`}
                         className={styles.qrImage}
                       />
                     </div>
@@ -820,7 +866,7 @@ export default function GamingArenaPage() {
                         <span className={styles.paymentLabel}>UPI ID:</span>
                         <div className={styles.upiValueContainer}>
                           <strong className={styles.paymentValue}>
-                            {UPI_ID}
+                            {UPI_IDS[selectedGame]}
                           </strong>
                           <button
                             type="button"
