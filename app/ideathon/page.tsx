@@ -58,7 +58,7 @@ export default function IdeathonPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    const deadline = new Date("2026-08-01T23:59:59");
+    const deadline = new Date("2026-08-04T20:59:59");
     setIsClosed(new Date() > deadline);
   }, []);
 
@@ -502,21 +502,30 @@ export default function IdeathonPage() {
                       </strong>
                     </li>
                     <li>
-                      The <strong>Preliminary Round will be conducted online</strong>.
-                      Teams are free to choose their own theme or idea and must
-                      submit their pitch in the prescribed format (to be shared
-                      later).
+                      The{" "}
+                      <strong>
+                        Preliminary Round will be conducted online
+                      </strong>
+                      . Teams are free to choose their own theme or idea and
+                      must submit their pitch in the prescribed format (to be
+                      shared later).
                     </li>
                     <li>
                       Based on the evaluation of submissions,{" "}
-                      <strong>only selected teams will qualify for the Final Round.</strong>
+                      <strong>
+                        only selected teams will qualify for the Final Round.
+                      </strong>
                     </li>
                     <li>
-                      If a team is not selected for the Final Round,<strong> the registration
-                      fee will be refunded.</strong>
+                      If a team is not selected for the Final Round,
+                      <strong> the registration fee will be refunded.</strong>
                     </li>
                     <li>
-                      The <strong>Final Round will be held on 8th August 2026 at College of Engineering Chengannur (CEC).</strong>
+                      The{" "}
+                      <strong>
+                        Final Round will be held on 8th August 2026 at College
+                        of Engineering Chengannur (CEC).
+                      </strong>
                     </li>
                     <li>
                       Registration will be considered confirmed upon successful
@@ -524,15 +533,17 @@ export default function IdeathonPage() {
                     </li>
                     <li>
                       Teams are allowed to{" "}
-                      <strong>refine or improve their idea after the Preliminary Round</strong>
+                      <strong>
+                        refine or improve their idea after the Preliminary Round
+                      </strong>
                       if they develop a better concept.
                     </li>
                     <li>
                       Registration Deadline: <strong>1st August 2026</strong>
                     </li>
                     <li>
-                      Further details regarding selection and final round participation
-                      will be communicated to shortlisted teams.
+                      Further details regarding selection and final round
+                      participation will be communicated to shortlisted teams.
                     </li>
                   </ol>
 
