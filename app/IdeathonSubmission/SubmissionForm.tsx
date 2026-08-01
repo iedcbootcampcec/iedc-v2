@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./IdeathonSubmission.module.css";
 import {
   FiArrowUpRight,
+  FiAlertTriangle,
   FiChevronDown,
   FiCheck,
   FiChevronUp,
+  FiUploadCloud,
+  FiFileText,
+  FiX,
 } from "react-icons/fi";
 import * as Select from "@radix-ui/react-select";
 import {
@@ -16,9 +20,64 @@ import {
   fetchTeamMembers,
   updateTeamMembers,
   submitIdea,
+  uploadPdfToDrive,
 } from "./services/api";
 
 const GENDER_OPTIONS = ["Male", "Female", "Other"];
+
+interface LocalSubmissionRecord {
+  teamId: string;
+  teamName: string;
+  submissionUrl: string;
+  timestamp: number;
+}
+
+function getLocalSubmittedTeams(): LocalSubmissionRecord[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem("iedc_submitted_teams");
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalSubmittedTeam(
+  teamId: string,
+  teamName: string,
+  submissionUrl: string,
+) {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getLocalSubmittedTeams();
+    const updated = existing.filter(
+      (t) =>
+        String(t.teamId) !== String(teamId) &&
+        t.teamName.toLowerCase() !== teamName.trim().toLowerCase(),
+    );
+    updated.push({
+      teamId: String(teamId),
+      teamName: teamName.trim(),
+      submissionUrl,
+      timestamp: Date.now(),
+    });
+    localStorage.setItem("iedc_submitted_teams", JSON.stringify(updated));
+  } catch (err) {
+    console.warn("Could not save submission to localStorage:", err);
+  }
+}
+
+function checkLocalSubmittedTeam(
+  teamId: string,
+  teamName: string,
+): LocalSubmissionRecord | undefined {
+  const records = getLocalSubmittedTeams();
+  return records.find(
+    (t) =>
+      String(t.teamId) === String(teamId) ||
+      t.teamName.toLowerCase() === teamName.trim().toLowerCase(),
+  );
+}
 
 export default function SubmissionForm() {
   const [inputTeamName, setInputTeamName] = useState("");
@@ -34,18 +93,32 @@ export default function SubmissionForm() {
     {},
   );
 
-  const [submissionText, setSubmissionText] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedDriveUrl, setUploadedDriveUrl] = useState<string>("");
+  const [fileError, setFileError] = useState("");
+  const [dragActive, setDragActive] = useState(false);
+  const [uploadProgressMsg, setUploadProgressMsg] = useState("");
 
   const [formError, setFormError] = useState("");
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
-  const handleVerifyTeam = async (): Promise<FindTeamResult | null> => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isAlreadySubmitted = Boolean(verifiedTeam?.has_submission);
+
+  useEffect(() => {
+    if (submitStatus === "success") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [submitStatus]);
+
+  const handleVerifyTeam = async (): Promise<void> => {
     const targetName = inputTeamName.trim();
     if (!targetName) {
       setVerifyError("Please enter your team name.");
-      return null;
+      return;
     }
 
     setVerifyError("");
@@ -53,24 +126,32 @@ export default function SubmissionForm() {
     setTeamMembersDetails(null);
     setLeaderGender("");
     setMemberGenders({});
+    setUploadedDriveUrl("");
 
     try {
       const team = await findTeamByName(targetName);
+
+      const localRecord = checkLocalSubmittedTeam(team.team_id, team.team_name);
+      if (localRecord) {
+        team.has_submission = true;
+        if (!team.submission && localRecord.submissionUrl) {
+          team.submission = localRecord.submissionUrl;
+        }
+      }
+
       setVerifiedTeam(team);
       setIsVerifyingTeam(false);
 
-      // Fetch member details for verified team
       setIsLoadingMembers(true);
       const membersData = await fetchTeamMembers(team.team_id);
       setTeamMembersDetails(membersData);
       setIsLoadingMembers(false);
 
-      return team;
+      return;
     } catch (err: any) {
       setVerifiedTeam(null);
       setVerifyError(err.message || "Team not found.");
       setIsVerifyingTeam(false);
-      return null;
     }
   };
 
@@ -81,18 +162,74 @@ export default function SubmissionForm() {
     }));
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const validateAndSetFile = (file: File) => {
+    setFileError("");
+    setUploadedDriveUrl("");
+    if (
+      file.type !== "application/pdf" &&
+      !file.name.toLowerCase().endsWith(".pdf")
+    ) {
+      setFileError("Only PDF files are allowed. Please select a .pdf file.");
+      return false;
+    }
+    const MAX_SIZE = 15 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      setFileError("File size exceeds 15MB. Please select a smaller PDF.");
+      return false;
+    }
+
+    setSelectedFile(file);
+    return true;
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      validateAndSetFile(e.target.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      validateAndSetFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    setUploadedDriveUrl("");
+    setFileError("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError("");
+    setFileError("");
 
-    let currentTeam = verifiedTeam;
+    const currentTeam = verifiedTeam;
 
     if (!currentTeam) {
-      currentTeam = await handleVerifyTeam();
-      if (!currentTeam) {
-        return setFormError("Please enter and verify a registered team name.");
-      }
+      return setFormError("Please enter and verify a registered team name.");
     }
+
+    if (isAlreadySubmitted) return;
 
     if (!leaderGender) {
       return setFormError(
@@ -114,13 +251,17 @@ export default function SubmissionForm() {
       }
     }
 
-    if (!submissionText.trim()) {
-      return setFormError("Please enter your submission text/link.");
+    let finalSubmissionUrl = uploadedDriveUrl;
+
+    if (!selectedFile && !finalSubmissionUrl) {
+      setFileError("Please select or drop a PDF file to upload.");
+      return setFormError("Please upload your Pitch Deck PDF.");
     }
 
     setSubmitStatus("submitting");
 
     try {
+      setUploadProgressMsg("Updating team member details...");
       const membersPayload =
         teamMembersDetails?.members.map((m) => ({
           user_id: m.user_id,
@@ -132,10 +273,37 @@ export default function SubmissionForm() {
         members: membersPayload,
       });
 
-      await submitIdea(Number(currentTeam.team_id) || 0, submissionText.trim());
+      if (selectedFile && !finalSubmissionUrl) {
+        setUploadProgressMsg("Uploading PDF to Google Drive...");
+        finalSubmissionUrl = await uploadPdfToDrive(
+          selectedFile,
+          currentTeam.team_name,
+        );
+        setUploadedDriveUrl(finalSubmissionUrl);
+      }
+
+      setUploadProgressMsg("Finalizing submission...");
+      await submitIdea(currentTeam.team_id, finalSubmissionUrl);
+
+      saveLocalSubmittedTeam(
+        currentTeam.team_id,
+        currentTeam.team_name,
+        finalSubmissionUrl,
+      );
+
+      if (verifiedTeam) {
+        setVerifiedTeam({
+          ...verifiedTeam,
+          has_submission: true,
+          submission: finalSubmissionUrl,
+        });
+      }
+
       setSubmitStatus("success");
     } catch (err: any) {
+      console.error("[handleSubmit] Submission error:", err);
       setSubmitStatus("error");
+      setUploadProgressMsg("");
       setFormError(
         err.message || "An unexpected error occurred during submission.",
       );
@@ -146,14 +314,14 @@ export default function SubmissionForm() {
     return (
       <div className={styles.successScreen}>
         <div className={styles.successIconWrapper}>
-          <span className={styles.successCheck}>✓</span>
+          <FiCheck className={styles.successCheck} />
         </div>
         <h2 className={styles.successTitle}>SUBMISSION SUCCESSFUL!</h2>
         <p className={styles.successDescription}>
           Thank you! Your submission for team{" "}
-          <strong>{verifiedTeam?.team_name}</strong> has been received. Our
-          panel will evaluate the ideas and contact your team leader if any
-          clarifications are needed.
+          <strong>{verifiedTeam?.team_name}</strong> has been received and saved
+          to Google Drive. Our panel will evaluate the ideas and contact your
+          team leader if any clarifications are needed.
         </p>
       </div>
     );
@@ -172,7 +340,7 @@ export default function SubmissionForm() {
             }}
             type="button"
           >
-            ✕
+          <FiX />
           </button>
         </div>
       )}
@@ -211,7 +379,11 @@ export default function SubmissionForm() {
             <button
               type="button"
               className={`${styles.verifyBtn} ${
-                verifiedTeam ? styles.verifiedBtn : ""
+                verifiedTeam
+                  ? isAlreadySubmitted
+                    ? styles.alreadySubmittedBtn
+                    : styles.verifiedBtn
+                  : ""
               }`}
               onClick={handleVerifyTeam}
               disabled={
@@ -223,10 +395,17 @@ export default function SubmissionForm() {
               {isVerifyingTeam ? (
                 "Verifying..."
               ) : verifiedTeam ? (
-                <>
-                  <span>Verified</span>
-                  <FiCheck />
-                </>
+                isAlreadySubmitted ? (
+                  <>
+                    <span>Submitted</span>
+                    <FiAlertTriangle />
+                  </>
+                ) : (
+                  <>
+                    <span>Verified</span>
+                    <FiCheck />
+                  </>
+                )
               ) : (
                 "Verify Team"
               )}
@@ -234,16 +413,42 @@ export default function SubmissionForm() {
           </div>
           {verifyError && <p className={styles.formErrorText}>{verifyError}</p>}
           {verifiedTeam && (
-            <div className={styles.verifiedBadge}>
-              <span className={styles.verifiedIcon}>✓</span>
-              <span>
-                Team verified: <strong>{verifiedTeam.team_name}</strong>
-              </span>
-            </div>
+            <>
+              {isAlreadySubmitted ? (
+                <div className={styles.alreadySubmittedBox}>
+                  <div className={styles.alreadySubmittedHeader}>
+                    <FiAlertTriangle className={styles.warningIcon} />
+                    <strong>SUBMISSION ALREADY RECEIVED</strong>
+                  </div>
+                  <p className={styles.alreadySubmittedText}>
+                    Team <strong>{verifiedTeam.team_name}</strong> has already
+                    submitted their pitch deck.
+                  </p>
+                  {verifiedTeam.submission && (
+                    <a
+                      href={verifiedTeam.submission}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.viewSubmissionBtn}
+                    >
+                      <span>View Submitted Pitch Deck</span>
+                      <FiArrowUpRight />
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.verifiedBadge}>
+                  <FiCheck className={styles.verifiedIcon} />
+                  <span>
+                    Team verified: <strong>{verifiedTeam.team_name}</strong>
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        {Boolean(verifiedTeam) && (
+        {Boolean(verifiedTeam) && !isAlreadySubmitted && (
           <>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionNum}>02</span>
@@ -267,7 +472,6 @@ export default function SubmissionForm() {
               </div>
             ) : (
               <div className={styles.genderSection}>
-                {/* Leader Gender Field */}
                 <div className={styles.field}>
                   <label className={styles.label}>
                     Leader Gender:{" "}
@@ -328,7 +532,6 @@ export default function SubmissionForm() {
                   </Select.Root>
                 </div>
 
-                {/* Team Members Gender Fields */}
                 {teamMembersDetails?.members &&
                   teamMembersDetails.members.map((member) => (
                     <div key={member.user_id} className={styles.field}>
@@ -393,47 +596,94 @@ export default function SubmissionForm() {
                   ))}
               </div>
             )}
+
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionNum}>03</span>
+              <h2 className={styles.sectionTitle}>Submission Pitch Deck</h2>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Pitch Deck (PDF Format)</label>
+
+              {!selectedFile ? (
+                <div
+                  className={`${styles.dropZone} ${
+                    dragActive ? styles.dropZoneActive : ""
+                  } ${!verifiedTeam ? styles.dropZoneDisabled : ""}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => verifiedTeam && fileInputRef.current?.click()}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="application/pdf"
+                    className={styles.fileInput}
+                    onChange={handleFileChange}
+                    disabled={submitStatus === "submitting" || !verifiedTeam}
+                  />
+                  <FiUploadCloud className={styles.uploadIcon} />
+                  <div className={styles.dropZoneText}>
+                    <p className={styles.dropZonePrimaryText}>
+                      Click to browse or drag & drop your PDF file here
+                    </p>
+                    <p className={styles.dropZoneSubText}>
+                      Supports PDF format • Max 15MB
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.fileCard}>
+                  <div className={styles.fileIconWrapper}>
+                    <FiFileText className={styles.fileCardIcon} />
+                  </div>
+                  <div className={styles.fileDetails}>
+                    <p className={styles.fileCardName}>{selectedFile.name}</p>
+
+                    <p className={styles.fileCardSize}>
+                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className={styles.removeFileBtn}
+                    onClick={removeFile}
+                    disabled={submitStatus === "submitting"}
+                    title="Remove file"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+              )}
+
+              {fileError && <p className={styles.formErrorText}>{fileError}</p>}
+            </div>
+
+            {formError && submitStatus !== "error" && (
+              <p className={styles.formErrorText}>{formError}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={
+                submitStatus === "submitting" ||
+                !verifiedTeam ||
+                (!selectedFile && !uploadedDriveUrl)
+              }
+              className={styles.submitBtn}
+            >
+              {submitStatus === "submitting" ? (
+                <span>{uploadProgressMsg || "Submitting..."}</span>
+              ) : (
+                <>
+                  <span>Submit Idea</span>
+                  <FiArrowUpRight />
+                </>
+              )}
+            </button>
           </>
         )}
-
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>
-            {verifiedTeam ? "03" : "02"}
-          </span>
-          <h2 className={styles.sectionTitle}>Submission</h2>
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Submission link</label>
-          <input
-            type="text"
-            placeholder="https://drive.google.com/..."
-            className={styles.input}
-            value={submissionText}
-            onChange={(e) => setSubmissionText(e.target.value)}
-            required
-            disabled={submitStatus === "submitting" || !verifiedTeam}
-          />
-        </div>
-
-        {formError && submitStatus !== "error" && (
-          <p className={styles.formErrorText}>{formError}</p>
-        )}
-
-        <button
-          type="submit"
-          disabled={submitStatus === "submitting" || !verifiedTeam}
-          className={styles.submitBtn}
-        >
-          {submitStatus === "submitting" ? (
-            "Submitting..."
-          ) : (
-            <>
-              <span>Submit Idea</span>
-              <FiArrowUpRight />
-            </>
-          )}
-        </button>
       </form>
     </>
   );

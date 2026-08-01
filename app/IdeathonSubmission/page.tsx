@@ -13,13 +13,12 @@ export default function IdeathonSubmissionPage() {
             <div className={styles.header}>
               <h1 className={styles.title}>Ideathon Submission</h1>
               <p className={styles.subtitle}>
-                Select your registered team and submit your pitch deck link
+                Select your registered team and upload your pitch deck PDF
                 below.
               </p>
             </div>
-            
+
             <SubmissionForm />
-            
           </div>
         </div>
       </main>
