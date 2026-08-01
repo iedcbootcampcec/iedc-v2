@@ -6,7 +6,15 @@ export const PRICE_PER_HEAD = 30;
 
 export const GENDER_OPTIONS = ["Male", "Female", "Other"] as const;
 
-export const UPI_ID = "shaheemek890@okaxis";
+export const UPI_IDS = {
+  mini_militia: "blessystephen0911@okicici",
+  efootball: "aiswaryarosejacob@okicici",
+} as const;
+
+export const QR_CODES = {
+  mini_militia: "/assets/blessy_qr.jpeg",
+  efootball: "/assets/aishwarya_qr.jpeg",
+} as const;
 
 export const WHATSAPP_GROUPS = {
   mini_militia: "https://chat.whatsapp.com/ByVyCHB6nek1xSqgSKYpEE",
