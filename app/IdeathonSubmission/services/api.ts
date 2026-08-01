@@ -1,8 +1,3 @@
-export interface Team {
-  team_id: number;
-  team_name: string;
-}
-
 export interface TeamMember {
   user_id: string;
   name: string;
@@ -27,6 +22,8 @@ const baseUrl = process.env.NEXT_PUBLIC_IDEATHON_API_URL!;
 export interface FindTeamResult {
   team_id: string;
   team_name: string;
+  has_submission?: boolean;
+  submission?: string | null;
 }
 
 export async function findTeamByName(
@@ -46,9 +43,32 @@ export async function findTeamByName(
     const data = await res.json().catch(() => ({}));
 
     if (res.ok && data.team_id && !data.error) {
+      const submissionUrl =
+        data.submission ||
+        data.submission_url ||
+        data.pitch_deck ||
+        data.pitch_deck_url ||
+        data.submission_link ||
+        data.idea ||
+        null;
+
+      const isSubmitted =
+        Boolean(data.has_submission) ||
+        Boolean(data.has_submitted) ||
+        Boolean(data.is_submitted) ||
+        Boolean(data.submitted) ||
+        Boolean(data.already_submitted) ||
+        Boolean(data.isSubmitted) ||
+        Boolean(data.hasSubmitted) ||
+        data.status === "submitted" ||
+        data.status === "completed" ||
+        Boolean(submissionUrl);
+
       return {
         team_id: String(data.team_id),
         team_name: data.team_name || queryName,
+        has_submission: isSubmitted,
+        submission: typeof submissionUrl === "string" ? submissionUrl : null,
       };
     }
   } catch (err) {
@@ -78,7 +98,6 @@ export async function fetchTeamMembers(
       `[fetchTeamMembers] Backend endpoint GET /teams/members/${teamId} returned error:`,
       err,
     );
-    // Return fallback sample team structure so gender options remain functional
     return {
       leader_name: "Team Leader",
       members: [
@@ -113,9 +132,16 @@ export async function updateTeamMembers(
   return resData;
 }
 
-export async function submitIdea(teamId: number, submission: string) {
+export async function submitIdea(teamId: number | string, submission: string) {
+  const parsedId =
+    typeof teamId === "number"
+      ? teamId
+      : !isNaN(Number(teamId)) && teamId !== ""
+      ? Number(teamId)
+      : teamId;
+
   const payload = {
-    team_id: teamId,
+    team_id: parsedId,
     submission: submission,
   };
 
@@ -131,9 +157,30 @@ export async function submitIdea(teamId: number, submission: string) {
 
   if (!res.ok) {
     throw new Error(
-      resData.error || "Failed to submit project. Please try again.",
+      resData.error || resData.message || "Failed to submit project. Please try again.",
     );
   }
 
   return resData;
+}
+
+export async function uploadPdfToDrive(file: File, teamName: string): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("team_name", teamName);
+
+  const res = await fetch("/api/upload-pdf", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok || !data.webViewLink) {
+    throw new Error(
+      data.error || "Failed to upload file to Google Drive. Please try again."
+    );
+  }
+
+  return data.webViewLink;
 }
