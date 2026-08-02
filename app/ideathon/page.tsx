@@ -70,7 +70,7 @@ export default function IdeathonPage() {
                 if they develop a better concept.
               </li>
               <li>
-                Registration Deadline: <strong>1st August 2026</strong>
+                Registration Deadline: <strong>3rd August 2026</strong>
               </li>
               <li>
                 Further details regarding selection and final round
