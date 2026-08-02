@@ -354,6 +354,9 @@ export default function EventRegistrationForm({
           if (showGender) td.gender = t.gender.toLowerCase();
           return td;
         }),
+        paymentScreenshot: objectKey || "N/A",
+        upiId: upiId.trim() || "N/A",
+        referralCode: referralCode.trim() || "N/A",
         totalPaid: calculatedTotalPaid,
         isEarlyBird: Boolean(isEarlyBird),
       };

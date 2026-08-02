@@ -1,0 +1,41 @@
+.guessWhoPage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 8.5rem 2rem 6rem;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(232, 160, 32, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(circle at right 30%, rgba(0, 0, 0, 0.04), transparent 35%),
+    linear-gradient(180deg, #f8f4eb 0%, #f2ede2 100%);
+  display: flex;
+  justify-content: center;
+}
+
+.guessWhoPage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .guessWhoPage {
+    padding: 7rem 1rem 4rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .guessWhoPage {
+    padding: 6rem 0.5rem 3rem;
+  }
+}
