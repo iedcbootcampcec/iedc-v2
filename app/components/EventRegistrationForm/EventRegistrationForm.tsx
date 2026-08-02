@@ -625,6 +625,19 @@ export default function EventRegistrationForm({
                 </div>
               )}
 
+              {!showTicket && whatsappGroupUrl && (
+                <a
+                  href={whatsappGroupUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.whatsappBtn}
+                  style={{ margin: "1rem 0", maxWidth: "320px" }}
+                >
+                  <FaWhatsapp />
+                  <span>Join WhatsApp Group</span>
+                </a>
+              )}
+
               <button
                 type="button"
                 onClick={() => {
@@ -674,7 +687,9 @@ export default function EventRegistrationForm({
                     {!ideathonVerifying && ideathonVerified === true && (
                       <div className={styles.ideathonVerifiedCard}>
                         <div className={styles.ideathonVerifiedHeader}>
-                          <span className={styles.ideathonVerifiedCheck}>✓</span>
+                          <span className={styles.ideathonVerifiedCheck}>
+                            ✓
+                          </span>
                           <p className={styles.ideathonVerifiedTitle}>
                             IDEATHON TEAM VERIFIED
                           </p>
@@ -693,12 +708,14 @@ export default function EventRegistrationForm({
                         </span>
                       </div>
                     )}
-                    {!ideathonVerifying && ideathonVerified === null && teamName.trim() && (
-                      <p className={styles.ideathonHint}>
-                        Click <strong>Verify</strong> to check if your team is
-                        registered for Ideathon and get a free registration.
-                      </p>
-                    )}
+                    {!ideathonVerifying &&
+                      ideathonVerified === null &&
+                      teamName.trim() && (
+                        <p className={styles.ideathonHint}>
+                          Click <strong>Verify</strong> to check if your team is
+                          registered for Ideathon and get a free registration.
+                        </p>
+                      )}
                   </>
                 ) : (
                   <input
