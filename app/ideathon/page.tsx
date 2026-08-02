@@ -22,6 +22,7 @@ export default function IdeathonPage() {
           title="IDEATHON"
           subtitle="Turn your ideas into impact. Register now for IDEATHON '26 and showcase your innovation on a state-level platform."
           leaderLabel="Team Leader Details"
+          apiBaseUrl={process.env.NEXT_PUBLIC_IDEATHON_API_URL!}
           maxTeammates={3}
           minTeammates={1}
           requiresPayment={true}
