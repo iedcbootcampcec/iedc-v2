@@ -27,7 +27,7 @@ export default function IdeathonPage() {
           requiresPayment={true}
           paymentConfig={{
             upiId: "shaheemek890@okaxis",
-            qrCodeSrc: "/assets/shaheem_qr.webp",
+            qrCodeSrc: "/qr/shaheem_qr.webp",
             feeLabel: "₹200/Team",
           }}
           guidelines={

@@ -12,7 +12,7 @@ export default function StartupDnaPage() {
       <main className={styles.startupDnaPage}>
         <EventRegistrationForm
           title="STARTUP DNA"
-          subtitle="Decode the entrepreneur in you! Register for Startup DNA and learn the fundamentals of building a startup from industry experts."
+          subtitle="Fuse core startup concepts, spark creative synergies, and engineer the next groundbreaking venture."
           leaderLabel="Team Leader Details"
           maxTeammates={3}
           minTeammates={0}
@@ -24,7 +24,7 @@ export default function StartupDnaPage() {
           requiresPayment={true}
           paymentConfig={{
             upiId: "shaheemek890@okaxis",
-            qrCodeSrc: "/assets/shaheem_qr.webp",
+            qrCodeSrc: "/qr/shaheem_qr.webp",
             feeLabel: "₹20/Team",
           }}
           guidelines={
