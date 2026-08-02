@@ -955,6 +955,38 @@
   line-height: 1;
 }
 
+.verifyBtn {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: var(--color-accent, #ffe600);
+  border: 2px solid var(--color-primary);
+  box-shadow: 2px 2px 0px var(--color-primary);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.verifyBtn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--color-primary);
+}
+
+.verifyBtn:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-primary);
+}
+
+.verifyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ===== Tablet (≤ 768px) ===== */
 @media screen and (max-width: 768px) {
   .card {
@@ -1065,6 +1097,11 @@
     font-size: 0.88rem;
   }
 
+  .verifyBtn {
+    font-size: 0.65rem;
+    padding: 0.7rem 0.8rem;
+  }
+
   .phonePrefix {
     font-size: 0.8rem;
     padding: 0 0.35rem 0 0.7rem;
@@ -1151,36 +1188,6 @@
   gap: 0.5rem;
   align-items: center;
   width: 100%;
-}
-
-.verifyBtn {
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  background: var(--color-accent, #ffe600);
-  border: 2px solid var(--color-primary);
-  box-shadow: 2px 2px 0px var(--color-primary);
-  padding: 0.7rem 0.85rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.verifyBtn:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px var(--color-primary);
-}
-
-.verifyBtn:active:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px var(--color-primary);
-}
-
-.verifyBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 .ideathonStatusBox {

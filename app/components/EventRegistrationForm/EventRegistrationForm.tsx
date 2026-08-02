@@ -153,6 +153,7 @@ export default function EventRegistrationForm({
   const [ideathonVerified, setIdeathonVerified] = useState<boolean | null>(
     null,
   );
+  const [ideathonVerifying, setIdeathonVerifying] = useState(false);
 
   /* ---- Payment state ---- */
   const [paymentScreenshotFile, setPaymentScreenshotFile] =
@@ -234,18 +235,19 @@ export default function EventRegistrationForm({
     [baseUrl],
   );
 
+  /* Reset verification when team name changes so stale result is cleared */
   useEffect(() => {
-    if (!allowIdeathonDiscount || !teamName.trim()) {
+    if (allowIdeathonDiscount) {
       setIdeathonVerified(null);
-      return;
     }
+  }, [teamName, allowIdeathonDiscount]);
 
-    const timer = setTimeout(() => {
-      verifyIdeathonTeam(teamName);
-    }, 600);
-
-    return () => clearTimeout(timer);
-  }, [teamName, allowIdeathonDiscount, verifyIdeathonTeam]);
+  const handleVerifyIdeathon = async () => {
+    if (!teamName.trim()) return;
+    setIdeathonVerifying(true);
+    await verifyIdeathonTeam(teamName);
+    setIdeathonVerifying(false);
+  };
 
   /* ---- Handlers ---- */
   const handleCopyUpi = () => {
@@ -644,14 +646,70 @@ export default function EventRegistrationForm({
 
               <div className={styles.field}>
                 <label className={styles.label}>Team Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Innovators Club"
-                  className={styles.input}
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  required
-                />
+                {allowIdeathonDiscount ? (
+                  <>
+                    <div className={styles.teamNameInputWrap}>
+                      <input
+                        type="text"
+                        placeholder="e.g. Innovators Club"
+                        className={styles.input}
+                        value={teamName}
+                        onChange={(e) => setTeamName(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className={styles.verifyBtn}
+                        onClick={handleVerifyIdeathon}
+                        disabled={!teamName.trim() || ideathonVerifying}
+                      >
+                        {ideathonVerifying ? "..." : "Verify"}
+                      </button>
+                    </div>
+                    {ideathonVerifying && (
+                      <p className={styles.ideathonChecking}>
+                        Checking Ideathon registration…
+                      </p>
+                    )}
+                    {!ideathonVerifying && ideathonVerified === true && (
+                      <div className={styles.ideathonVerifiedCard}>
+                        <div className={styles.ideathonVerifiedHeader}>
+                          <span className={styles.ideathonVerifiedCheck}>✓</span>
+                          <p className={styles.ideathonVerifiedTitle}>
+                            IDEATHON TEAM VERIFIED
+                          </p>
+                        </div>
+                        <p className={styles.ideathonVerifiedDesc}>
+                          Your team is registered for Ideathon.{" "}
+                          <strong>No payment required!</strong> You can proceed
+                          directly to submit your registration.
+                        </p>
+                      </div>
+                    )}
+                    {!ideathonVerifying && ideathonVerified === false && (
+                      <div className={styles.ideathonStatusBox}>
+                        <span className={styles.ideathonNotVerifiedBadge}>
+                          ✕ Not found in Ideathon records — payment required
+                        </span>
+                      </div>
+                    )}
+                    {!ideathonVerifying && ideathonVerified === null && teamName.trim() && (
+                      <p className={styles.ideathonHint}>
+                        Click <strong>Verify</strong> to check if your team is
+                        registered for Ideathon and get a free registration.
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <input
+                    type="text"
+                    placeholder="e.g. Innovators Club"
+                    className={styles.input}
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    required
+                  />
+                )}
               </div>
 
               {/* ===== 02 — Leader Details ===== */}
