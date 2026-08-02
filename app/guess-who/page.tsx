@@ -12,7 +12,7 @@ export default function GuessWhoPage() {
       <main className={styles.guessWhoPage}>
         <EventRegistrationForm
           title="GUESS WHO"
-          subtitle="Put your deduction skills to the ultimate test! Register for Guess Who and decode mystery personalities to conquer the challenge."
+          subtitle="Put your deduction skills to the ultimate test! Register for Guess Who and decode mystery startups to conquer the challenge."
           leaderLabel="Team Leader Details"
           maxTeammates={3}
           minTeammates={0}
@@ -23,7 +23,8 @@ export default function GuessWhoPage() {
           guidelines={
             <>
               <li>
-                Event Type: <strong>Individual or Team</strong> (up to 4 members).
+                Event Type: <strong>Individual or Team</strong> (up to 4
+                members).
               </li>
               <li>
                 Venue: <strong>Room 314</strong>.
@@ -35,13 +36,16 @@ export default function GuessWhoPage() {
                 Registration Fee: <strong>Free (No registration fee)</strong>.
               </li>
               <li>
-                The event consists of a <strong>Quiz Round followed by an Interactive Session</strong>.
+                The event consists of a{" "}
+                <strong>Quiz Round followed by an Interactive Session</strong>.
               </li>
               <li>
-                Use of <strong>mobile phones or any external assistance</strong> during the quiz is <strong>strictly prohibited</strong>.
+                Use of <strong>mobile phones or any external assistance</strong>{" "}
+                during the quiz is <strong>strictly prohibited</strong>.
               </li>
               <li>
-                <strong>Organizers reserve the right</strong> to modify the <strong>event format or rules</strong> if required.
+                <strong>Organizers reserve the right</strong> to modify the{" "}
+                <strong>event format or rules</strong> if required.
               </li>
             </>
           }
