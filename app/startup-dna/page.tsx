@@ -14,6 +14,7 @@ export default function StartupDnaPage() {
           title="STARTUP DNA"
           subtitle="Fuse core startup concepts, spark creative synergies, and engineer the next groundbreaking venture."
           leaderLabel="Team Leader Details"
+          apiBaseUrl={process.env.NEXT_PUBLIC_IDEATHON_API_URL!}
           maxTeammates={3}
           minTeammates={0}
           showGender={true}

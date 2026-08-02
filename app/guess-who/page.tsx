@@ -14,6 +14,7 @@ export default function GuessWhoPage() {
           title="GUESS WHO"
           subtitle="Put your deduction skills to the ultimate test! Register for Guess Who and decode mystery startups to conquer the challenge."
           leaderLabel="Team Leader Details"
+          apiBaseUrl={process.env.NEXT_PUBLIC_IDEATHON_API_URL!}
           maxTeammates={3}
           minTeammates={0}
           showGender={true}

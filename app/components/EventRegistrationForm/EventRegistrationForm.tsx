@@ -19,7 +19,10 @@ import {
   FiCopy,
   FiCheck,
   FiDownload,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
+import * as Select from "@radix-ui/react-select";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -64,7 +67,7 @@ export interface EventRegistrationFormProps {
   gameName?: string;
   totalPaidAmount?: number;
   isEarlyBird?: boolean;
-  apiBaseUrl?: string;
+  apiBaseUrl: string;
   registerEndpoint: string;
   uploadEndpoint: string;
 
@@ -170,7 +173,7 @@ export default function EventRegistrationForm({
   }, [submitStatus]);
 
   /* ---- Derived ---- */
-  const baseUrl = apiBaseUrl || process.env.NEXT_PUBLIC_IDEATHON_API_URL || "";
+  const baseUrl = apiBaseUrl!;
 
   /* ---- Handlers ---- */
   const handleCopyUpi = () => {
@@ -239,7 +242,7 @@ export default function EventRegistrationForm({
   );
 
   /* ---- Validation ---- */
-  const handleSubmitClick = (e: React.FormEvent) => {
+  const handleSubmitClick = (e: React.SubmitEvent) => {
     e.preventDefault();
     setFormError("");
     setSubmitStatus("idle");
@@ -428,6 +431,9 @@ export default function EventRegistrationForm({
   return (
     <>
       <div className={styles.container}>
+        {submitStatus === "submitting" && (
+          <div className={styles.loadingOverlay} />
+        )}
         <div className={styles.card}>
           <div className={styles.header}>
             <h1 className={styles.title}>{title}</h1>
@@ -505,7 +511,7 @@ export default function EventRegistrationForm({
                           value={ticketData.ticket}
                           size={130}
                           level="H"
-                          includeMargin={true}
+                          marginSize={4}
                           bgColor="#ffffff"
                           fgColor="#1a1a1a"
                         />
@@ -524,19 +530,18 @@ export default function EventRegistrationForm({
                   >
                     <FiDownload /> Download Ticket (PNG)
                   </button>
+                  {whatsappGroupUrl && (
+                    <a
+                      href={whatsappGroupUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.whatsappBtn}
+                    >
+                      <FaWhatsapp />
+                      <span>Join WhatsApp Group</span>
+                    </a>
+                  )}
                 </div>
-              )}
-
-              {whatsappGroupUrl && (
-                <a
-                  href={whatsappGroupUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.whatsappBtn}
-                >
-                  <FaWhatsapp />
-                  <span>Join WhatsApp Group</span>
-                </a>
               )}
 
               <button
@@ -591,21 +596,55 @@ export default function EventRegistrationForm({
                 {showGender ? (
                   <div className={styles.field}>
                     <label className={styles.label}>Gender</label>
-                    <select
-                      className={styles.select}
+                    <Select.Root
                       value={leaderGender}
-                      onChange={(e) => setLeaderGender(e.target.value)}
+                      onValueChange={setLeaderGender}
                       required
                     >
-                      <option value="" disabled>
-                        Select Gender
-                      </option>
-                      {GENDER_OPTIONS.map((g) => (
-                        <option key={g} value={g}>
-                          {g}
-                        </option>
-                      ))}
-                    </select>
+                      <Select.Trigger
+                        className={styles.selectTrigger}
+                        aria-label="Leader Gender"
+                      >
+                        <Select.Value placeholder="-- Select Gender --" />
+                        <Select.Icon className={styles.selectIcon}>
+                          <FiChevronDown />
+                        </Select.Icon>
+                      </Select.Trigger>
+                      <Select.Portal>
+                        <Select.Content
+                          className={styles.selectContent}
+                          position="popper"
+                          sideOffset={4}
+                        >
+                          <Select.ScrollUpButton
+                            className={styles.selectScrollButton}
+                          >
+                            <FiChevronUp />
+                          </Select.ScrollUpButton>
+                          <Select.Viewport className={styles.selectViewport}>
+                            {GENDER_OPTIONS.map((g) => (
+                              <Select.Item
+                                key={g}
+                                value={g}
+                                className={styles.selectItem}
+                              >
+                                <Select.ItemText>{g}</Select.ItemText>
+                                <Select.ItemIndicator
+                                  className={styles.selectItemIndicator}
+                                >
+                                  <FiCheck />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                            ))}
+                          </Select.Viewport>
+                          <Select.ScrollDownButton
+                            className={styles.selectScrollButton}
+                          >
+                            <FiChevronDown />
+                          </Select.ScrollDownButton>
+                        </Select.Content>
+                      </Select.Portal>
+                    </Select.Root>
                   </div>
                 ) : (
                   <div className={styles.field}>
@@ -721,23 +760,59 @@ export default function EventRegistrationForm({
                         {showGender && (
                           <div className={styles.field}>
                             <label className={styles.label}>Gender</label>
-                            <select
-                              className={styles.select}
+                            <Select.Root
                               value={mate.gender}
-                              onChange={(e) =>
-                                updateTeammate(idx, "gender", e.target.value)
+                              onValueChange={(val) =>
+                                updateTeammate(idx, "gender", val)
                               }
                               required
                             >
-                              <option value="" disabled>
-                                Select Gender
-                              </option>
-                              {GENDER_OPTIONS.map((g) => (
-                                <option key={g} value={g}>
-                                  {g}
-                                </option>
-                              ))}
-                            </select>
+                              <Select.Trigger
+                                className={styles.selectTrigger}
+                                aria-label={`Gender for Teammate ${idx + 1}`}
+                              >
+                                <Select.Value placeholder="-- Select Gender --" />
+                                <Select.Icon className={styles.selectIcon}>
+                                  <FiChevronDown />
+                                </Select.Icon>
+                              </Select.Trigger>
+                              <Select.Portal>
+                                <Select.Content
+                                  className={styles.selectContent}
+                                  position="popper"
+                                  sideOffset={4}
+                                >
+                                  <Select.ScrollUpButton
+                                    className={styles.selectScrollButton}
+                                  >
+                                    <FiChevronUp />
+                                  </Select.ScrollUpButton>
+                                  <Select.Viewport
+                                    className={styles.selectViewport}
+                                  >
+                                    {GENDER_OPTIONS.map((g) => (
+                                      <Select.Item
+                                        key={g}
+                                        value={g}
+                                        className={styles.selectItem}
+                                      >
+                                        <Select.ItemText>{g}</Select.ItemText>
+                                        <Select.ItemIndicator
+                                          className={styles.selectItemIndicator}
+                                        >
+                                          <FiCheck />
+                                        </Select.ItemIndicator>
+                                      </Select.Item>
+                                    ))}
+                                  </Select.Viewport>
+                                  <Select.ScrollDownButton
+                                    className={styles.selectScrollButton}
+                                  >
+                                    <FiChevronDown />
+                                  </Select.ScrollDownButton>
+                                </Select.Content>
+                              </Select.Portal>
+                            </Select.Root>
                           </div>
                         )}
                       </div>
