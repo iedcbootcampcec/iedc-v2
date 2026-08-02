@@ -1144,3 +1144,124 @@
     font-size: 0.68rem;
   }
 }
+
+/* ===== Ideathon Verification Styles ===== */
+.teamNameInputWrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.verifyBtn {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: var(--color-accent, #ffe600);
+  border: 2px solid var(--color-primary);
+  box-shadow: 2px 2px 0px var(--color-primary);
+  padding: 0.7rem 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.verifyBtn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--color-primary);
+}
+
+.verifyBtn:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--color-primary);
+}
+
+.verifyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ideathonStatusBox {
+  margin-top: 0.25rem;
+}
+
+.ideathonChecking {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.78rem;
+  color: #666;
+  font-style: italic;
+}
+
+.ideathonVerifiedBadge {
+  display: inline-block;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0d6efd;
+  background: rgba(13, 110, 253, 0.08);
+  border: 1.5px solid #0d6efd;
+  padding: 0.35rem 0.65rem;
+  box-shadow: 2px 2px 0px #0d6efd;
+}
+
+.ideathonNotVerifiedBadge {
+  display: inline-block;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.76rem;
+  color: #d9534f;
+  background: rgba(217, 83, 79, 0.08);
+  border: 1.5px solid #d9534f;
+  padding: 0.35rem 0.65rem;
+}
+
+.ideathonHint {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.76rem;
+  color: rgba(26, 26, 26, 0.65);
+}
+
+.ideathonVerifiedCard {
+  background: #f0fdf4;
+  border: 2.5px solid #16a34a;
+  box-shadow: 4px 4px 0px #16a34a;
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.ideathonVerifiedHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.ideathonVerifiedCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #16a34a;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.ideathonVerifiedTitle {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #15803d;
+  margin: 0;
+}
+
+.ideathonVerifiedDesc {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.88rem;
+  color: #166534;
+  margin: 0;
+  line-height: 1.5;
+}
