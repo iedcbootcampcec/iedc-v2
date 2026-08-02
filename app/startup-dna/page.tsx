@@ -19,6 +19,7 @@ export default function StartupDnaPage() {
           minTeammates={0}
           showGender={true}
           showTicket={true}
+          allowIdeathonDiscount={true}
           gameName="Startup DNA"
           totalPaidAmount={20}
           isEarlyBird={false}
