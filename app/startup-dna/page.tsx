@@ -23,8 +23,8 @@ export default function StartupDnaPage() {
           isEarlyBird={false}
           requiresPayment={true}
           paymentConfig={{
-            upiId: "shaheemek890@okaxis",
-            qrCodeSrc: "/qr/shaheem_qr.webp",
+            upiId: "parvathirajan14@okicici",
+            qrCodeSrc: "/qr/parvathi_qr.webp",
             feeLabel: "₹20/Team",
           }}
           guidelines={
