@@ -54,6 +54,7 @@ export interface EventRegistrationFormProps {
   minTeammates?: number;
   showGender?: boolean;
   showTicket?: boolean;
+  allowIdeathonDiscount?: boolean;
 
   /* Payment */
   requiresPayment: boolean;
@@ -112,6 +113,7 @@ export default function EventRegistrationForm({
   minTeammates = 0,
   showGender = false,
   showTicket = false,
+  allowIdeathonDiscount = false,
   requiresPayment,
   paymentConfig,
   guidelines,
@@ -147,6 +149,11 @@ export default function EventRegistrationForm({
     }[]
   >([]);
 
+  /* ---- Ideathon verification state ---- */
+  const [ideathonVerified, setIdeathonVerified] = useState<boolean | null>(
+    null,
+  );
+
   /* ---- Payment state ---- */
   const [paymentScreenshotFile, setPaymentScreenshotFile] =
     useState<File | null>(null);
@@ -172,8 +179,73 @@ export default function EventRegistrationForm({
     }
   }, [submitStatus]);
 
-  /* ---- Derived ---- */
   const baseUrl = apiBaseUrl!;
+
+  const verifyIdeathonTeam = useCallback(
+    async (nameToTest: string) => {
+      const queryName = nameToTest.trim();
+      if (!queryName) {
+        setIdeathonVerified(null);
+        return;
+      }
+
+      try {
+        let res = await fetch(`${baseUrl}/teams/find`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ team_name: queryName }),
+        });
+
+        let data = await res.json().catch(() => ({}));
+
+        if (!res.ok || data.error || (!data.team_id && !data.team_name)) {
+          const fallbackRes = await fetch(`${baseUrl}/find`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ team_name: queryName }),
+          });
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json().catch(() => ({}));
+            if (
+              fallbackData.team_id ||
+              fallbackData.team_name ||
+              fallbackData.success
+            ) {
+              res = fallbackRes;
+              data = fallbackData;
+            }
+          }
+        }
+
+        if (
+          res.ok &&
+          (data.team_id || data.team_name || data.success) &&
+          !data.error
+        ) {
+          setIdeathonVerified(true);
+        } else {
+          setIdeathonVerified(false);
+        }
+      } catch (err) {
+        console.warn("Ideathon verification check error:", err);
+        setIdeathonVerified(false);
+      }
+    },
+    [baseUrl],
+  );
+
+  useEffect(() => {
+    if (!allowIdeathonDiscount || !teamName.trim()) {
+      setIdeathonVerified(null);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      verifyIdeathonTeam(teamName);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [teamName, allowIdeathonDiscount, verifyIdeathonTeam]);
 
   /* ---- Handlers ---- */
   const handleCopyUpi = () => {
@@ -286,7 +358,9 @@ export default function EventRegistrationForm({
         `Please accept the ${guidelinesCheckboxLabel} to continue.`,
       );
 
-    if (requiresPayment) {
+    const effectiveRequiresPayment = requiresPayment && !ideathonVerified;
+
+    if (effectiveRequiresPayment) {
       if (!paymentScreenshotFile)
         return setFormError("Please upload a screenshot of payment.");
       if (!upiId.trim()) return setFormError("UPI ID is required.");
@@ -300,11 +374,13 @@ export default function EventRegistrationForm({
     if (!agreeTerms) return;
     setSubmitStatus("submitting");
 
+    const effectiveRequiresPayment = requiresPayment && !ideathonVerified;
+
     try {
       let objectKey = "";
 
       /* Upload screenshot (payment events only) */
-      if (requiresPayment && paymentScreenshotFile) {
+      if (effectiveRequiresPayment && paymentScreenshotFile) {
         const formData = new FormData();
         formData.append("file", paymentScreenshotFile);
 
@@ -323,7 +399,7 @@ export default function EventRegistrationForm({
         objectKey = uploadData.objectKey;
       }
 
-      if (requiresPayment && !objectKey) {
+      if (effectiveRequiresPayment && !objectKey) {
         throw new Error("File upload did not return a valid key.");
       }
 
@@ -336,8 +412,9 @@ export default function EventRegistrationForm({
       };
       if (showGender) leaderData.gender = leaderGender.toLowerCase();
 
-      const calculatedTotalPaid =
-        totalPaidAmount !== undefined
+      const calculatedTotalPaid = ideathonVerified
+        ? 0
+        : totalPaidAmount !== undefined
           ? totalPaidAmount
           : requiresPayment
             ? 20
@@ -357,14 +434,16 @@ export default function EventRegistrationForm({
           if (showGender) td.gender = t.gender.toLowerCase();
           return td;
         }),
-        paymentScreenshot: objectKey || "N/A",
-        upiId: upiId.trim() || "N/A",
+        paymentScreenshot:
+          objectKey || (ideathonVerified ? "IDEATHON_FREE" : "N/A"),
+        upiId: upiId.trim() || (ideathonVerified ? "IDEATHON_FREE" : "N/A"),
         referralCode: referralCode.trim() || "N/A",
         totalPaid: calculatedTotalPaid,
         isEarlyBird: Boolean(isEarlyBird),
+        isIdeathonTeam: Boolean(ideathonVerified),
       };
 
-      if (requiresPayment) {
+      if (effectiveRequiresPayment) {
         payload.paymentScreenshot = objectKey;
         payload.upiId = upiId.trim();
         payload.referralCode = referralCode.trim() || null;
@@ -900,7 +979,7 @@ export default function EventRegistrationForm({
               </div>
 
               {/* ===== 05 — Payment (conditional) ===== */}
-              {requiresPayment && paymentConfig && (
+              {requiresPayment && !ideathonVerified && paymentConfig && (
                 <>
                   <div
                     className={`${styles.sectionHeader} ${!agreeTerms ? styles.paymentDisabled : ""}`}
