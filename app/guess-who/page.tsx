@@ -54,7 +54,7 @@ export default function GuessWhoPage() {
           registerEndpoint="/events/guess-who"
           uploadEndpoint="/upload"
           successTitle="REGISTRATION SUCCESSFUL!"
-          successDescription="Your registration for Guess Who has been recorded. Please join the official WhatsApp group for updates, schedules, and event announcements."
+          successDescription="Your registration for Guess Who has been successfully recorded. Your ticket will be sent to your email shortly. Please join the official WhatsApp group to receive updates, schedules, and important event announcements."
           whatsappGroupUrl="https://chat.whatsapp.com/BbZ8RKxPHcu8vPpmrIY33b?mode=gi_t"
           resetButtonLabel="Register Another Team"
         />

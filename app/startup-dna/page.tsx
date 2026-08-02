@@ -78,7 +78,7 @@ export default function StartupDnaPage() {
           registerEndpoint="/events/startup-dna"
           uploadEndpoint="/upload"
           successTitle="REGISTRATION SUCCESSFUL!"
-          successDescription="Your registration for Startup DNA has been recorded. Please join the official WhatsApp group for updates, announcements, and event details."
+          successDescription="Your registration for Startup DNA has been successfully recorded. Your ticket will be sent to your email shortly. Please join the official WhatsApp group to receive updates, schedules, and important event announcements."
           whatsappGroupUrl="https://chat.whatsapp.com/BbZ8RKxPHcu8vPpmrIY33b?mode=gi_t"
           resetButtonLabel="Register Another Team"
         />
