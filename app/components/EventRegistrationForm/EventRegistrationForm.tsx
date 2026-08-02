@@ -1,7 +1,16 @@
 "use client";
 
-import { useState, useCallback, useEffect, type ReactNode } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from "react";
+import { QRCodeSVG } from "qrcode.react";
+import { toPng } from "html-to-image";
 import styles from "./EventRegistrationForm.module.css";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   FiArrowUpRight,
   FiUpload,
@@ -9,11 +18,21 @@ import {
   FiPlus,
   FiCopy,
   FiCheck,
+  FiDownload,
 } from "react-icons/fi";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
+
+export interface TicketData {
+  message?: string;
+  teamId?: number | string;
+  ticket?: string;
+  eventName?: string;
+  teamName?: string;
+  game?: string;
+}
 
 interface PaymentConfig {
   upiId: string;
@@ -30,6 +49,8 @@ export interface EventRegistrationFormProps {
   leaderLabel?: string;
   maxTeammates: number;
   minTeammates?: number;
+  showGender?: boolean;
+  showTicket?: boolean;
 
   /* Payment */
   requiresPayment: boolean;
@@ -40,6 +61,9 @@ export interface EventRegistrationFormProps {
   guidelinesCheckboxLabel?: string;
 
   /* Submission */
+  gameName?: string;
+  totalPaidAmount?: number;
+  isEarlyBird?: boolean;
   apiBaseUrl?: string;
   registerEndpoint: string;
   uploadEndpoint: string;
@@ -60,7 +84,14 @@ export interface EventRegistrationFormProps {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const emptyTeammate = () => ({ name: "", email: "", phone: "", college: "" });
+const GENDER_OPTIONS = ["Male", "Female", "Other"] as const;
+const emptyTeammate = () => ({
+  name: "",
+  email: "",
+  phone: "",
+  college: "",
+  gender: "",
+});
 const isValidPhone = (num: string) => /^[6-9]\d{9}$/.test(num);
 const isValidEmail = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -76,10 +107,15 @@ export default function EventRegistrationForm({
   leaderLabel = "Team Leader Details",
   maxTeammates,
   minTeammates = 0,
+  showGender = false,
+  showTicket = false,
   requiresPayment,
   paymentConfig,
   guidelines,
   guidelinesCheckboxLabel = "competition guidelines",
+  gameName,
+  totalPaidAmount,
+  isEarlyBird = false,
   apiBaseUrl,
   registerEndpoint,
   uploadEndpoint,
@@ -94,11 +130,18 @@ export default function EventRegistrationForm({
   /* ---- Form state ---- */
   const [teamName, setTeamName] = useState("");
   const [leaderName, setLeaderName] = useState("");
+  const [leaderGender, setLeaderGender] = useState("");
   const [college, setCollege] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [teammates, setTeammates] = useState<
-    { name: string; email: string; phone: string; college: string }[]
+    {
+      name: string;
+      email: string;
+      phone: string;
+      college: string;
+      gender: string;
+    }[]
   >([]);
 
   /* ---- Payment state ---- */
@@ -117,6 +160,8 @@ export default function EventRegistrationForm({
   >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [ticketData, setTicketData] = useState<TicketData | null>(null);
+  const ticketRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (submitStatus === "success" || submitStatus === "error") {
@@ -125,8 +170,7 @@ export default function EventRegistrationForm({
   }, [submitStatus]);
 
   /* ---- Derived ---- */
-  const baseUrl =
-    apiBaseUrl || process.env.NEXT_PUBLIC_IDEATHON_API_URL || "";
+  const baseUrl = apiBaseUrl || process.env.NEXT_PUBLIC_IDEATHON_API_URL || "";
 
   /* ---- Handlers ---- */
   const handleCopyUpi = () => {
@@ -138,6 +182,22 @@ export default function EventRegistrationForm({
       setCopied(false);
       setShowCopyToast(false);
     }, 2000);
+  };
+
+  const handleDownloadTicket = async () => {
+    if (!ticketRef.current) return;
+    try {
+      const dataUrl = await toPng(ticketRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+      });
+      const link = document.createElement("a");
+      link.download = `${(ticketData?.eventName || title).replace(/\s+/g, "_")}_Ticket.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Failed to download ticket image:", err);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +226,7 @@ export default function EventRegistrationForm({
   const updateTeammate = useCallback(
     (
       index: number,
-      field: "name" | "email" | "phone" | "college",
+      field: "name" | "email" | "phone" | "college" | "gender",
       value: string,
     ) => {
       setTeammates((prev) => {
@@ -188,6 +248,8 @@ export default function EventRegistrationForm({
     if (!teamName.trim()) return setFormError("Team name is required.");
     if (!leaderName.trim())
       return setFormError("Team leader's name is required.");
+    if (showGender && !leaderGender)
+      return setFormError("Please select a gender.");
     if (!college.trim()) return setFormError("College name is required.");
     if (!email.trim() || !isValidEmail(email))
       return setFormError("Enter a valid email address.");
@@ -204,6 +266,8 @@ export default function EventRegistrationForm({
       const mate = teammates[i];
       if (!mate.name.trim())
         return setFormError(`Teammate ${i + 1}'s name is required.`);
+      if (showGender && !mate.gender)
+        return setFormError(`Select gender for Teammate ${i + 1}.`);
       if (!mate.college.trim())
         return setFormError(`Teammate ${i + 1}'s college is required.`);
       if (!mate.email.trim() || !isValidEmail(mate.email))
@@ -261,26 +325,43 @@ export default function EventRegistrationForm({
       }
 
       /* Build payload */
+      const leaderData: Record<string, string> = {
+        name: leaderName.trim(),
+        email: email.trim(),
+        phone: "+91" + phone.trim(),
+        college: college.trim(),
+      };
+      if (showGender) leaderData.gender = leaderGender.toLowerCase();
+
+      const calculatedTotalPaid =
+        totalPaidAmount !== undefined
+          ? totalPaidAmount
+          : requiresPayment
+            ? 20
+            : 0;
+
       const payload: Record<string, unknown> = {
+        game: gameName || title,
         teamName: teamName.trim(),
-        leader: {
-          name: leaderName.trim(),
-          email: email.trim(),
-          phone: "+91" + phone.trim(),
-          college: college.trim(),
-        },
-        teammates: teammates.map((t) => ({
-          name: t.name.trim(),
-          email: t.email.trim(),
-          phone: t.phone.trim(),
-          college: t.college.trim(),
-        })),
+        leader: leaderData,
+        teammates: teammates.map((t) => {
+          const td: Record<string, string> = {
+            name: t.name.trim(),
+            email: t.email.trim(),
+            phone: "+91" + t.phone.trim(),
+            college: t.college.trim(),
+          };
+          if (showGender) td.gender = t.gender.toLowerCase();
+          return td;
+        }),
+        totalPaid: calculatedTotalPaid,
+        isEarlyBird: Boolean(isEarlyBird),
       };
 
       if (requiresPayment) {
         payload.paymentScreenshot = objectKey;
         payload.upiId = upiId.trim();
-        payload.referralCode = referralCode.trim();
+        payload.referralCode = referralCode.trim() || null;
       }
 
       /* Register */
@@ -293,12 +374,23 @@ export default function EventRegistrationForm({
       const resData = await registerRes.json();
 
       if (registerRes.status === 200 || registerRes.status === 201) {
+        if (resData.ticket || resData.teamId) {
+          setTicketData({
+            message: resData.message,
+            teamId: resData.teamId,
+            ticket: resData.ticket,
+            eventName: resData.eventName || title,
+            teamName: resData.teamName || teamName.trim(),
+            game: resData.game,
+          });
+        }
         setSubmitStatus("success");
         setSubmitMessage(
           resData.message || `${title} Registration Submitted Successfully!`,
         );
         setTeamName("");
         setLeaderName("");
+        setLeaderGender("");
         setCollege("");
         setEmail("");
         setPhone("");
@@ -373,6 +465,65 @@ export default function EventRegistrationForm({
                   "Your registration has been recorded successfully."}
               </p>
 
+              {showTicket && ticketData?.ticket && (
+                <div className={styles.ticketCardWrapper}>
+                  <div ref={ticketRef} className={styles.ticketCard}>
+                    <div className={styles.ticketHeader}>
+                      <span className={styles.ticketEventBadge}>
+                        {ticketData.eventName || title}
+                      </span>
+                      <span className={styles.ticketBadgeTag}>
+                        OFFICIAL TICKET
+                      </span>
+                    </div>
+
+                    <div className={styles.ticketBody}>
+                      <div className={styles.ticketInfoGroup}>
+                        <div className={styles.ticketMetaItem}>
+                          <span className={styles.ticketMetaLabel}>
+                            Team / Participant
+                          </span>
+                          <strong className={styles.ticketMetaValue}>
+                            {ticketData.teamName || "Registered Participant"}
+                          </strong>
+                        </div>
+                        {ticketData.game && (
+                          <div className={styles.ticketMetaItem}>
+                            <span className={styles.ticketMetaLabel}>Game</span>
+                            <strong className={styles.ticketMetaValue}>
+                              {ticketData.game}
+                            </strong>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={styles.ticketQrContainer}>
+                        <QRCodeSVG
+                          value={ticketData.ticket}
+                          size={130}
+                          level="H"
+                          includeMargin={true}
+                          bgColor="#ffffff"
+                          fgColor="#1a1a1a"
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.ticketFooterNote}>
+                      Present this QR code at the venue for check-in
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleDownloadTicket}
+                    className={styles.downloadTicketBtn}
+                  >
+                    <FiDownload /> Download Ticket (PNG)
+                  </button>
+                </div>
+              )}
+
               {whatsappGroupUrl && (
                 <a
                   href={whatsappGroupUrl}
@@ -380,13 +531,17 @@ export default function EventRegistrationForm({
                   rel="noopener noreferrer"
                   className={styles.whatsappBtn}
                 >
-                  Join WhatsApp Group
+                  <FaWhatsapp />
+                  <span>Join WhatsApp Group</span>
                 </a>
               )}
 
               <button
                 type="button"
-                onClick={() => setSubmitStatus("idle")}
+                onClick={() => {
+                  setSubmitStatus("idle");
+                  setTicketData(null);
+                }}
                 className={styles.resetBtn}
               >
                 {resetButtonLabel}
@@ -430,6 +585,41 @@ export default function EventRegistrationForm({
                     required
                   />
                 </div>
+                {showGender ? (
+                  <div className={styles.field}>
+                    <label className={styles.label}>Gender</label>
+                    <select
+                      className={styles.select}
+                      value={leaderGender}
+                      onChange={(e) => setLeaderGender(e.target.value)}
+                      required
+                    >
+                      <option value="" disabled>
+                        Select Gender
+                      </option>
+                      {GENDER_OPTIONS.map((g) => (
+                        <option key={g} value={g}>
+                          {g}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className={styles.field}>
+                    <label className={styles.label}>College</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. CEC Chengannur"
+                      className={styles.input}
+                      value={college}
+                      onChange={(e) => setCollege(e.target.value)}
+                      required
+                    />
+                  </div>
+                )}
+              </div>
+
+              {showGender && (
                 <div className={styles.field}>
                   <label className={styles.label}>College</label>
                   <input
@@ -441,7 +631,7 @@ export default function EventRegistrationForm({
                     required
                   />
                 </div>
-              </div>
+              )}
 
               <div className={styles.row}>
                 <div className={styles.field}>
@@ -464,9 +654,7 @@ export default function EventRegistrationForm({
                       placeholder="9876543210"
                       className={styles.input}
                       value={phone}
-                      onChange={(e) =>
-                        setPhone(sanitizePhone(e.target.value))
-                      }
+                      onChange={(e) => setPhone(sanitizePhone(e.target.value))}
                       required
                     />
                   </div>
@@ -484,8 +672,7 @@ export default function EventRegistrationForm({
                     disabled={teammates.length >= maxTeammates}
                     className={styles.addTeammateBtn}
                   >
-                    <FiPlus /> Add Teammate ({teammates.length}/
-                    {maxTeammates})
+                    <FiPlus /> Add Teammate ({teammates.length}/{maxTeammates})
                   </button>
                 </div>
               </div>
@@ -514,18 +701,42 @@ export default function EventRegistrationForm({
                           <FiTrash2 /> Remove
                         </button>
                       </div>
-                      <div className={styles.field}>
-                        <label className={styles.label}>Full Name</label>
-                        <input
-                          type="text"
-                          placeholder="Full Name"
-                          className={styles.input}
-                          value={mate.name}
-                          onChange={(e) =>
-                            updateTeammate(idx, "name", e.target.value)
-                          }
-                          required
-                        />
+                      <div className={styles.row}>
+                        <div className={styles.field}>
+                          <label className={styles.label}>Full Name</label>
+                          <input
+                            type="text"
+                            placeholder="Full Name"
+                            className={styles.input}
+                            value={mate.name}
+                            onChange={(e) =>
+                              updateTeammate(idx, "name", e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        {showGender && (
+                          <div className={styles.field}>
+                            <label className={styles.label}>Gender</label>
+                            <select
+                              className={styles.select}
+                              value={mate.gender}
+                              onChange={(e) =>
+                                updateTeammate(idx, "gender", e.target.value)
+                              }
+                              required
+                            >
+                              <option value="" disabled>
+                                Select Gender
+                              </option>
+                              {GENDER_OPTIONS.map((g) => (
+                                <option key={g} value={g}>
+                                  {g}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
                       </div>
                       <div className={styles.field}>
                         <label className={styles.label}>College</label>
@@ -736,9 +947,7 @@ export default function EventRegistrationForm({
               )}
 
               {/* ===== Error & Submit ===== */}
-              {formError && (
-                <p className={styles.formErrorText}>{formError}</p>
-              )}
+              {formError && <p className={styles.formErrorText}>{formError}</p>}
 
               <button
                 type="submit"
