@@ -1,4 +1,4 @@
-.ideathonPage {
+.startupDnaPage {
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -16,7 +16,7 @@
   justify-content: center;
 }
 
-.ideathonPage::before {
+.startupDnaPage::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -30,14 +30,14 @@
 
 /* ===== Tablet (≤ 768px) ===== */
 @media screen and (max-width: 768px) {
-  .ideathonPage {
+  .startupDnaPage {
     padding: 7rem 1rem 4rem;
   }
 }
 
 /* ===== Small phones (≤ 480px) ===== */
 @media screen and (max-width: 480px) {
-  .ideathonPage {
+  .startupDnaPage {
     padding: 6rem 0.5rem 3rem;
   }
 }

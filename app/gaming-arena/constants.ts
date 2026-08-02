@@ -12,8 +12,8 @@ export const UPI_IDS = {
 } as const;
 
 export const QR_CODES = {
-  mini_militia: "/assets/blessy_qr.jpeg",
-  efootball: "/assets/aishwarya_qr.jpeg",
+  mini_militia: "/qr/blessy_qr.webp",
+  efootball: "/qr/aishwarya_qr.webp",
 } as const;
 
 export const WHATSAPP_GROUPS = {
