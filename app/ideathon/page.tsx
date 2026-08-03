@@ -12,15 +12,6 @@ export default function IdeathonPage() {
   useEffect(() => {
     const deadline = new Date("2026-08-04T00:00:00"); // turns 12am in the next day
     setIsClosed(new Date() > deadline);
-
-    const interval = setInterval(() => {
-      if (new Date() > deadline) {
-        setIsClosed(true);
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
