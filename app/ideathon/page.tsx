@@ -10,7 +10,7 @@ export default function IdeathonPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    const deadline = new Date("2026-08-03T20:59:59");
+    const deadline = new Date("2026-08-31T20:59:59");
     setIsClosed(new Date() > deadline);
   }, []);
 
@@ -71,7 +71,7 @@ export default function IdeathonPage() {
                 if they develop a better concept.
               </li>
               <li>
-                Registration Deadline: <strong>3rd August 2026</strong>
+                Registration Deadline: <strong>31st August 2026</strong>
               </li>
               <li>
                 Further details regarding selection and final round
