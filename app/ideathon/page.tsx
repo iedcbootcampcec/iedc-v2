@@ -10,8 +10,17 @@ export default function IdeathonPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    const deadline = new Date("2026-08-31T20:59:59");
+    const deadline = new Date("2026-08-04T00:00:00"); // turns 12am in the next day
     setIsClosed(new Date() > deadline);
+
+    const interval = setInterval(() => {
+      if (new Date() > deadline) {
+        setIsClosed(true);
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -21,6 +30,11 @@ export default function IdeathonPage() {
         <EventRegistrationForm
           title="IDEATHON"
           subtitle="Turn your ideas into impact. Register now for IDEATHON '26 and showcase your innovation on a state-level platform."
+          pocs={[
+            { name: "Aiswarya", phone: "+91 95391 62654" },
+            { name: "Blessy", phone: "+91 77368 59869" },
+            { name: "Christo", phone: "+91 95269 28521" },
+          ]}
           leaderLabel="Team Leader Details"
           apiBaseUrl={process.env.NEXT_PUBLIC_IDEATHON_API_URL!}
           maxTeammates={3}
@@ -71,7 +85,7 @@ export default function IdeathonPage() {
                 if they develop a better concept.
               </li>
               <li>
-                Registration Deadline: <strong>31st August 2026</strong>
+                Registration Deadline: <strong>3rd August 2026</strong>
               </li>
               <li>
                 Further details regarding selection and final round

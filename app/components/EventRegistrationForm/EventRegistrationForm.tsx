@@ -21,12 +21,18 @@ import {
   FiDownload,
   FiChevronDown,
   FiChevronUp,
+  FiPhone,
 } from "react-icons/fi";
 import * as Select from "@radix-ui/react-select";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
+
+export interface POC {
+  name: string;
+  phone: string;
+}
 
 export interface TicketData {
   message?: string;
@@ -47,6 +53,7 @@ export interface EventRegistrationFormProps {
   /* Content */
   title: string;
   subtitle: string;
+  pocs?: POC[];
 
   /* Team config */
   leaderLabel?: string;
@@ -108,6 +115,7 @@ const sanitizePhone = (val: string) => val.replace(/\D/g, "").slice(0, 10);
 export default function EventRegistrationForm({
   title,
   subtitle,
+  pocs,
   leaderLabel = "Team Leader Details",
   maxTeammates,
   minTeammates = 0,
@@ -543,6 +551,27 @@ export default function EventRegistrationForm({
                 {closedMessage ||
                   "Registration is currently closed. We are no longer accepting submissions."}
               </p>
+
+              {pocs && pocs.length > 0 && (
+                <div className={styles.closedPocBox}>
+                  <span className={styles.pocBoxTitle}>
+                    For any queries, contact POCs:
+                  </span>
+                  <ul className={styles.pocBoxList}>
+                    {pocs.map((poc, idx) => (
+                      <li key={idx} className={styles.pocItem}>
+                        <span className={styles.pocName}>{poc.name}:</span>{" "}
+                        <a
+                          href={`tel:${poc.phone.replace(/\s+/g, "")}`}
+                          className={styles.pocPhone}
+                        >
+                          {poc.phone}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           ) : submitStatus === "success" ? (
             <div className={styles.successScreen}>
@@ -1035,6 +1064,27 @@ export default function EventRegistrationForm({
 
               <div className={styles.guidelinesInlineBox}>
                 <ol className={styles.guidelinesInlineList}>{guidelines}</ol>
+
+                {pocs && pocs.length > 0 && (
+                  <div className={styles.pocContainer}>
+                    <span className={styles.pocBoxTitle}>
+                      Points of Contact (POC):
+                    </span>
+                    <ul className={styles.pocBoxList}>
+                      {pocs.map((poc, idx) => (
+                        <li key={idx} className={styles.pocItem}>
+                          <span className={styles.pocName}>{poc.name}:</span>{" "}
+                          <a
+                            href={`tel:${poc.phone.replace(/\s+/g, "")}`}
+                            className={styles.pocPhone}
+                          >
+                            {poc.phone}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <div className={styles.agreeContainer}>
                   <input
