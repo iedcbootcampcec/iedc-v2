@@ -10,7 +10,7 @@ export default function IdeathonPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    const deadline = new Date("2026-08-04T00:00:00"); // turns 12am in the next day
+    const deadline = new Date("2026-08-09T00:00:00"); // turns 12am in the next day
     setIsClosed(new Date() > deadline);
   }, []);
 
