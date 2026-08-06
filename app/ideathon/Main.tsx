@@ -21,7 +21,7 @@ export default function IdeathonPage({
   const date = formater(deadline);
 
   useEffect(() => {
-    setIsClosed(new Date() > new Date(deadline));
+    if(!closed) setIsClosed(new Date() > new Date(deadline));
   }, []);
 
   return (
