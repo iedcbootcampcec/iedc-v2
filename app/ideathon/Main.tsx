@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EventRegistrationForm from "../components/EventRegistrationForm";
 import styles from "./ideathon.module.css";
+import { formater } from "./services/dateFormater";
 
 const DEFAULT_DEADLINE = "2026-08-20T20:59:59";
 
@@ -16,6 +17,8 @@ export default function IdeathonPage({
   deadline?: string;
 }) {
   const [isClosed, setIsClosed] = useState(closed);
+
+  const date = formater(deadline);
 
   useEffect(() => {
     setIsClosed(new Date() > new Date(deadline));
@@ -83,7 +86,7 @@ export default function IdeathonPage({
                 if they develop a better concept.
               </li>
               <li>
-                Registration Deadline: <strong>20th August 2026</strong>
+                Registration Deadline: <strong>{date}</strong>
               </li>
               <li>
                 Further details regarding selection and final round
