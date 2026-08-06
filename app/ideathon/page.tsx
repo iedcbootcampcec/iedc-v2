@@ -10,7 +10,7 @@ export default function IdeathonPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    const deadline = new Date("2026-08-09T00:00:00"); // turns 12am in the next day
+    const deadline = new Date("2026-08-20T20:59:59");
     setIsClosed(new Date() > deadline);
   }, []);
 
@@ -60,7 +60,7 @@ export default function IdeathonPage() {
               <li>
                 The{" "}
                 <strong>
-                  Final Round will be held on 8th August 2026 at College of
+                  Final Round will be held on 6th September 2026 at College of
                   Engineering Chengannur (CEC).
                 </strong>
               </li>
@@ -76,7 +76,7 @@ export default function IdeathonPage() {
                 if they develop a better concept.
               </li>
               <li>
-                Registration Deadline: <strong>3rd August 2026</strong>
+                Registration Deadline: <strong>20th August 2026</strong>
               </li>
               <li>
                 Further details regarding selection and final round
