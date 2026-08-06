@@ -21,6 +21,11 @@ export default function IdeathonPage() {
         <EventRegistrationForm
           title="IDEATHON"
           subtitle="Turn your ideas into impact. Register now for IDEATHON '26 and showcase your innovation on a state-level platform."
+          pocs={[
+            { name: "Aiswarya", phone: "+91 95391 62654" },
+            { name: "Blessy", phone: "+91 77368 59869" },
+            { name: "Christo", phone: "+91 95269 28521" },
+          ]}
           leaderLabel="Team Leader Details"
           apiBaseUrl={process.env.NEXT_PUBLIC_IDEATHON_API_URL!}
           maxTeammates={3}

@@ -1272,3 +1272,69 @@
   margin: 0;
   line-height: 1.5;
 }
+
+/* ===== Points of Contact (POC) ===== */
+.pocContainer {
+  background: #ffffff;
+  border: 2px solid var(--color-primary);
+  padding: 1rem 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.closedPocBox {
+  margin-top: 1.75rem;
+  background: #ffffff;
+  border: 2px solid var(--color-primary);
+  box-shadow: 4px 4px 0 var(--color-primary);
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 520px;
+  text-align: left;
+}
+
+.pocBoxTitle {
+  display: block;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.pocBoxList {
+  list-style-type: disc;
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pocItem {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.88rem;
+  color: var(--color-primary);
+  line-height: 1.5;
+}
+
+.pocName {
+  font-weight: 700;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+}
+
+.pocPhone {
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.pocPhone:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
