@@ -728,13 +728,8 @@ export default function GamingArenaPage() {
                           Teams must have <strong>3–6 players</strong>.
                         </li>
                         <li>
-                          <strong>Tournament Mode:</strong> Played in{" "}
-                          <strong>hybrid mode</strong> (Online qualifiers followed by{" "}
-                          <strong>offline semi-finals and finals</strong> at the{" "}
-                          <strong>
-                            College of Engineering Chengannur on 8th August
-                          </strong>
-                          ).
+                          <strong>Tournament Mode:</strong> Played completely{" "}
+                          <strong>online</strong>.
                         </li>
                         <li>
                           Teams must <strong>report on time</strong> as per the
@@ -777,16 +772,8 @@ export default function GamingArenaPage() {
                           This is an <strong>individual event</strong>.
                         </li>
                         <li>
-                          <strong>Tournament Mode:</strong> Played in{" "}
-                          <strong>hybrid mode</strong> (Online qualifiers followed by{" "}
-                          <strong>
-                            offline quarter-finals, semi-finals and finals
-                          </strong>{" "}
-                          at the{" "}
-                          <strong>
-                            College of Engineering Chengannur on 8th August
-                          </strong>
-                          ).
+                          <strong>Tournament Mode:</strong> Played completely{" "}
+                          <strong>online</strong>.
                         </li>
                         <li>
                           Participants must <strong>report on time</strong> as
