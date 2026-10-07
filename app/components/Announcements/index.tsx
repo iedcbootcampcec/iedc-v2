@@ -8,50 +8,9 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowUpRight } from "react-icons/fi";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+import { events } from "@data/events";
 
-const events = [
-  {
-    id: 1,
-    title: "Ideathon",
-    category: "Hackathon",
-    when: "Aug 01",
-    time: "9:30 AM",
-    image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "CodeLess 2.0",
-    category: "Workshop",
-    when: "Jun 15",
-    time: "10:00 AM",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Project Expo 2.0",
-    category: "Exhibition",
-    when: "Mar 24",
-    time: "9:30 AM",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Rithu",
-    category: "Summit",
-    when: "Mar 03",
-    time: "10:00 AM",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Tinkherhack",
-    category: "Women Hackathon",
-    when: "Feb 27",
-    time: "9:30 AM",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Announcements() {
   const containerRef = useRef<HTMLElement>(null);
@@ -98,9 +57,8 @@ export default function Announcements() {
 
         <div className={styles.rightCol}>
           <div className={styles.listContainer}>
-            {events.slice(0, 5).map((event) => {
-              const isIdeathon = event.title.toLowerCase() === "ideathon";
-              const href = isIdeathon ? "/ideathon" : "/#events";
+            {events.map((event) => {
+              const href = ("link" in event && typeof event.link === "string") ? event.link : "/#events";
               return (
                 <Link
                   href={href}

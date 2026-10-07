@@ -1,6 +1,16 @@
 {
     "achievements": [
         {
+            "title": "Jeevan George John - Selected into NEST Team",
+            "desc": "IEDC BOOTCAMP CEC congratulates Jeevan George John on being selected into the NEST Team, a state-level student team supported by the Kerala Startup Mission.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/jeevan_nest.webp"
+        },
+        {
+            "title": "Keerthana S - Selected into WINGS Team",
+            "desc": "IEDC BOOTCAMP CEC congratulates Keerthana S on being selected into the WINGS Team, a state-level student team supported by the Kerala Startup Mission.",
+            "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/keerthana_wings.webp"
+        },
+        {
             "title": "A New Journey Begins for Lekshmipriya S & Abhijith J Nair at IEDC NEST",
             "desc": "IEDC BOOTCAMP CEC is excited to announce that Lekshmipriya S and Abhijith J Nair are beginning their new journey at IEDC NEST.",
             "image_url": "https://cdn.jsdelivr.net/gh/iedcbootcampcec/iedc-web-assets@main/achievements/new_journey_nest.webp"
