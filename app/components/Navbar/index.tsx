@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import IedcLogo from "../logos/iedcLogo";
 import styles from "./Navbar.module.css";
 
@@ -58,16 +59,17 @@ export default function Navbar({ isMenuShown = true }: NavbarProps) {
   }, []);
 
   useEffect(() => {
+    const navElement = navRef.current;
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      navRef.current?.classList.add(styles.navbarMobileMenuOpen);
+      navElement?.classList.add(styles.navbarMobileMenuOpen);
     } else {
       document.body.style.overflow = "";
-      navRef.current?.classList.remove(styles.navbarMobileMenuOpen);
+      navElement?.classList.remove(styles.navbarMobileMenuOpen);
     }
     return () => {
       document.body.style.overflow = "";
-      navRef.current?.classList.remove(styles.navbarMobileMenuOpen);
+      navElement?.classList.remove(styles.navbarMobileMenuOpen);
     };
   }, [isOpen]);
 
@@ -103,13 +105,13 @@ export default function Navbar({ isMenuShown = true }: NavbarProps) {
         id="navbar-ref"
       >
         {/* ── Logo ── */}
-        <a
+        <Link
           href="/#hero"
           className={`${styles.logo} ${isOpen ? styles.logoOpen : ""}`}
           onClick={handleNavClick}
         >
           <IedcLogo size={"5rem"} />
-        </a>
+        </Link>
 
         {/* ── Desktop links ── */}
         {isMenuShown && (
@@ -129,9 +131,9 @@ export default function Navbar({ isMenuShown = true }: NavbarProps) {
             </ul>
 
             {/* ── Desktop Join CTA ── */}
-            <button className={styles.joinCta} type="button">
+            <Link href="/join-us" className={styles.joinCta}>
               Join Us
-            </button>
+            </Link>
 
             {/* ── Hamburger (mobile only) ── */}
             <button
@@ -172,13 +174,13 @@ export default function Navbar({ isMenuShown = true }: NavbarProps) {
           {/* ── Mobile bottom info ── */}
           <div className={styles.mobileFooter}>
             <span className={styles.mobileFooterText}>EST. 2015 — CEC</span>
-            <a
-              href="/#hero"
+            <Link
+              href="/join-us"
               className={styles.mobileFooterCta}
               onClick={closeMenu}
             >
               Join the bootcamp →
-            </a>
+            </Link>
           </div>
         </div>
       )}

@@ -1,0 +1,108 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.5rem 0.5rem;
+  color: var(--color-primary);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.75rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.backLink:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.groupTitle {
+  margin-bottom: 1.25rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.optional {
+  color: var(--text-subtle);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.teamSection {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-primary);
+}
+
+.teammate {
+  padding: 1rem;
+  border: 2px solid var(--color-primary);
+  background: #fffdf8;
+}
+
+.memberLegend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 100%;
+  padding: 0 0.4rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.removeButton,
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-primary);
+  background: var(--color-white);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.removeButton {
+  padding: 0.3rem 0.4rem;
+  border: 0;
+  text-decoration: underline;
+}
+
+.addButton {
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-primary);
+}
+
+.addButton:hover:not(:disabled) {
+  background: var(--color-accent);
+}
+
+.addButton:disabled,
+.removeButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.addButton:focus-visible,
+.removeButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.memberCount {
+  margin-bottom: 0.75rem;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+}
+
+@media screen and (max-width: 600px) {
+  .teammate {
+    padding: 0.75rem;
+  }
+}

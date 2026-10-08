@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
+import StudentIdeas from "./components/StudentIdeas";
 import Mascot from "./components/Mascot";
 import { FiScissors } from "react-icons/fi";
 import Announcements from "./components/Announcements";
@@ -38,6 +39,7 @@ export default function Home() {
       </div>
 
       <About />
+      <StudentIdeas />
       <Mascot />
       <MarqueeBelt />
       <Announcements />
