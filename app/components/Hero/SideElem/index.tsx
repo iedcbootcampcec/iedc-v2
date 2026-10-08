@@ -214,21 +214,51 @@ export default function SideElem() {
         setIsGsapReady(true);
 
         ctx = gsap.context(() => {
-          const glassEl = containerRef.current?.querySelector("#glass") as SVGPathElement;
-          const glassShadowEl = containerRef.current?.querySelector("#glass-shadow") as SVGPathElement;
-          const filamentEl = containerRef.current?.querySelector("#filament") as SVGPathElement;
-          const baseEl = containerRef.current?.querySelector("#base") as SVGGElement;
-          const raysEl = containerRef.current?.querySelector("#rays") as SVGGElement;
-          const glowEl = containerRef.current?.querySelector("#glow") as SVGGElement;
-          const flashRingEl = containerRef.current?.querySelector("#flash-ring") as SVGPathElement;
-          const gearHoleEl = containerRef.current?.querySelector("#gear-hole") as SVGPathElement;
-          const gear2El = containerRef.current?.querySelector("#gear2") as SVGPathElement;
-          const gear2ShadowEl = containerRef.current?.querySelector("#gear2-shadow") as SVGPathElement;
-          const gear2HoleEl = containerRef.current?.querySelector("#gear2-hole") as SVGCircleElement;
-          const burstGroupEl = containerRef.current?.querySelector("#burst-group") as SVGGElement;
-          const rocketGroupEl = containerRef.current?.querySelector("#rocket") as SVGGElement;
-          const flameEl = containerRef.current?.querySelector("#flame") as SVGPathElement;
-          const shippedStickerEl = containerRef.current?.querySelector("#shipped-sticker") as SVGGElement;
+          const glassEl = containerRef.current?.querySelector(
+            "#glass",
+          ) as SVGPathElement;
+          const glassShadowEl = containerRef.current?.querySelector(
+            "#glass-shadow",
+          ) as SVGPathElement;
+          const filamentEl = containerRef.current?.querySelector(
+            "#filament",
+          ) as SVGPathElement;
+          const baseEl = containerRef.current?.querySelector(
+            "#base",
+          ) as SVGGElement;
+          const raysEl = containerRef.current?.querySelector(
+            "#rays",
+          ) as SVGGElement;
+          const glowEl = containerRef.current?.querySelector(
+            "#glow",
+          ) as SVGGElement;
+          const flashRingEl = containerRef.current?.querySelector(
+            "#flash-ring",
+          ) as SVGPathElement;
+          const gearHoleEl = containerRef.current?.querySelector(
+            "#gear-hole",
+          ) as SVGPathElement;
+          const gear2El = containerRef.current?.querySelector(
+            "#gear2",
+          ) as SVGPathElement;
+          const gear2ShadowEl = containerRef.current?.querySelector(
+            "#gear2-shadow",
+          ) as SVGPathElement;
+          const gear2HoleEl = containerRef.current?.querySelector(
+            "#gear2-hole",
+          ) as SVGCircleElement;
+          const burstGroupEl = containerRef.current?.querySelector(
+            "#burst-group",
+          ) as SVGGElement;
+          const rocketGroupEl = containerRef.current?.querySelector(
+            "#rocket",
+          ) as SVGGElement;
+          const flameEl = containerRef.current?.querySelector(
+            "#flame",
+          ) as SVGPathElement;
+          const shippedStickerEl = containerRef.current?.querySelector(
+            "#shipped-sticker",
+          ) as SVGGElement;
 
           if (!glassEl || !glassShadowEl) return;
 
@@ -261,17 +291,64 @@ export default function SideElem() {
             const pLen = (p as SVGPathElement).getTotalLength() || 50;
             gsap.set(p, { strokeDasharray: pLen, strokeDashoffset: pLen });
           });
-          if (raysEl) gsap.set(raysEl.children, { scale: 0, opacity: 0, svgOrigin: "150 142" });
-          if (glowEl) gsap.set(glowEl, { scale: 0.85, opacity: 0, svgOrigin: "150 142" });
-          if (flashRingEl) gsap.set(flashRingEl, { scale: 0.1, opacity: 0, svgOrigin: "150 150" });
-          if (gearHoleEl) gsap.set(gearHoleEl, { scale: 0, opacity: 0, svgOrigin: "150 150" });
-          if (gear2El) gsap.set(gear2El, { scale: 0, opacity: 0, svgOrigin: "216 92" });
-          if (gear2ShadowEl) gsap.set(gear2ShadowEl, { scale: 0, opacity: 0, svgOrigin: "222 98" });
-          if (gear2HoleEl) gsap.set(gear2HoleEl, { scale: 0, opacity: 0, svgOrigin: "216 92" });
-          if (burstGroupEl) gsap.set(burstGroupEl, { scale: 0.2, opacity: 0, svgOrigin: "150 150" });
-          if (rocketGroupEl) gsap.set(rocketGroupEl, { scale: 0, opacity: 0, x: 0, y: 0, rotation: 0, svgOrigin: "150 150" });
-          if (flameEl) gsap.set(flameEl, { opacity: 0, scaleY: 1, svgOrigin: "150 192" });
-          if (shippedStickerEl) gsap.set(shippedStickerEl, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "147 147" });
+          if (raysEl)
+            gsap.set(raysEl.children, {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "150 142",
+            });
+          if (glowEl)
+            gsap.set(glowEl, { scale: 0.85, opacity: 0, svgOrigin: "150 142" });
+          if (flashRingEl)
+            gsap.set(flashRingEl, {
+              scale: 0.1,
+              opacity: 0,
+              svgOrigin: "150 150",
+            });
+          if (gearHoleEl)
+            gsap.set(gearHoleEl, {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "150 150",
+            });
+          if (gear2El)
+            gsap.set(gear2El, { scale: 0, opacity: 0, svgOrigin: "216 92" });
+          if (gear2ShadowEl)
+            gsap.set(gear2ShadowEl, {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "222 98",
+            });
+          if (gear2HoleEl)
+            gsap.set(gear2HoleEl, {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "216 92",
+            });
+          if (burstGroupEl)
+            gsap.set(burstGroupEl, {
+              scale: 0.2,
+              opacity: 0,
+              svgOrigin: "150 150",
+            });
+          if (rocketGroupEl)
+            gsap.set(rocketGroupEl, {
+              scale: 0,
+              opacity: 0,
+              x: 0,
+              y: 0,
+              rotation: 0,
+              svgOrigin: "150 150",
+            });
+          if (flameEl)
+            gsap.set(flameEl, { opacity: 0, scaleY: 1, svgOrigin: "150 192" });
+          if (shippedStickerEl)
+            gsap.set(shippedStickerEl, {
+              scale: 0,
+              opacity: 0,
+              rotation: 0,
+              svgOrigin: "147 147",
+            });
 
           // -----------------------------------------------------------------
           // TIMELINE: ~8s Total Loop
@@ -286,44 +363,103 @@ export default function SideElem() {
 
           /* --- STAGE 1: BULB (0s to 2.6s) --- */
           // Draw glass outline with stroke-dashoffset
-          tl.to(glassEl, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut" }, 0);
-          tl.to(glassShadowEl, { opacity: 1, duration: 0.7, ease: "power2.out" }, 0.4);
+          tl.to(
+            glassEl,
+            { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut" },
+            0,
+          );
+          tl.to(
+            glassShadowEl,
+            { opacity: 1, duration: 0.7, ease: "power2.out" },
+            0.4,
+          );
 
           // Draw base and filament
           if (filamentEl) {
-            tl.to(filamentEl, { strokeDashoffset: 0, duration: 0.65, ease: "power2.out" }, 0.75);
+            tl.to(
+              filamentEl,
+              { strokeDashoffset: 0, duration: 0.65, ease: "power2.out" },
+              0.75,
+            );
           }
           if (basePaths.length > 0) {
-            tl.to(basePaths, { strokeDashoffset: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, 0.85);
+            tl.to(
+              basePaths,
+              {
+                strokeDashoffset: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out",
+              },
+              0.85,
+            );
           }
 
           // Fill mustard
-          tl.to(glassEl, { fillOpacity: 1, duration: 0.55, ease: "power1.out" }, 1.3);
+          tl.to(
+            glassEl,
+            { fillOpacity: 1, duration: 0.55, ease: "power1.out" },
+            1.3,
+          );
 
           // Glow pulses 0.9 -> 1.15 -> 1
           if (glowEl) {
-            tl.to(glowEl, { opacity: 0.85, scale: 1.15, svgOrigin: "150 142", duration: 0.55, ease: "power2.out" }, 1.35);
-            tl.to(glowEl, { scale: 1.0, svgOrigin: "150 142", duration: 0.45, ease: "power1.inOut" }, 1.9);
+            tl.to(
+              glowEl,
+              {
+                opacity: 0.85,
+                scale: 1.15,
+                svgOrigin: "150 142",
+                duration: 0.55,
+                ease: "power2.out",
+              },
+              1.35,
+            );
+            tl.to(
+              glowEl,
+              {
+                scale: 1.0,
+                svgOrigin: "150 142",
+                duration: 0.45,
+                ease: "power1.inOut",
+              },
+              1.9,
+            );
           }
 
           // Ray dashes pop in with 0.05s stagger
           if (raysEl) {
             tl.to(
               raysEl.children,
-              { scale: 1, opacity: 1, svgOrigin: "150 142", duration: 0.35, stagger: 0.05, ease: "back.out(2)" },
+              {
+                scale: 1,
+                opacity: 1,
+                svgOrigin: "150 142",
+                duration: 0.35,
+                stagger: 0.05,
+                ease: "back.out(2)",
+              },
               1.45,
             );
           }
 
           /* --- STAGE 2: MORPH (2.6s to 3.6s) --- */
           // Fade out bulb-only parts (0.3s)
-          tl.to([filamentEl, baseEl, raysEl, glowEl], { opacity: 0, duration: 0.3, ease: "power2.in" }, 2.6);
+          tl.to(
+            [filamentEl, baseEl, raysEl, glowEl],
+            { opacity: 0, duration: 0.3, ease: "power2.in" },
+            2.6,
+          );
 
           // True MorphSVG: #glass -> #gear and #glass-shadow -> #gear-shadow
           tl.to(
             glassEl,
             {
-              morphSVG: { shape: "#gear", type: "rotational", shapeIndex: "auto" },
+              morphSVG: {
+                shape: "#gear",
+                type: "rotational",
+                shapeIndex: "auto",
+              },
               duration: 0.9,
               ease: "power2.inOut",
             },
@@ -332,7 +468,11 @@ export default function SideElem() {
           tl.to(
             glassShadowEl,
             {
-              morphSVG: { shape: "#gear-shadow", type: "rotational", shapeIndex: "auto" },
+              morphSVG: {
+                shape: "#gear-shadow",
+                type: "rotational",
+                shapeIndex: "auto",
+              },
               duration: 0.9,
               ease: "power2.inOut",
             },
@@ -340,69 +480,240 @@ export default function SideElem() {
           );
 
           // Scale pulse during morph (1 -> 1.12 -> 1) centered at (150, 150) and (156, 156)
-          tl.to(glassEl, { scale: 1.12, svgOrigin: "150 150", duration: 0.45, ease: "power1.out" }, 2.6);
-          tl.to(glassShadowEl, { scale: 1.12, svgOrigin: "156 156", duration: 0.45, ease: "power1.out" }, 2.6);
-          tl.to(glassEl, { scale: 1.0, svgOrigin: "150 150", duration: 0.45, ease: "power1.in" }, 3.05);
-          tl.to(glassShadowEl, { scale: 1.0, svgOrigin: "156 156", duration: 0.45, ease: "power1.in" }, 3.05);
+          tl.to(
+            glassEl,
+            {
+              scale: 1.12,
+              svgOrigin: "150 150",
+              duration: 0.45,
+              ease: "power1.out",
+            },
+            2.6,
+          );
+          tl.to(
+            glassShadowEl,
+            {
+              scale: 1.12,
+              svgOrigin: "156 156",
+              duration: 0.45,
+              ease: "power1.out",
+            },
+            2.6,
+          );
+          tl.to(
+            glassEl,
+            {
+              scale: 1.0,
+              svgOrigin: "150 150",
+              duration: 0.45,
+              ease: "power1.in",
+            },
+            3.05,
+          );
+          tl.to(
+            glassShadowEl,
+            {
+              scale: 1.0,
+              svgOrigin: "156 156",
+              duration: 0.45,
+              ease: "power1.in",
+            },
+            3.05,
+          );
 
           // Mustard flash ring expanding from center
           if (flashRingEl) {
             tl.fromTo(
               flashRingEl,
-              { scale: 0.15, svgOrigin: "150 150", opacity: 0.95, strokeWidth: 8 },
-              { scale: 1.6, svgOrigin: "150 150", opacity: 0, strokeWidth: 1, duration: 0.65, ease: "power2.out" },
+              {
+                scale: 0.15,
+                svgOrigin: "150 150",
+                opacity: 0.95,
+                strokeWidth: 8,
+              },
+              {
+                scale: 1.6,
+                svgOrigin: "150 150",
+                opacity: 0,
+                strokeWidth: 1,
+                duration: 0.65,
+                ease: "power2.out",
+              },
               2.75,
             );
           }
 
           // Center axle hole appears at (150, 150)
           if (gearHoleEl) {
-            tl.to(gearHoleEl, { scale: 1, svgOrigin: "150 150", opacity: 1, duration: 0.4, ease: "back.out(1.7)" }, 3.1);
+            tl.to(
+              gearHoleEl,
+              {
+                scale: 1,
+                svgOrigin: "150 150",
+                opacity: 1,
+                duration: 0.4,
+                ease: "back.out(1.7)",
+              },
+              3.1,
+            );
           }
 
           /* --- STAGE 3: GEARS (3.6s to 5.4s) --- */
           // Main morphed gear rotates continuously (360deg, ease "none") exactly around its center (150, 150)
-          tl.to(glassEl, { rotation: "+=360", svgOrigin: "150 150", duration: 1.8, ease: "none" }, 3.6);
+          tl.to(
+            glassEl,
+            {
+              rotation: "+=360",
+              svgOrigin: "150 150",
+              duration: 1.8,
+              ease: "none",
+            },
+            3.6,
+          );
           // Hard shadow rotates on its own center (156, 156) so it never drifts from +6, +6!
-          tl.to(glassShadowEl, { rotation: "+=360", svgOrigin: "156 156", duration: 1.8, ease: "none" }, 3.6);
+          tl.to(
+            glassShadowEl,
+            {
+              rotation: "+=360",
+              svgOrigin: "156 156",
+              duration: 1.8,
+              ease: "none",
+            },
+            3.6,
+          );
           if (gearHoleEl) {
-            tl.to(gearHoleEl, { rotation: "+=360", svgOrigin: "150 150", duration: 1.8, ease: "none" }, 3.6);
+            tl.to(
+              gearHoleEl,
+              {
+                rotation: "+=360",
+                svgOrigin: "150 150",
+                duration: 1.8,
+                ease: "none",
+              },
+              3.6,
+            );
           }
 
           // Meshing gear #gear2 scales in at upper right and rotates counter-clockwise around (216, 92)
           if (gear2El) {
-            tl.to([gear2El, gear2HoleEl], { scale: 1, opacity: 1, svgOrigin: "216 92", duration: 0.4, ease: "back.out(1.8)" }, 3.6);
-            tl.to(gear2ShadowEl, { scale: 1, opacity: 1, svgOrigin: "222 98", duration: 0.4, ease: "back.out(1.8)" }, 3.6);
+            tl.to(
+              [gear2El, gear2HoleEl],
+              {
+                scale: 1,
+                opacity: 1,
+                svgOrigin: "216 92",
+                duration: 0.4,
+                ease: "back.out(1.8)",
+              },
+              3.6,
+            );
+            tl.to(
+              gear2ShadowEl,
+              {
+                scale: 1,
+                opacity: 1,
+                svgOrigin: "222 98",
+                duration: 0.4,
+                ease: "back.out(1.8)",
+              },
+              3.6,
+            );
 
-            tl.to([gear2El, gear2HoleEl], { rotation: "-=540", svgOrigin: "216 92", duration: 1.8, ease: "none" }, 3.6);
-            tl.to(gear2ShadowEl, { rotation: "-=540", svgOrigin: "222 98", duration: 1.8, ease: "none" }, 3.6);
+            tl.to(
+              [gear2El, gear2HoleEl],
+              {
+                rotation: "-=540",
+                svgOrigin: "216 92",
+                duration: 1.8,
+                ease: "none",
+              },
+              3.6,
+            );
+            tl.to(
+              gear2ShadowEl,
+              {
+                rotation: "-=540",
+                svgOrigin: "222 98",
+                duration: 1.8,
+                ease: "none",
+              },
+              3.6,
+            );
           }
 
           /* --- STAGE 4: TO ROCKET (5.2s to 6.0s) --- */
           // Gears shrink and fade with energetic comic dash burst
           tl.to(
             glassEl,
-            { scale: 0, opacity: 0, svgOrigin: "150 150", duration: 0.35, ease: "back.in(1.6)" },
+            {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "150 150",
+              duration: 0.35,
+              ease: "back.in(1.6)",
+            },
             5.2,
           );
           tl.to(
             glassShadowEl,
-            { scale: 0, opacity: 0, svgOrigin: "156 156", duration: 0.35, ease: "back.in(1.6)" },
+            {
+              scale: 0,
+              opacity: 0,
+              svgOrigin: "156 156",
+              duration: 0.35,
+              ease: "back.in(1.6)",
+            },
             5.2,
           );
           if (gearHoleEl) {
-            tl.to(gearHoleEl, { scale: 0, opacity: 0, svgOrigin: "150 150", duration: 0.35, ease: "back.in(1.6)" }, 5.2);
+            tl.to(
+              gearHoleEl,
+              {
+                scale: 0,
+                opacity: 0,
+                svgOrigin: "150 150",
+                duration: 0.35,
+                ease: "back.in(1.6)",
+              },
+              5.2,
+            );
           }
           if (gear2El) {
-            tl.to([gear2El, gear2HoleEl], { scale: 0, opacity: 0, svgOrigin: "216 92", duration: 0.35, ease: "back.in(1.6)" }, 5.2);
-            tl.to(gear2ShadowEl, { scale: 0, opacity: 0, svgOrigin: "222 98", duration: 0.35, ease: "back.in(1.6)" }, 5.2);
+            tl.to(
+              [gear2El, gear2HoleEl],
+              {
+                scale: 0,
+                opacity: 0,
+                svgOrigin: "216 92",
+                duration: 0.35,
+                ease: "back.in(1.6)",
+              },
+              5.2,
+            );
+            tl.to(
+              gear2ShadowEl,
+              {
+                scale: 0,
+                opacity: 0,
+                svgOrigin: "222 98",
+                duration: 0.35,
+                ease: "back.in(1.6)",
+              },
+              5.2,
+            );
           }
 
           if (burstGroupEl) {
             tl.fromTo(
               burstGroupEl,
               { scale: 0.2, svgOrigin: "150 150", opacity: 1 },
-              { scale: 1.45, svgOrigin: "150 150", opacity: 0, duration: 0.32, ease: "power2.out" },
+              {
+                scale: 1.45,
+                svgOrigin: "150 150",
+                opacity: 0,
+                duration: 0.32,
+                ease: "power2.out",
+              },
               5.35,
             );
           }
@@ -410,8 +721,21 @@ export default function SideElem() {
           // Rocket pops in from scale 0.3 with back.out(1.7) overshoot
           tl.fromTo(
             rocketGroupEl,
-            { scale: 0.3, opacity: 0, x: 0, y: 0, rotation: 0, svgOrigin: "150 150" },
-            { scale: 1.0, opacity: 1, svgOrigin: "150 150", duration: 0.45, ease: "back.out(1.7)" },
+            {
+              scale: 0.3,
+              opacity: 0,
+              x: 0,
+              y: 0,
+              rotation: 0,
+              svgOrigin: "150 150",
+            },
+            {
+              scale: 1.0,
+              opacity: 1,
+              svgOrigin: "150 150",
+              duration: 0.45,
+              ease: "back.out(1.7)",
+            },
             5.45,
           );
 
@@ -419,9 +743,23 @@ export default function SideElem() {
           // Rocket pre-launch shake and thruster ignition (5.9s - 6.15s)
           if (flameEl) {
             tl.to(flameEl, { opacity: 1, duration: 0.08 }, 5.9);
-            tl.to(flameEl, { scaleY: 1.4, svgOrigin: "150 192", duration: 0.05, repeat: 4, yoyo: true }, 5.92);
+            tl.to(
+              flameEl,
+              {
+                scaleY: 1.4,
+                svgOrigin: "150 192",
+                duration: 0.05,
+                repeat: 4,
+                yoyo: true,
+              },
+              5.92,
+            );
           }
-          tl.to(rocketGroupEl, { x: 2, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 5.92);
+          tl.to(
+            rocketGroupEl,
+            { x: 2, duration: 0.05, repeat: 4, yoyo: true, ease: "none" },
+            5.92,
+          );
 
           // ROCKET BLASTS OFF FIRST! Accelerates up and right, completely exiting the frame (6.15s - 6.65s)
           tl.to(
@@ -435,7 +773,14 @@ export default function SideElem() {
             tl.fromTo(
               shippedStickerEl,
               { scale: 2.3, opacity: 0, rotation: 14, svgOrigin: "147 147" },
-              { scale: 1.0, opacity: 1, rotation: -6, svgOrigin: "147 147", duration: 0.42, ease: "back.out(2.0)" },
+              {
+                scale: 1.0,
+                opacity: 1,
+                rotation: -6,
+                svgOrigin: "147 147",
+                duration: 0.42,
+                ease: "back.out(2.0)",
+              },
               6.7,
             );
           }
@@ -469,21 +814,61 @@ export default function SideElem() {
               svgOrigin: "156 156",
               opacity: 0,
             });
-            if (filamentEl) gsap.set(filamentEl, { strokeDashoffset: filLen, opacity: 1 });
+            if (filamentEl)
+              gsap.set(filamentEl, { strokeDashoffset: filLen, opacity: 1 });
             basePaths.forEach((p) => {
               const pLen = (p as SVGPathElement).getTotalLength() || 50;
               gsap.set(p, { strokeDashoffset: pLen, opacity: 1 });
             });
             if (raysEl) gsap.set(raysEl.children, { scale: 0, opacity: 0 });
             if (glowEl) gsap.set(glowEl, { scale: 0.85, opacity: 0 });
-            if (gearHoleEl) gsap.set(gearHoleEl, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "150 150" });
-            if (gear2El) gsap.set(gear2El, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "216 92" });
-            if (gear2ShadowEl) gsap.set(gear2ShadowEl, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "222 98" });
-            if (gear2HoleEl) gsap.set(gear2HoleEl, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "216 92" });
-            if (burstGroupEl) gsap.set(burstGroupEl, { scale: 0.2, opacity: 0 });
-            if (rocketGroupEl) gsap.set(rocketGroupEl, { scale: 0, opacity: 0, x: 0, y: 0, rotation: 0, svgOrigin: "150 150" });
+            if (gearHoleEl)
+              gsap.set(gearHoleEl, {
+                scale: 0,
+                opacity: 0,
+                rotation: 0,
+                svgOrigin: "150 150",
+              });
+            if (gear2El)
+              gsap.set(gear2El, {
+                scale: 0,
+                opacity: 0,
+                rotation: 0,
+                svgOrigin: "216 92",
+              });
+            if (gear2ShadowEl)
+              gsap.set(gear2ShadowEl, {
+                scale: 0,
+                opacity: 0,
+                rotation: 0,
+                svgOrigin: "222 98",
+              });
+            if (gear2HoleEl)
+              gsap.set(gear2HoleEl, {
+                scale: 0,
+                opacity: 0,
+                rotation: 0,
+                svgOrigin: "216 92",
+              });
+            if (burstGroupEl)
+              gsap.set(burstGroupEl, { scale: 0.2, opacity: 0 });
+            if (rocketGroupEl)
+              gsap.set(rocketGroupEl, {
+                scale: 0,
+                opacity: 0,
+                x: 0,
+                y: 0,
+                rotation: 0,
+                svgOrigin: "150 150",
+              });
             if (flameEl) gsap.set(flameEl, { opacity: 0, scaleY: 1 });
-            if (shippedStickerEl) gsap.set(shippedStickerEl, { scale: 0, opacity: 0, rotation: 0, svgOrigin: "147 147" });
+            if (shippedStickerEl)
+              gsap.set(shippedStickerEl, {
+                scale: 0,
+                opacity: 0,
+                rotation: 0,
+                svgOrigin: "147 147",
+              });
           }, 7.98);
         }, containerRef);
 
@@ -547,11 +932,11 @@ export default function SideElem() {
             ------------------------------------------------------------- */}
         <g id="static-frame" className={styles.staticFrame}>
           {/* Small gear base */}
-          <g id="static-gear-base" transform="translate(150 195) scale(0.62) translate(-150 -150)">
-            <path
-              d={GEAR_SHADOW_PATH}
-              fill="var(--color-primary, #1a1a1a)"
-            />
+          <g
+            id="static-gear-base"
+            transform="translate(150 195) scale(0.62) translate(-150 -150)"
+          >
+            <path d={GEAR_SHADOW_PATH} fill="var(--color-primary, #1a1a1a)" />
             <path
               d={GEAR_PATH}
               fill="var(--color-accent, #e8a020)"
@@ -714,7 +1099,12 @@ export default function SideElem() {
           />
 
           {/* Burst dashes for gear-to-rocket pop */}
-          <g id="burst-group" stroke="var(--color-primary, #1a1a1a)" strokeWidth="5.5" strokeLinecap="round">
+          <g
+            id="burst-group"
+            stroke="var(--color-primary, #1a1a1a)"
+            strokeWidth="5.5"
+            strokeLinecap="round"
+          >
             <path d="M 150 102 L 150 82" />
             <path d="M 188 114 L 202 100" />
             <path d="M 194 162 L 210 174" />
@@ -723,10 +1113,13 @@ export default function SideElem() {
             <path d="M 112 114 L 98 100" />
           </g>
 
-
-
           {/* Bulb ray dashes */}
-          <g id="rays" stroke="var(--color-primary, #1a1a1a)" strokeWidth="5.5" strokeLinecap="round">
+          <g
+            id="rays"
+            stroke="var(--color-primary, #1a1a1a)"
+            strokeWidth="5.5"
+            strokeLinecap="round"
+          >
             <path d="M 150 68 L 150 50" />
             <path d="M 188 78 L 202 64" />
             <path d="M 220 138 L 238 138" />
@@ -766,7 +1159,13 @@ export default function SideElem() {
           />
 
           {/* Bulb base screw threads (fade out on morph) */}
-          <g id="base" stroke="var(--color-primary, #1a1a1a)" strokeWidth="6" strokeLinecap="round" fill="none">
+          <g
+            id="base"
+            stroke="var(--color-primary, #1a1a1a)"
+            strokeWidth="6"
+            strokeLinecap="round"
+            fill="none"
+          >
             <path d="M 134 196 C 142 200 158 200 166 196" />
             <path d="M 137 204 C 143 208 157 208 163 204" />
             <path d="M 141 212 C 145 216 155 216 159 212" />
