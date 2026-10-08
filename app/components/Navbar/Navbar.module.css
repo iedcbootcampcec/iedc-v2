@@ -83,6 +83,7 @@
 
 /* ===== Join CTA Button ===== */
 .joinCta {
+  text-decoration: none;
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 0.78rem;
   font-weight: 700;
