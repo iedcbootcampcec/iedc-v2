@@ -216,7 +216,7 @@
 
 @media screen and (max-width: 600px) {
   .page {
-    padding: 2rem 1.2rem;
+    padding: 2rem 0.5rem;
   }
 
   .card {
@@ -227,7 +227,7 @@
   .cardHeader,
   .form,
   .review {
-    padding: 1.5rem 1.2rem;
+    padding: 1.5rem 0.75rem;
   }
 
   .cardTitle {
