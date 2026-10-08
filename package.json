@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "test:registration": "node --experimental-strip-types --test tests/registration.test.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

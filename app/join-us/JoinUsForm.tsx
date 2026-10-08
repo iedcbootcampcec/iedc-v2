@@ -47,12 +47,16 @@ const branches = [
   "Electrical Engineering",
 ];
 
-function BranchInput({
+export function BranchInput({
   error,
   onValueChange,
+  name = "branch",
+  id = "join-branch",
 }: {
   error?: string;
   onValueChange: () => void;
+  name?: string;
+  id?: string;
 }) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -75,17 +79,17 @@ function BranchInput({
     <div className={styles.branchControl}>
       <input
         ref={inputRef}
-        id="join-branch"
-        name="branch"
+        id={id}
+        name={name}
         role="combobox"
         aria-autocomplete="list"
         aria-expanded={showSuggestions}
         aria-invalid={error ? true : undefined}
-        aria-describedby={error ? "branch-error" : undefined}
-        aria-controls={showSuggestions ? "join-branch-options" : undefined}
+        aria-describedby={error ? `${name}-error` : undefined}
+        aria-controls={showSuggestions ? `${id}-options` : undefined}
         aria-activedescendant={
           showSuggestions && activeIndex >= 0
-            ? `branch-option-${activeIndex}`
+            ? `${id}-option-${activeIndex}`
             : undefined
         }
         autoComplete="off"
@@ -136,7 +140,7 @@ function BranchInput({
       />
       {showSuggestions && (
         <ul
-          id="join-branch-options"
+          id={`${id}-options`}
           role="listbox"
           aria-label="Branch suggestions"
           className={styles.suggestions}
@@ -144,7 +148,7 @@ function BranchInput({
           {suggestions.map((branch, index) => (
             <li key={branch} role="presentation">
               <button
-                id={`branch-option-${index}`}
+                id={`${id}-option-${index}`}
                 type="button"
                 role="option"
                 aria-selected={index === activeIndex}
