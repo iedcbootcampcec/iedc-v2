@@ -80,7 +80,8 @@
   text-transform: uppercase;
 }
 
-.field input {
+.field input,
+.field textarea {
   width: 100%;
   min-width: 0;
   padding: 0.85rem 0.9rem;
@@ -93,14 +94,28 @@
   transition: box-shadow 0.15s ease;
 }
 
-.field input::placeholder {
+.field input::placeholder,
+.field textarea::placeholder {
   color: #6b675f;
   font-size: 0.85rem;
 }
 
-.field input:focus {
+.field input:focus,
+.field textarea:focus {
   outline: none;
   box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 10rem;
+  line-height: 1.6;
+}
+
+.fieldHint {
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+  line-height: 1.6;
 }
 
 .form > .submitButton {
@@ -208,6 +223,7 @@
 }
 
 .reviewList dd {
+  white-space: pre-wrap;
   margin-top: 0.35rem;
   font-size: 0.95rem;
   line-height: 1.5;
@@ -242,6 +258,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .field input,
+  .field textarea,
   .submitButton {
     transition: none;
   }

@@ -12,12 +12,20 @@ export interface JoinUsDetails {
   branch: string;
 }
 
-const fields: { name: keyof JoinUsDetails; label: string }[] = [
+type SubmissionDetails = JoinUsDetails & { ideaTitle?: string; idea?: string };
+type FormField = { name: keyof SubmissionDetails; label: string };
+
+const studentFields: FormField[] = [
   { name: "name", label: "Name" },
   { name: "phone", label: "Phone number" },
   { name: "email", label: "Email" },
   { name: "class", label: "Class" },
   { name: "branch", label: "Branch" },
+];
+
+const ideaFields: FormField[] = [
+  { name: "ideaTitle", label: "Idea title" },
+  { name: "idea", label: "Your idea" },
 ];
 
 const branches = [
@@ -113,8 +121,10 @@ function BranchInput() {
   );
 }
 
-export default function JoinUsForm() {
-  const [details, setDetails] = useState<JoinUsDetails | null>(null);
+export default function JoinUsForm({ mode = "join" }: { mode?: "join" | "idea" }) {
+  const isIdeaForm = mode === "idea";
+  const fields = isIdeaForm ? [...studentFields, ...ideaFields] : studentFields;
+  const [details, setDetails] = useState<SubmissionDetails | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
 
@@ -122,12 +132,19 @@ export default function JoinUsForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const values = Object.fromEntries(
-      fields.map(({ name }) => [name, String(data.get(name) ?? "").trim()]),
-    ) as unknown as JoinUsDetails;
+    const readField = (name: keyof SubmissionDetails) =>
+      String(data.get(name) ?? "").trim();
+    const values: SubmissionDetails = {
+      name: readField("name"),
+      phone: readField("phone"),
+      email: readField("email"),
+      class: readField("class"),
+      branch: readField("branch"),
+      ...(isIdeaForm ? { ideaTitle: readField("ideaTitle"), idea: readField("idea") } : {}),
+    };
 
     for (const { name, label } of fields) {
-      const input = form.elements.namedItem(name) as HTMLInputElement;
+      const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
       input.setCustomValidity(
         values[name] ? "" : `Please enter your ${label.toLowerCase()}.`,
       );
@@ -145,6 +162,7 @@ export default function JoinUsForm() {
     );
     if (!phoneInput.reportValidity()) return;
 
+    // Connect the submission API here when it is ready.
     setDetails(values);
     requestAnimationFrame(() => reviewRef.current?.focus());
   };
@@ -162,7 +180,7 @@ export default function JoinUsForm() {
     <section className={styles.card} aria-labelledby="form-heading">
       <div className={styles.cardHeader}>
         <h1 id="form-heading" className={styles.cardTitle}>
-          JOIN THE BOOTCAMP
+          {isIdeaForm ? "SUBMIT YOUR IDEA" : "JOIN THE BOOTCAMP"}
         </h1>
       </div>
 
@@ -177,12 +195,28 @@ export default function JoinUsForm() {
           {fields.map(({ name, label }) => (
             <div
               key={name}
-              className={`${styles.field} ${["name", "class", "branch"].includes(name) ? styles.fullWidth : ""}`}
+              className={`${styles.field} ${!["phone", "email"].includes(name) ? styles.fullWidth : ""}`}
             >
               <label htmlFor={`join-${name}`}>
                 {label} <span aria-hidden="true">*</span>
               </label>
-              {name === "branch" ? <BranchInput /> : (
+              {name === "branch" ? <BranchInput /> : name === "idea" ? (
+                <>
+                  <textarea
+                    id="join-idea"
+                    name="idea"
+                    rows={6}
+                    placeholder="Tell us about your idea…"
+                    aria-describedby="idea-help"
+                    maxLength={5000}
+                    onInput={(event) => event.currentTarget.setCustomValidity("")}
+                    required
+                  />
+                  <p id="idea-help" className={styles.fieldHint}>
+                    Describe the problem, your solution, and who it helps.
+                  </p>
+                </>
+              ) : (
                 <input
                   id={`join-${name}`}
                   name={name}
@@ -211,7 +245,7 @@ export default function JoinUsForm() {
                           ? "you@example.com"
                           : name === "class"
                             ? "e.g. S3 A"
-                            : "Type or select your branch"
+                            : "Give your idea a short title"
                   }
                   maxLength={
                     name === "email" ? 254 : name === "phone" ? 25 : 100
@@ -224,7 +258,7 @@ export default function JoinUsForm() {
           ))}
         </div>
         <button type="submit" className={styles.submitButton}>
-          Submit <FiArrowUpRight aria-hidden="true" />
+          {isIdeaForm ? "Submit idea" : "Submit"} <FiArrowUpRight aria-hidden="true" />
         </button>
       </form>
 
@@ -235,10 +269,11 @@ export default function JoinUsForm() {
           tabIndex={-1}
           aria-labelledby="review-heading"
         >
-          <h3 id="review-heading">Your details</h3>
+          <h3 id="review-heading">{isIdeaForm ? "Your idea" : "Your details"}</h3>
           <p>
-            Your details have not been submitted. Registration submissions will
-            be available soon.
+            {isIdeaForm
+              ? "Your idea has not been submitted. Idea submissions will be available soon."
+              : "Your details have not been submitted. Registration submissions will be available soon."}
           </p>
           <dl className={styles.reviewList}>
             {fields.map(({ name, label }) => (
