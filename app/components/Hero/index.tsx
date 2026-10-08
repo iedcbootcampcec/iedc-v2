@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import SideElem from "./SideElem";
 import styles from "./Hero.module.css";
 
 gsap.registerPlugin(useGSAP);
@@ -104,6 +105,10 @@ export default function Hero() {
               className={styles.startBuildingSvg}
             />
           </div>
+        </div>
+
+        <div className={`${styles.illustrationColumn} ${styles.revealUp}`}>
+          <SideElem />
         </div>
       </div>
     </section>
