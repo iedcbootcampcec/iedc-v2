@@ -2,8 +2,18 @@
 
 import { useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
-import { FiArrowUpRight, FiEdit2 } from "react-icons/fi";
-import { validateRegistration } from "../lib/registration";
+import * as Select from "@radix-ui/react-select";
+import {
+  FiArrowUpRight,
+  FiCheck,
+  FiChevronDown,
+  FiChevronUp,
+  FiEdit2,
+} from "react-icons/fi";
+import {
+  registerUser,
+  validateRegistrationInput,
+} from "../services/registrationService";
 import styles from "./join-us.module.css";
 
 export interface JoinUsDetails {
@@ -40,130 +50,181 @@ const registrationFields: FormField[] = [
   ...studentFields.filter(({ name }) => !["name", "class"].includes(name)),
 ];
 
-const branches = [
+export const branches = [
   "Computer Science",
   "Computer Science(AI & ML)",
   "Electronics Engineering",
   "Electrical Engineering",
-];
+  "Other",
+] as const;
+
+export interface RadixSelectOption {
+  value: string;
+  label: string;
+}
+
+export function RadixSelect({
+  id,
+  name,
+  value,
+  defaultValue,
+  placeholder,
+  options,
+  error,
+  disabled,
+  onValueChange,
+  required,
+}: {
+  id: string;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder: string;
+  options: readonly (string | RadixSelectOption)[];
+  error?: string;
+  disabled?: boolean;
+  onValueChange?: (value: string) => void;
+  required?: boolean;
+}) {
+  const normalizedOptions: RadixSelectOption[] = options.map((opt) =>
+    typeof opt === "string" ? { value: opt, label: opt } : opt,
+  );
+
+  return (
+    <Select.Root
+      name={name}
+      value={value || undefined}
+      defaultValue={defaultValue}
+      onValueChange={onValueChange}
+      disabled={disabled}
+      required={required}
+    >
+      <Select.Trigger
+        id={id}
+        className={styles.selectTrigger}
+        aria-label={placeholder}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${name || id}-error` : undefined}
+      >
+        <Select.Value placeholder={placeholder} className={styles.selectValue} />
+        <Select.Icon className={styles.selectIcon}>
+          <FiChevronDown aria-hidden="true" />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content
+          className={styles.selectContent}
+          position="popper"
+          sideOffset={4}
+        >
+          <Select.ScrollUpButton className={styles.selectScrollButton}>
+            <FiChevronUp aria-hidden="true" />
+          </Select.ScrollUpButton>
+          <Select.Viewport className={styles.selectViewport}>
+            {normalizedOptions.map((opt) => (
+              <Select.Item
+                key={opt.value}
+                value={opt.value}
+                className={styles.selectItem}
+              >
+                <Select.ItemText>{opt.label}</Select.ItemText>
+                <Select.ItemIndicator className={styles.selectItemIndicator}>
+                  <FiCheck aria-hidden="true" />
+                </Select.ItemIndicator>
+              </Select.Item>
+            ))}
+          </Select.Viewport>
+          <Select.ScrollDownButton className={styles.selectScrollButton}>
+            <FiChevronDown aria-hidden="true" />
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+
+export interface BranchInputProps {
+  error?: string;
+  onValueChange?: () => void;
+  name?: string;
+  id?: string;
+  value?: string;
+  onChange?: (val: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+}
 
 export function BranchInput({
   error,
   onValueChange,
   name = "branch",
   id = "join-branch",
-}: {
-  error?: string;
-  onValueChange: () => void;
-  name?: string;
-  id?: string;
-}) {
-  const [value, setValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const suggestions = branches.filter((branch) =>
-    branch.toLowerCase().includes(value.trim().toLowerCase()),
-  );
-  const showSuggestions = isOpen && suggestions.length > 0;
+  value: controlledValue,
+  onChange,
+  placeholder = "Select your branch",
+  disabled,
+}: BranchInputProps) {
+  const [internalValue, setInternalValue] = useState("");
+  const [customBranch, setCustomBranch] = useState("");
+  const currentValue =
+    controlledValue !== undefined ? controlledValue : internalValue;
 
-  const chooseBranch = (branch: string) => {
-    setValue(branch);
-    setIsOpen(false);
-    setActiveIndex(-1);
-    inputRef.current?.setCustomValidity("");
-    onValueChange();
+  const isPredefined = branches.some((b) => b === currentValue);
+  const isOther =
+    currentValue === "Other" || (!isPredefined && currentValue !== "");
+  const selectValue = isPredefined
+    ? currentValue
+    : currentValue
+      ? "Other"
+      : "";
+
+  const handleSelect = (val: string) => {
+    let finalVal = val;
+    if (val === "Other") {
+      finalVal = customBranch.trim() || "Other";
+    }
+    if (controlledValue === undefined) {
+      setInternalValue(finalVal);
+    }
+    onChange?.(finalVal);
+    onValueChange?.();
+  };
+
+  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setCustomBranch(text);
+    const finalVal = text.trim() || "Other";
+    if (controlledValue === undefined) {
+      setInternalValue(finalVal);
+    }
+    onChange?.(finalVal);
+    onValueChange?.();
   };
 
   return (
     <div className={styles.branchControl}>
-      <input
-        ref={inputRef}
+      <RadixSelect
         id={id}
-        name={name}
-        role="combobox"
-        aria-autocomplete="list"
-        aria-expanded={showSuggestions}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${name}-error` : undefined}
-        aria-controls={showSuggestions ? `${id}-options` : undefined}
-        aria-activedescendant={
-          showSuggestions && activeIndex >= 0
-            ? `${id}-option-${activeIndex}`
-            : undefined
-        }
-        autoComplete="off"
-        placeholder="Type or select your branch"
-        value={value}
-        maxLength={100}
-        onFocus={() => setIsOpen(true)}
-        onBlur={() => {
-          setIsOpen(false);
-          setActiveIndex(-1);
-        }}
-        onChange={(event) => {
-          setValue(event.target.value);
-          setIsOpen(true);
-          setActiveIndex(-1);
-          event.currentTarget.setCustomValidity("");
-          onValueChange();
-        }}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") {
-            event.preventDefault();
-            setIsOpen(false);
-            setActiveIndex(-1);
-          } else if (
-            ["ArrowDown", "ArrowUp"].includes(event.key) &&
-            suggestions.length > 0
-          ) {
-            event.preventDefault();
-            setIsOpen(true);
-            const direction = event.key === "ArrowDown" ? 1 : -1;
-            setActiveIndex((index) =>
-              index < 0
-                ? direction === 1
-                  ? 0
-                  : suggestions.length - 1
-                : (index + direction + suggestions.length) % suggestions.length,
-            );
-          } else if (
-            event.key === "Enter" &&
-            showSuggestions &&
-            activeIndex >= 0
-          ) {
-            event.preventDefault();
-            chooseBranch(suggestions[activeIndex]);
-          }
-        }}
-        required
+        name={isOther ? undefined : name}
+        value={selectValue}
+        onValueChange={handleSelect}
+        placeholder={placeholder}
+        options={branches}
+        error={error}
+        disabled={disabled}
       />
-      {showSuggestions && (
-        <ul
-          id={`${id}-options`}
-          role="listbox"
-          aria-label="Branch suggestions"
-          className={styles.suggestions}
-        >
-          {suggestions.map((branch, index) => (
-            <li key={branch} role="presentation">
-              <button
-                id={`${id}-option-${index}`}
-                type="button"
-                role="option"
-                aria-selected={index === activeIndex}
-                tabIndex={-1}
-                className={
-                  index === activeIndex ? styles.activeSuggestion : undefined
-                }
-                onPointerDown={(event) => event.preventDefault()}
-                onClick={() => chooseBranch(branch)}
-              >
-                {branch}
-              </button>
-            </li>
-          ))}
-        </ul>
+      {isOther && (
+        <input
+          id={`${id}-custom`}
+          name={name}
+          type="text"
+          className={styles.customBranchInput}
+          placeholder="Please specify your branch"
+          value={customBranch}
+          maxLength={100}
+          onChange={handleCustomChange}
+          required
+        />
       )}
     </div>
   );
@@ -178,6 +239,8 @@ export default function JoinUsForm({
   const fields = isIdeaForm
     ? [...studentFields, ...ideaFields]
     : registrationFields;
+  const [gender, setGender] = useState("");
+  const [branch, setBranch] = useState("");
   const [details, setDetails] = useState<SubmissionDetails | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -210,92 +273,109 @@ export default function JoinUsForm({
       phone: readField("phone"),
       email: readField("email"),
       class: readField("class"),
-      branch: readField("branch"),
-      ...(!isIdeaForm ? { gender: readField("gender") } : {}),
+      branch: branch.trim() || readField("branch"),
+      ...(!isIdeaForm ? { gender: gender.trim() || readField("gender") } : {}),
       ...(isIdeaForm
         ? { ideaTitle: readField("ideaTitle"), idea: readField("idea") }
         : {}),
     };
 
+    const nextFieldErrors: Record<string, string> = {};
     for (const { name, label } of fields) {
-      const input = form.elements.namedItem(name) as
-        | HTMLInputElement
-        | HTMLTextAreaElement
-        | HTMLSelectElement;
-      input.setCustomValidity(
-        values[name] ? "" : `Please enter your ${label.toLowerCase()}.`,
-      );
-      if (!input.reportValidity()) return;
+      if (!values[name]) {
+        nextFieldErrors[name] =
+          name === "gender" || name === "branch"
+            ? `Please select your ${label.toLowerCase()}.`
+            : `Please enter your ${label.toLowerCase()}.`;
+      }
+    }
+
+    if (Object.keys(nextFieldErrors).length > 0) {
+      setFieldErrors(nextFieldErrors);
+      for (const { name } of fields) {
+        if (nextFieldErrors[name]) {
+          const el = document.getElementById(`join-${name}`);
+          el?.focus();
+          break;
+        }
+      }
+      return;
     }
 
     if (isIdeaForm) {
       const phoneInput = form.elements.namedItem("phone") as HTMLInputElement;
       const digits = values.phone.replace(/\D/g, "");
-      phoneInput.setCustomValidity(
+      const isPhoneValid =
         /^[+0-9 ()-]+$/.test(values.phone) &&
-          digits.length >= 10 &&
-          digits.length <= 15
-          ? ""
-          : "Please enter a phone number with 10 to 15 digits, including the country code if needed.",
-      );
-      if (!phoneInput.reportValidity()) return;
+        digits.length >= 10 &&
+        digits.length <= 15;
+      if (!isPhoneValid) {
+        setFieldErrors((prev) => ({
+          ...prev,
+          phone:
+            "Please enter a phone number with 10 to 15 digits, including the country code if needed.",
+        }));
+        phoneInput?.focus();
+        return;
+      }
       setDetails(values);
       requestAnimationFrame(() => reviewRef.current?.focus());
       return;
     }
 
-    const { payload, errors } = validateRegistration(values);
-    for (const { field, message } of errors) {
-      const input = form.elements.namedItem(field) as
-        | HTMLInputElement
-        | HTMLSelectElement;
-      input.setCustomValidity(message);
-      if (!input.reportValidity()) return;
+    const validation = validateRegistrationInput({
+      name: values.name,
+      gender: values.gender || "",
+      phone: values.phone,
+      email: values.email,
+      branch: values.branch,
+    });
+
+    if (!validation.isValid) {
+      setFieldErrors(validation.errors);
+      const firstField = Object.keys(validation.errors)[0];
+      const el = document.getElementById(`join-${firstField}`);
+      if (el) {
+        el.focus();
+      } else {
+        const input = form.elements.namedItem(firstField) as
+          | HTMLInputElement
+          | null;
+        input?.focus();
+      }
+      return;
     }
 
     submittingRef.current = true;
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(25000),
+      const result = await registerUser({
+        name: values.name.trim(),
+        gender: (values.gender || "").trim(),
+        phone: values.phone.trim(),
+        email: values.email.trim(),
+        ...(values.branch?.trim() ? { branch: values.branch.trim() } : {}),
       });
-      const result: unknown = await response.json().catch(() => null);
-      const body =
-        result && typeof result === "object" && !Array.isArray(result)
-          ? (result as Record<string, unknown>)
-          : {};
-      if (response.status === 201 && body.success === true) {
-        setSuccessMessage(
-          typeof body.message === "string"
-            ? body.message
-            : "User registered successfully.",
-        );
-        setDetails({ ...values, ...payload });
+
+      if (result.success) {
+        setSuccessMessage(result.message);
+        setDetails({
+          ...values,
+          name: result.data.name,
+          gender: result.data.gender,
+          phone: result.data.phone,
+          email: result.data.email,
+          branch: result.data.branch ?? values.branch,
+        });
         requestAnimationFrame(() => reviewRef.current?.focus());
       } else {
-        const nextErrors: Record<string, string> = {};
-        if (Array.isArray(body.details)) {
-          for (const detail of body.details) {
-            if (
-              detail &&
-              typeof detail === "object" &&
-              typeof detail.field === "string" &&
-              typeof detail.message === "string" &&
-              fields.some(({ name }) => name === detail.field)
-            ) {
-              nextErrors[detail.field] = detail.message;
-            }
-          }
+        if (result.fieldErrors) {
+          setFieldErrors(result.fieldErrors);
+          const firstField = Object.keys(result.fieldErrors)[0];
+          const el = document.getElementById(`join-${firstField}`);
+          el?.focus();
         }
-        setFieldErrors(nextErrors);
-        setFormError(
-          typeof body.message === "string"
-            ? body.message
-            : "We couldn't complete your registration. Please try again.",
-        );
+        setFormError(result.message);
         requestAnimationFrame(() => errorRef.current?.focus());
       }
     } catch {
@@ -349,33 +429,30 @@ export default function JoinUsForm({
               </label>
               {name === "branch" ? (
                 <BranchInput
+                  value={branch}
+                  onChange={(val) => {
+                    setBranch(val);
+                    clearFieldError("branch");
+                  }}
                   error={fieldErrors.branch}
                   onValueChange={() => clearFieldError("branch")}
+                  disabled={isSubmitting}
                 />
               ) : name === "gender" ? (
-                <select
+                <RadixSelect
                   id="join-gender"
                   name="gender"
-                  defaultValue=""
-                  required
-                  aria-invalid={fieldErrors.gender ? true : undefined}
-                  aria-describedby={
-                    fieldErrors.gender ? "gender-error" : undefined
-                  }
-                  onChange={(event) => {
-                    event.currentTarget.setCustomValidity("");
+                  value={gender}
+                  onValueChange={(val) => {
+                    setGender(val);
                     clearFieldError("gender");
                   }}
-                >
-                  <option value="" disabled>
-                    Select your gender
-                  </option>
-                  {["Male", "Female"].map((gender) => (
-                    <option key={gender} value={gender}>
-                      {gender}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="Select your gender"
+                  options={["Male", "Female", "Other"]}
+                  error={fieldErrors.gender}
+                  disabled={isSubmitting}
+                  required
+                />
               ) : name === "idea" ? (
                 <>
                   <textarea

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import IdeaSubmissionForm from "./IdeaSubmissionForm";
-import formStyles from "../join-us/join-us.module.css";
 import styles from "./submit-idea.module.css";
+import { Theme } from "@radix-ui/themes";
 
 export const metadata: Metadata = {
   title: "Submit Your Idea | IEDC BOOTCAMP CEC",
@@ -13,13 +13,15 @@ export const metadata: Metadata = {
 
 export default function SubmitIdeaPage() {
   return (
-    <main className={formStyles.page}>
-      <div className={formStyles.inner}>
-        <Link href="/" className={styles.backLink}>
-          <FiArrowLeft aria-hidden="true" /> Back to homepage
-        </Link>
-        <IdeaSubmissionForm />
-      </div>
-    </main>
+    <Theme>
+      <main className={styles.page}>
+        <div className={styles.inner}>
+          <Link href="/" className={styles.backLink}>
+            <FiArrowLeft aria-hidden="true" /> Back to homepage
+          </Link>
+          <IdeaSubmissionForm />
+        </div>
+      </main>
+    </Theme>
   );
 }

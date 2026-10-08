@@ -1,3 +1,5 @@
+@import "@radix-ui/themes/styles.css";
+
 :root {
   /* ── Brand / Theme Colors ── */
   --color-primary: #1a1a1a;
