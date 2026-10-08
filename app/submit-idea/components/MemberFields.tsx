@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type { IdeaMember } from "../../lib/idea-submission";
+import type { IdeaMember } from "@/app/types/idea-submission";
 import { RadixSelect } from "./RadixSelect";
 import { BranchSelect } from "./BranchSelect";
 import { TextField } from "./TextField";
