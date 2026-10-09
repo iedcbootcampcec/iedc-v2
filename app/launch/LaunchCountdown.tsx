@@ -28,14 +28,24 @@ function subscribeToClock(onChange: () => void) {
 const getClockSnapshot = () => Math.floor(Date.now() / 1000);
 const getServerClockSnapshot = () => null;
 
-export default function LaunchCountdown() {
+export default function LaunchCountdown({
+  countdownSeconds = null,
+}: {
+  countdownSeconds?: number | null;
+}) {
+  // A custom timer starts on opening the page and keeps its deadline across ticks.
+  const [countdownTimestamp] = useState(() =>
+    countdownSeconds === null
+      ? launchTimestamp / 1000
+      : Math.floor(Date.now() / 1000) + countdownSeconds,
+  );
   const now = useSyncExternalStore(
     subscribeToClock,
     getClockSnapshot,
     getServerClockSnapshot,
   );
   const secondsLeft =
-    now === null ? null : Math.max(0, Math.ceil(launchTimestamp / 1000 - now));
+    now === null ? null : Math.max(0, Math.ceil(countdownTimestamp - now));
   const isLive = secondsLeft === 0;
   const countdown = [
     {
