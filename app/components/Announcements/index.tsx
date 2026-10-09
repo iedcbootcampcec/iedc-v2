@@ -57,7 +57,7 @@ export default function Announcements() {
 
         <div className={styles.rightCol}>
           <div className={styles.listContainer}>
-            {events.map((event) => {
+            {events.slice(0, 5).map((event) => {
               const href = ("link" in event && typeof event.link === "string") ? event.link : "/#events";
               return (
                 <Link
